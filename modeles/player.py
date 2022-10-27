@@ -8,3 +8,5 @@ class Player:
         self.grading = 0
         self.number_point = 0
 
+    def __str__(self):
+        return f"{self.name}"
