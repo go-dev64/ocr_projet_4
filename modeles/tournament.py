@@ -1,6 +1,8 @@
-class Tournament:
-    type_of_tournament = ["Bullet", "Blitz", "Rapid"]
+from round import Round
 
+
+class Tournament:
+    """type_of_tournament = ["Bullet", "Blitz", "Rapid"]"""
     def __init__(self, name, place, date):
         self.name = name
         self.place = place
@@ -11,15 +13,19 @@ class Tournament:
         self.time_control = ""
         self.description = ""
 
-    def select_type_of_tournament(self):
-        pass
+    def select_type_of_tournament(self, control_time):
+        """select control-time"""
+        self.time_control = control_time
 
-    def add_players(self):
-        pass
+    def add_players(self, player):
+        """add player to tournament"""
+        self.players.append(player)
 
     def add_tour(self):
-        pass
+        for tour in range(1, self.number_of_round):
+            round = Round(tour)
+            self.tour.append(round)
 
-    def add_description(self):
-        pass
+    def add_tournament_description(self, description):
+        self.description = description
 

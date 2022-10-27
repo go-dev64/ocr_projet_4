@@ -7,3 +7,4 @@ class Match:
         self.result_player1 = 0
         self.result_player2 = 0
 
+
