@@ -21,7 +21,7 @@ class ViewTournament:
               "1 - Bullet\n"
               "2 - Blitz\n"
               "3 - Coup Rapide\n")
-        control_time = input("Entrer votre choix:")
+        control_time = int(input("Entrer votre choix:"))
         match control_time:
             case 1:
                 return "Bullet"
@@ -44,12 +44,5 @@ class ViewTournament:
         return choice_of_player
 
 
-toto = ViewTournament()
-toto.user_choice_of_player()
-toto.user_choice_of_description_of_tournament()
-toto.user_choice_of_date_of_tournament()
-toto.user_choice_of_name_of_tournament()
-toto.user_choice_of_place_of_tournament()
-toto.user_choice_of_control_time()
 
 

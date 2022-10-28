@@ -11,11 +11,11 @@ class Round:
         self.hour_of_end = "hour_of_end"
 
     def start_of_round(self):
-        self.date_of_start = self.get_time_now()[1]
+        self.date_of_start = self.get_time_now()[0]
         self.hour_of_start = self.get_time_now()[1]
 
     def end_of_round(self):
-        self.date_of_end = self.get_time_now()[1]
+        self.date_of_end = self.get_time_now()[0]
         self.hour_of_end = self.get_time_now()[1]
 
     def get_time_now(self):
@@ -24,5 +24,8 @@ class Round:
         return date, hour
 
     def __str__(self):
+        return f"{self.name}", f"{self.list_of_match}"
+
+    def __repr__(self):
         return f"{self.name}", f"{self.list_of_match}"
 

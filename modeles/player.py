@@ -5,8 +5,15 @@ class Player:
         self.first_name = first_name
         self.date_of_birth = date_of_birth
         self.gender = gender
-        self.grading = 0
+        self.rang = 0
         self.number_point = 0
 
+    def edit_grading(self, new_grading):
+        self.rang = new_grading
+
     def __str__(self):
-        return f"{self.name}"
+        return self.name + " " + self.first_name
+
+    def __repr__(self):
+        return self.name + " " + self.first_name
+
