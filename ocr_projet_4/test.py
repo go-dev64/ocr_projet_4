@@ -1,4 +1,4 @@
-import.modeles.tournament
+import ocr_projet_4.modeles.tournament
 from ocr_projet_4.modeles.player import Player
 from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.modeles.match import Match
@@ -45,35 +45,29 @@ def sort_player_list_by_rang(list_player):
     print(list_player)
     return list_player
 
+
 def sort_player_list_by_point(list_player):
     list_player = sorted(list_player, key=lambda player: player.number_point)
     print(list_player)
 
 
-def match(x):
-    y = int(len(x)/2)
-    for i in range(1, y+1):
-        i = Match(name=i , player1=x[i-1], player2=x[y+i-1])
-        print(i.player1, i.player2)
+def get_match_of_round(x):
+    list = []
+    y = int(len(x) / 2)
+    for i in range(1, y + 1):
+        i = Match(name=i, player1=x[i - 1], player2=x[y + i - 1])
+        # print(i.player1, i.player2)
+        list.append(i)
+
+    return list
 
 
-
-
-
-
-
-match(list_players)
-
-
-
-
+test = Match(name="match_1", player1=list_players[0], player2=list_players[1])
 
 
 """print(list_players)
 sort_player_list_by_point(list_players)
 sort_player_list_by_rang(list_players)"""
-
-
 
 """tournoi_a = Tournament(name="tournoi_a", place="bayonne", date="21/02/2022")
 tournoi_a.time_control = "Blitz"

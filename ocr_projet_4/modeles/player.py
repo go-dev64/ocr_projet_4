@@ -12,8 +12,9 @@ class Player:
         self.rang = new_grading
 
     def __str__(self):
-        return self.name + " " + self.first_name
+        return f"{self.name} {self.first_name}"
 
     def __repr__(self):
-        return self.name + " " + self.first_name
+        return f"{self.name} {self.first_name}"
+
 
