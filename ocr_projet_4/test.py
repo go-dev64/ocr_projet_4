@@ -1,4 +1,4 @@
-import ocr_projet_4.modeles.tournament
+import.modeles.tournament
 from ocr_projet_4.modeles.player import Player
 from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.modeles.match import Match
