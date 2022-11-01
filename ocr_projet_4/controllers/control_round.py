@@ -3,7 +3,7 @@ from ocr_projet_4.modeles.round import Round
 from ocr_projet_4.modeles.match import Match
 
 
-class ControlRound():
+class ControlRound:
     def __init__(self):
         self.view_round = ViewRound()
 

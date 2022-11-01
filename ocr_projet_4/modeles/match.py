@@ -39,12 +39,12 @@ class Match:
     def give_player_point(self, result):
         match result:
             case 1:
-                self.player1.number_of_point += 1
+                self.player1.number_point += 1
             case 2:
-                self.player2.number_of_point += 1
+                self.player2.number_point += 1
             case 3:
-                self.player1.number_of_point += 0.5
-                self.player2.number_of_point += 0.5
+                self.player1.number_point += 0.5
+                self.player2.number_point += 0.5
 
     def save_match(self):
         list_player1 = [self.player1, self.result_player1]

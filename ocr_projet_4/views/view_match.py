@@ -1,5 +1,3 @@
-from ocr_projet_4.test import list_players, get_match_of_round
-
 
 class ViewMatch:
 

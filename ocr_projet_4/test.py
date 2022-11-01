@@ -1,7 +1,6 @@
-import ocr_projet_4.modeles.tournament
 from ocr_projet_4.modeles.player import Player
-from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.modeles.match import Match
+
 
 play_1 = Player(name="Toto", first_name="patrick",
                 date_of_birth="11/02/88", gender="homme")
@@ -39,30 +38,9 @@ play_8.number_point = 1
 
 list_players = [play_1, play_2, play_3, play_4, play_5, play_6, play_7, play_8]
 
+toto = Match(name="match_1", player1=list_players[0], player2=list_players[1])
+print(toto)
 
-def sort_player_list_by_rang(list_player):
-    list_player = sorted(list_players, key=lambda player: player.rang)
-    print(list_player)
-    return list_player
-
-
-def sort_player_list_by_point(list_player):
-    list_player = sorted(list_player, key=lambda player: player.number_point)
-    print(list_player)
-
-
-def get_match_of_round(x):
-    list = []
-    y = int(len(x) / 2)
-    for i in range(1, y + 1):
-        i = Match(name=i, player1=x[i - 1], player2=x[y + i - 1])
-        # print(i.player1, i.player2)
-        list.append(i)
-
-    return list
-
-
-test = Match(name="match_1", player1=list_players[0], player2=list_players[1])
 
 
 """print(list_players)
