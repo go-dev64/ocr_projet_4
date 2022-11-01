@@ -1,5 +1,7 @@
 import random
 
+print(random.randint(0, 1))
+
 
 class Match:
     def __init__(self, name, player1, player2):
@@ -14,14 +16,13 @@ class Match:
     def get_color(self):
         number = random.randint(0, 1)
         match number:
-            case 1:
-                pass
+            case 0:
                 self.player_with_black_piece = self.player1
-            case 2:
+            case 1:
                 self.player_with_black_piece = self.player2
-                pass
 
     def result_of_match(self, result):
+        """save result"""
         match result:
             case 1:
                 "winner is player1"
@@ -37,6 +38,7 @@ class Match:
                 self.result_player2 = "draw"
 
     def give_player_point(self, result):
+        """add point to player"""
         match result:
             case 1:
                 self.player1.number_point += 1
@@ -52,9 +54,7 @@ class Match:
         self.data = (list_player1, list_player2)
 
     def __repr__(self):
-        return f"{self.player1} VS {self.player2}"
+        return f"{self.player1} VS {self.player2}: {self.player_with_black_piece} jouera en noir"
 
     def __str__(self):
-        return f"{self.player1} VS {self.player2}"
-
-
+        return f"{self.player1} VS {self.player2}: {self.player_with_black_piece} jouera en noir"

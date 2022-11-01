@@ -1,12 +1,9 @@
 from ocr_projet_4.views.view_match import ViewMatch
-import ocr_projet_4.test as test
-
-tata = test.toto
 
 
 class ControlMatch:
-    def __init__(self):
-        self.match = tata
+    def __init__(self, match):
+        self.match = match
         self.view_match = ViewMatch()
         self.player_1 = self.match.player1
         self.player_2 = self.match.player2
@@ -21,14 +18,27 @@ class ControlMatch:
             player_2=self.player_2)
         return result
 
+    def return_result(self, result):
+        match result:
+            case 1:
+                return [self.player_1]
+            case 2:
+                return [self.player_2]
+            case 3:
+                return [self.player_1, self.player_2]
+
     def run(self):
         result = self.get_result_match()
         self.match.result_of_match(result=result)
         self.match.give_player_point(result=result)
         self.match.save_match()
+        winner = self.return_result(result=result)
+        return winner
 
 
-"""go = ControlMatch()
+
+
+"""go = ControlMatch(test.toto)
 print(go.player_1.number_point)
 print(go.player_2.number_point)
 go.run()

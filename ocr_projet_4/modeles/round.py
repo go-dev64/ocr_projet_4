@@ -3,10 +3,10 @@ from ocr_projet_4.modeles.match import Match
 
 
 class Round:
-    def __init__(self, name):
+    def __init__(self, name, players_list):
         self.name = name
         self.list_of_match = []
-        self.players_list = []
+        self.players_list = players_list
         self.date_of_start = "date_of_start"
         self.hour_of_start = "hour_of_start"
         self.date_of_end = "date_of_end"
@@ -45,17 +45,21 @@ class Round:
         self.players_list.pop(loser_player)
 
     def get_match_of_round(self):
-        y = int(len(self.players_list) / 2)
-        for i in range(1, y + 1):
+        len_list_divide_per_2 = int(len(self.players_list) / 2)
+        for i in range(1, len_list_divide_per_2 + 1):
+            print(i)
             i = Match(
                 name=i,
                 player1=self.players_list[i - 1],
-                player2=self.players_list[y + i - 1]
+                player2=self.players_list[len_list_divide_per_2 + i - 1]
             )
+            i.get_color()
+            self.list_of_match.append(i)
+            print(i)
 
     def __str__(self):
-        return f"{self.name}", f"{self.list_of_match}"
+        return f"{self.name}"# f"{self.list_of_match}"
 
     def __repr__(self):
-        return f"{self.name}", f"{self.list_of_match}"
+        return f"{self.name}"# f"{self.list_of_match}"
 

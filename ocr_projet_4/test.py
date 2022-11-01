@@ -1,5 +1,8 @@
 from ocr_projet_4.modeles.player import Player
+from ocr_projet_4.modeles.round import Round
+from ocr_projet_4.controllers.control_round import ControlRound
 from ocr_projet_4.modeles.match import Match
+
 
 
 play_1 = Player(name="Toto", first_name="patrick",
@@ -38,40 +41,10 @@ play_8.number_point = 1
 
 list_players = [play_1, play_2, play_3, play_4, play_5, play_6, play_7, play_8]
 
-toto = Match(name="match_1", player1=list_players[0], player2=list_players[1])
-print(toto)
-
-
-
-"""print(list_players)
-sort_player_list_by_point(list_players)
-sort_player_list_by_rang(list_players)"""
-
-"""tournoi_a = Tournament(name="tournoi_a", place="bayonne", date="21/02/2022")
-tournoi_a.time_control = "Blitz"
-tournoi_a.add_players(list_players)
-tournoi_a.add_tournament_description("test tournoi a")
-
-tournoi_b = Tournament(name="tournoi_b", place="biarritz", date="22/02/2022")
-tournoi_b.time_control = "Blitz"
-tournoi_b.add_players(list_players)
-tournoi_b.add_tournament_description("test tournoi b")
-
-list_tournament = []"""
-
-"""list_players.append(Player(name="Toto", first_name="patrick",
-                           date_of_birth="11/02/88", gender="homme"))
-list_players.append(Player(name="Pitt", first_name="brad",
-                           date_of_birth="11/05/60", gender="homme"))
-list_players.append(Player(name="Portman", first_name="nathalie",
-                           date_of_birth="18/07/87", gender="femme"))
-list_players.append(Player(name="dupont", first_name="antoine",
-                           date_of_birth="11/22/90", gender="homme"))
-list_players.append(Player(name="Sansuss", first_name="laure",
-                           date_of_birth="14/03/2000", gender="femme"))
-list_players.append(Player(name="Mayans", first_name="marjorie",
-                           date_of_birth="25/09/2001", gender="femme"))
-list_players.append(Player(name="Penaud", first_name="Damian",
-                           date_of_birth="11/011/88", gender="homme"))
-list_players.append(Player(name="Guerdain", first_name="blanche",
-                           date_of_birth="11/02/88", gender="femme"))"""
+go = Match(name="match", player1=list_players[0], player2=list_players[4])
+go.get_color()
+print(go.player_with_black_piece)
+round_1 = Round(name="round_1", players_list=list_players)
+go = ControlRound(round_1, players_list=list_players)
+go.create_match()
+go.input_match_result()
