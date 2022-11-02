@@ -2,10 +2,11 @@ from datetime import datetime
 from ocr_projet_4.modeles.match import Match
 
 
-class Round:
+class Round(list):
     def __init__(self, name, players_list):
         self.name = name
         self.list_of_match = []
+        self.in_game_player_list = []
         self.players_list = players_list
         self.date_of_start = "date_of_start"
         self.hour_of_start = "hour_of_start"
@@ -41,8 +42,8 @@ class Round:
             key=lambda player: player.number_point
         )
 
-    def leave_loser_player(self, loser_player):
-        self.players_list.pop(loser_player)
+    def add_winner(self, winner):
+        self.in_game_player_list.extend(winner)
 
     def get_match_of_round(self):
         len_list_divide_per_2 = int(len(self.players_list) / 2)
@@ -57,9 +58,14 @@ class Round:
             self.list_of_match.append(i)
             print(i)
 
+    def take_out_the_finished_match(self, match):
+        index_match = self.list_of_match.index(match)
+        pop = self.list_of_match.pop(index_match)
+        self.append(pop)
+
     def __str__(self):
-        return f"{self.name}"# f"{self.list_of_match}"
+        return f"{self.name} ",  f"{self.list_of_match}"
 
     def __repr__(self):
-        return f"{self.name}"# f"{self.list_of_match}"
+        return f"{self.name}",  f"{self.list_of_match}"
 

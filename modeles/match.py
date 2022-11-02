@@ -6,6 +6,7 @@ print(random.randint(0, 1))
 class Match:
     def __init__(self, name, player1, player2):
         self.name = name
+        self.finished_match = False
         self.player1 = player1
         self.player2 = player2
         self.player_with_black_piece = ""
@@ -52,6 +53,9 @@ class Match:
         list_player1 = [self.player1, self.result_player1]
         list_player2 = [self.player2, self.result_player2]
         self.data = (list_player1, list_player2)
+
+    def status_match_is_finish(self):
+        self.finished_match = True
 
     def __repr__(self):
         return f"{self.player1} VS {self.player2}: {self.player_with_black_piece} jouera en noir"

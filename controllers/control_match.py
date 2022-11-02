@@ -31,6 +31,7 @@ class ControlMatch:
         result = self.get_result_match()
         self.match.result_of_match(result=result)
         self.match.give_player_point(result=result)
+        self.match.status_match_is_finish()
         self.match.save_match()
         winner = self.return_result(result=result)
         return winner

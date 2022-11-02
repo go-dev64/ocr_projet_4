@@ -2,7 +2,6 @@ from ocr_projet_4.views.view_round import ViewRound
 from ocr_projet_4.controllers.control_match import ControlMatch
 
 
-
 class ControlRound:
     def __init__(self, tour, players_list):
         self.view_round = ViewRound()
@@ -27,17 +26,13 @@ class ControlRound:
         self.view_round.view_end_of_round(name_of_round=self.tour)
         self.tour.end_of_round()
 
-    def input_match_result(self):
-        match = self.tour.list_of_match[self.select_match()]
-        result_match = ControlMatch(match=match).run()
-
-
-
-
-
-
-
-
     def select_match(self):
         match_selected = self.view_round.select_match(self.tour.list_of_match)
         return match_selected
+
+    def input_match_result(self):
+        match = self.tour.list_of_match[self.select_match()]
+        result_match = ControlMatch(match=match).run()
+        self.tour.add_winner(result_match)
+        self.tour.take_out_the_finished_match(match)
+
