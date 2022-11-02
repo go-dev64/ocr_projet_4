@@ -1,5 +1,4 @@
 from datetime import datetime
-from ocr_projet_4.modeles.match import Match
 
 
 class Round(list):
@@ -23,40 +22,14 @@ class Round(list):
         self.date_of_end = self.get_time_now()[0]
         self.hour_of_end = self.get_time_now()[1]
 
-    def get_time_now(self):
+    @staticmethod
+    def get_time_now():
         date = datetime.today().strftime("%d/%m/%y")
         hour = datetime.today().isoformat(timespec="seconds")
         return date, hour
 
-    def sort_player_list_by_rang(self):
-        """sort list by rang, only in first round"""
-        self.players_list = sorted(
-            self.players_list,
-            key=lambda player: player.rang
-        )
-
-    def sort_player_list_by_point(self):
-        """ sort list by point """
-        self.players_list = sorted(
-            self.players_list,
-            key=lambda player: player.number_point
-        )
-
     def add_winner(self, winner):
         self.in_game_player_list.extend(winner)
-
-    def get_match_of_round(self):
-        len_list_divide_per_2 = int(len(self.players_list) / 2)
-        for i in range(1, len_list_divide_per_2 + 1):
-            print(i)
-            i = Match(
-                name=i,
-                player1=self.players_list[i - 1],
-                player2=self.players_list[len_list_divide_per_2 + i - 1]
-            )
-            i.get_color()
-            self.list_of_match.append(i)
-            print(i)
 
     def take_out_the_finished_match(self, match):
         index_match = self.list_of_match.index(match)
