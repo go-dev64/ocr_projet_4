@@ -8,16 +8,8 @@ class ControlRound:
         self.tour = tour
         self.player_list = players_list
 
-    def create_match_of_round1(self):
-        self.tour.sort_player_list_by_rang()
-        self.tour.create_matchs_of_round_1()
-
-    def create_match_next_round(self):
-        self.tour.sort_player_list_by_point()
-        self.tour.create_matchs_of_next_round()
-
     def display_match_of_round(self):
-        list_of_match = self.tour.list_of_match
+        list_of_match = self.tour.match_in_progress
         self.view_round.display_match(match_list=list_of_match)
 
     def start_round(self):
@@ -34,8 +26,8 @@ class ControlRound:
         self.tour.end_of_round()
 
     def select_match(self):
-        match_selected = self.view_round.select_match(self.tour.list_of_match)
-        match = self.tour.list_of_match[match_selected]
+        match_selected = self.view_round.select_match(self.tour.match_in_progress)
+        match = self.tour.match_in_progress[match_selected]
         return match
 
     def input_match_result(self):
@@ -47,9 +39,9 @@ class ControlRound:
     def run_round(self):
         self.display_match_of_round()
         self.start_round()
-        while len(self.tour.list_of_match) != 0:
+        while len(self.tour.match_in_progress) != 0:
             self.input_match_result()
-        if len(self.tour.list_of_match) == 0:
+        if len(self.tour.match_in_progress) == 0:
             self.end_round()
 
 

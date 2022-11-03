@@ -1,12 +1,13 @@
 from datetime import datetime
 
 
-class Round(list):
-    def __init__(self, name, players_list):
+class Round:
+    def __init__(self, name):
         self.name = name
         self.list_of_match = []
+        self.match_in_progress = []
         self.in_game_player_list = []
-        self.players_list = players_list
+        self.players_list = []
         self.date_of_start = "date_of_start"
         self.hour_of_start = "hour_of_start"
         self.date_of_end = "date_of_end"
@@ -32,13 +33,12 @@ class Round(list):
         self.in_game_player_list.extend(winner)
 
     def take_out_the_finished_match(self, match):
-        index_match = self.list_of_match.index(match)
-        pop = self.list_of_match.pop(index_match)
-        self.append(pop)
+        index_match = self.match_in_progress.index(match)
+        self.match_in_progress.pop(index_match)
 
     def __str__(self):
-        return f"{self.name} ",  f"{self.list_of_match}"
+        return f"{self.name} ,{self.list_of_match}"
 
     def __repr__(self):
-        return f"{self.name}",  f"{self.list_of_match}"
+        return f"{self.name},{self.list_of_match}"
 

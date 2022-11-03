@@ -1,8 +1,9 @@
 from ocr_projet_4.modeles.player import Player
+from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.modeles.round import Round
 from ocr_projet_4.controllers.control_round import ControlRound
 from ocr_projet_4.modeles.match import Match
-
+from ocr_projet_4.controllers.control_tournament import ControlTournament
 
 
 play_1 = Player(name="Toto", first_name="patrick",
@@ -41,10 +42,25 @@ play_8.number_point = 0
 
 list_players = [play_1, play_2, play_3, play_4, play_5, play_6, play_7, play_8]
 
-round_1 = Round(name="round 1", players_list=list_players)
+tournoi_1 = Tournament(name="Tournoi 1",
+                       place="bayonne",
+                       date="26/01/2022",
+                       time_controle="Splitz",
+                       description="test controle tournament")
+
+tournoi_1.players_list = list_players
+
+go = ControlTournament(tournoi_1)
+go.run()
+print(go.tournament.round_list)
+
+
+
+
+"""round_1 = Round(name="round 1", players_list=list_players)
 got = ControlRound(round_1, players_list=list_players)
 got.run_round()
-list_round = [round_1]
+list_round = [round_1]"""
 
 
 
