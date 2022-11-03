@@ -29,16 +29,15 @@ class ControlTournament:
         first_round.match_in_progress = first_round.list_of_match.copy()
         return first_round
 
-    def create_next_round(self, name):
-        next_round = Round(name=name)
-        self.tournament.add_round(next_round)
-        return next_round
-
-    """def define_next_round(self, name):
-        next_round = self.create_next_round(name=name)
+    def define_next_round(self, name):
+        next_round = self.create_round(name=name)
         self.tournament.sort_player_list_by_point()
-        next_round.players_list = 
-        self.tournament.create_matchs_of_next_round()"""
+        next_round.players_list = self.tournament.players_list
+        next_round.list_of_match = self.tournament.create_matchs_of_next_round(
+            list_round=self.tournament.round_list
+        )
+        next_round.match_in_progress = next_round.list_of_match.copy()
+        return next_round
 
     def run(self):
         if self.view_create_round():
@@ -48,6 +47,15 @@ class ControlTournament:
                                  )
 
             round.run_round()
+            for round in range(2, self.tournament.number_of_round + 1):
+                next_round = 0
+                next_round = self.define_next_round(name=f"Round {round}")
+                round = ControlRound(tour=next_round,
+                                     players_list=self.tournament.players_list
+                                     )
+                round.run_round()
+
+
 
 
 

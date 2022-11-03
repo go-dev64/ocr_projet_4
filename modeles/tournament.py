@@ -51,45 +51,45 @@ class Tournament:
         return matchs_list_of_round1
 
     @staticmethod
-    def check_match_already_played(list_round, new_player1, new_player2):
+    def check_match_already_played(list_round, player_1, player_2):
         for old_round in list_round:
-            for old_match in old_round:
-                player_list = [old_match.player1, old_match.player2, new_player1, new_player2]
-                number_player1 = player_list.count(new_player1)
-                number_player2 = player_list.count(new_player2)
-                if number_player1 + number_player2 == 4:
+            for old_match in old_round.list_of_match:
+                player_list = [old_match.player1, old_match.player2, player_1, player_2]
+                number_player1 = player_list.count(player_1)
+                number_player2 = player_list.count(player_2)
+                if number_player1 + number_player2 > 3:
                     return False
+        return True
 
     def create_matchs_of_next_round(self, list_round):
         matchs_list_of_other_round = []
         copy_list = self.players_list.copy()
-        i = 0
-        while len(copy_list) > 1:
-            i += 1
-            if self.check_match_already_played(
+        compteur = 0
+        while len(copy_list) > 0:
+            index_player2 = 1
+            compteur += 1
+            i = compteur
+            already_played = self.check_match_already_played(
+                list_round=list_round,
+                player_1=copy_list[0],
+                player_2=copy_list[index_player2]
+            )
+            while not already_played:
+                index_player2 += 1
+                already_played = self.check_match_already_played(
                     list_round=list_round,
-                    new_player1=copy_list[0],
-                    new_player2=copy_list[1]
-            ):
-                i = Match(
-                    name=i,
-                    player1=copy_list[1],
-                    player2=copy_list[0]
-                )
-                i.get_color()
-                matchs_list_of_other_round.append(i)
-                copy_list.pop(0)
-                copy_list.pop(0)
-            else:
-                i = Match(
-                    name=i,
-                    player1=copy_list[0],
-                    player2=copy_list[2]
-                )
-                i.get_color()
-                matchs_list_of_other_round.append(i)
-                copy_list.pop(2)
-                copy_list.pop(0)
+                    player_1=copy_list[0],
+                    player_2=copy_list[index_player2]
+                    )
+            i = Match(
+                name=f"Match{i}",
+                player1=copy_list[0],
+                player2=copy_list[index_player2]
+            )
+            i.get_color()
+            matchs_list_of_other_round.append(i)
+            copy_list.pop(index_player2)
+            copy_list.pop(0)
 
         return matchs_list_of_other_round
 

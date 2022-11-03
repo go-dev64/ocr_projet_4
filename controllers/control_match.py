@@ -39,16 +39,6 @@ class ControlMatch:
 
 
 
-"""go = ControlMatch(test.toto)
-print(go.player_1.number_point)
-print(go.player_2.number_point)
-go.run()
-print(go.player_1.number_point)
-print(go.player_2.number_point)"""
-
-
-
-
 
 
 

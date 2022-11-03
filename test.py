@@ -57,10 +57,7 @@ print(go.tournament.round_list)
 
 
 
-"""round_1 = Round(name="round 1", players_list=list_players)
-got = ControlRound(round_1, players_list=list_players)
-got.run_round()
-list_round = [round_1]"""
+
 
 
 

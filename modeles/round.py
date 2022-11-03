@@ -5,7 +5,7 @@ class Round:
     def __init__(self, name):
         self.name = name
         self.list_of_match = []
-        self.match_in_progress = []
+        self.match_in_progress = self.list_of_match.copy()
         self.in_game_player_list = []
         self.players_list = []
         self.date_of_start = "date_of_start"
