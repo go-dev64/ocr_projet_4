@@ -52,8 +52,4 @@ class CreateTournament(list):
         self.append(new_tournament)
 
 
-go = CreateTournament()
-go.create_new_tournament()
-go.create_new_tournament()
-print(go)
-print("toto")
+

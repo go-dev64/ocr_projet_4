@@ -1,4 +1,5 @@
 from datetime import datetime
+from ocr_projet_4.modeles.match import Match
 
 
 class Round:
@@ -12,6 +13,14 @@ class Round:
         self.hour_of_start = "hour_of_start"
         self.date_of_end = "date_of_end"
         self.hour_of_end = "hour_of_end"
+
+    def create_match(self, name, player_1, player_2):
+        name = Match(
+            name=name,
+            player1=player_1,
+            player2=player_2
+        )
+        name.get_color()
 
     def start_of_round(self):
         """give the date and hour of starting round"""

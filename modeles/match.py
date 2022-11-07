@@ -1,7 +1,5 @@
 import random
 
-print(random.randint(0, 1))
-
 
 class Match:
     def __init__(self, name, player1, player2):
@@ -58,7 +56,7 @@ class Match:
         self.finished_match = True
 
     def __repr__(self):
-        return f"{self.player1} VS {self.player2}: {self.player_with_black_piece} jouera en noir"
+        return f"{self.player1} VS {self.player2}"
 
     def __str__(self):
-        return f"{self.player1} VS {self.player2}: {self.player_with_black_piece} jouera en noir"
+        return f"{self.player1} VS {self.player2}"

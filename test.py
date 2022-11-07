@@ -5,7 +5,6 @@ from ocr_projet_4.controllers.control_round import ControlRound
 from ocr_projet_4.modeles.match import Match
 from ocr_projet_4.controllers.control_tournament import ControlTournament
 
-
 play_1 = Player(name="Toto", first_name="patrick",
                 date_of_birth="11/02/88", gender="homme")
 play_1.rang = 1
@@ -45,14 +44,32 @@ list_players = [play_1, play_2, play_3, play_4, play_5, play_6, play_7, play_8]
 tournoi_1 = Tournament(name="Tournoi 1",
                        place="bayonne",
                        date="26/01/2022",
-                       time_controle="Splitz",
+                       time_control="Splitz",
                        description="test controle tournament")
 
 tournoi_1.players_list = list_players
 
 go = ControlTournament(tournoi_1)
 go.run()
-print(go.tournament.round_list)
+list_match = []
+for round in go.tournament.round_list:
+    for match in round.list_of_match:
+        list_match.append(match)
+
+for i in range(len(list_match)):
+    copy_list = list_match.copy()
+    player1 = copy_list[i].player1
+    player2 = copy_list[i].player2
+    copy_list.pop(i)
+    for match in copy_list:
+        if player1 is match.player1 or player1 is match.player2:
+            if player2 is match.player1 or player2 is match.player2:
+                print("doublon sur ce match {match}")
+
+        else:
+            print("ras")
+
+
 
 
 

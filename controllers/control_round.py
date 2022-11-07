@@ -10,7 +10,10 @@ class ControlRound:
 
     def display_match_of_round(self):
         list_of_match = self.tour.match_in_progress
-        self.view_round.display_match(match_list=list_of_match)
+        self.view_round.display_match(
+            match_list=list_of_match,
+            round=self.tour.name
+        )
 
     def start_round(self):
         self.view_round.view_start_of_round(
@@ -26,7 +29,9 @@ class ControlRound:
         self.tour.end_of_round()
 
     def select_match(self):
-        match_selected = self.view_round.select_match(self.tour.match_in_progress)
+        match_selected = self.view_round.select_match(
+            self.tour.match_in_progress
+        )
         match = self.tour.match_in_progress[match_selected]
         return match
 
