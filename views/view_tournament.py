@@ -1,48 +1,77 @@
+from ocr_projet_4.controllers.control_checker import ControlChecker
+
+
 class ViewTournament:
 
+    def __init__(self):
+        self.checker = ControlChecker()
 
-    def user_choice_of_name_of_tournament(self):
+    @staticmethod
+    def user_choice_of_name_of_tournament():
         print("Entrer le nom du tournoi: ")
         name = input("Nom du tournoi:")
         return name
 
-    def user_choice_of_place_of_tournament(self):
+    @staticmethod
+    def user_choice_of_place_of_tournament():
         print("Renseigner le lieu du tournoi")
         place = input("lieu du Tournoi:")
         return place
 
     def user_choice_of_date_of_tournament(self):
-        print("Entrer la date  du Tournoi:")
-        date = input("Date du tournoi:")
+        date = self.checker.check_date()
         return date
 
-    def user_choice_of_control_time(self):
-        print(" Sélectionner le type Controle de temps:\n"
-              "1 - Bullet\n"
-              "2 - Blitz\n"
-              "3 - Coup Rapide\n")
-        control_time = int(input("Entrer votre choix:"))
-        match control_time:
-            case 1:
-                return "Bullet"
-            case 2:
-                return "Blitz"
-            case 3:
-                return "Coup rapide"
+    def user_choice_of_control_time(self, list_type_of_time):
+        list_of_type_of_match = list_type_of_time
+        print(" Sélectionner le type Controle de temps:\n")
+        type_number = 0
+        for match_type in list_of_type_of_match:
+            type_number += 1
+            print(f"{type_number} - {match_type}")
+        check = self.checker.check_num_choice(
+            list_choice=list_of_type_of_match
+        )
+        type_match_selected = check - 1
+        print(f"Vous avez choisi comme controle de temps:"
+              f"{list_of_type_of_match[type_match_selected]}")
+        return list_of_type_of_match[type_match_selected]
 
-    def user_choice_of_description_of_tournament(self):
+    @staticmethod
+    def user_choice_of_description_of_tournament():
         print("Renseigner une description du tournoi:")
         descritption = input("Description: ")
         return descritption
 
-    def user_choice_of_player(self):
+    def user_choice_of_player(self, list_choice):
+        list_choice = list_choice
         print("Choix des joueurs:\n"
-              "1 - Entrer un nouveau joueur\n"
-              "2 - Sélectionner un joueur existant\n"
-              )
-        choice_of_player = input("Entrer votre choix: ")
-        return choice_of_player
+              "Voulez-vous:\n")
+        choice_number = 0
+        for choice in list_choice:
+            choice_number += 1
+            print(f"{choice_number} - {choice}")
+        check = self.checker.check_num_choice(
+            list_choice=list_choice
+        )
+        choice_selected = check - 1
+        print(f"Vous avez sélectionner :\n"
+              f"{list_choice[choice_selected]}")
+        return choice_selected
 
-
+    def user_select_player(self, players_list):
+        players_list = players_list
+        print("Sélectionner un joueur:\n")
+        choice_player = 0
+        for player in players_list:
+            choice_player += 1
+            print(f"{choice_player} - {player}")
+        check = self.checker.check_num_choice(
+            list_choice=players_list
+        )
+        player_selected = check - 1
+        print(f"Vous avez sélectionner:\n"
+              f"{players_list[player_selected]}")
+        return player_selected
 
 
