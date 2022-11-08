@@ -44,23 +44,30 @@ class ViewPlayer:
             player_name=player_name,
             player_rang=player_rang
         )
-        print(f"Vous modifier le rang du joueur :\n"
-              f"{player_name}?")
+        print(f"Vous modifier le rang du joueur: "
+              f"{player_name}")
         check = self.checker.check_string(
                 list_choice=list_of_choice
         )
         if check == "Y":
-            print(f"Entrer le nouveau rang au classement"
-                  f" du joueur:{player_name}:")
-            try:
-                rang = int(input("Rang:"))
-            except ValueError:
-                print("Oooops, Entrer Invalide. Entrer un Nombre!")
-            else:
-                new_rang = rang
+            result_ok = 0
+            while result_ok != 1:
+                try:
+                    rang = int(input(f"Entrer le nouveau rang au classement"
+                                     f" de {player_name}:"))
+                except ValueError:
+                    print("Oooops, Entrer Invalide. Entrer un Nombre!")
+                else:
+                    result_ok += 1
+                    new_rang = rang
+            print(f"\nNouveau Rang de {player_name}: {new_rang}")
             return new_rang
+
         else:
             return None
 
 
+go = ViewPlayer()
+go.change_player_rang(player_name="toto",
+                      player_rang=15)
 
