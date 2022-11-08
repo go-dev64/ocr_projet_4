@@ -19,33 +19,28 @@ class ViewControlTournament:
     def view_create_new_round(self, name_of_round):
         name_of_round = name_of_round
         list_of_choice = ["Y", "N", "E"]
-        print(f" Génerer le {name_of_round} ?: Y / N")
-        round = input("Indiquer votre  choix:\n").upper()
-        check_round = self.checker.check_string(
-            this_input=round,
+        print(f"Génerer le {name_of_round} ?:")
+        check = self.checker.check_string(
             list_choice=list_of_choice
         )
-        if check_round:
+        if check == "Y":
             print(f"Creation du {name_of_round}!")
-            match round:
-                case "Y":
-                    return True
-                case "N":
-                    return False
-                case "E":
-                    return False
+            return True
         else:
-            self.view_create_new_round(name_of_round)
+            return False
 
     def view_end_tournament(self, tournament):
         print(f"Le {tournament} est terminé!\n"
               "Résultat du touroi:")
         for player in tournament.players_list:
-            print(f"{tournament.players_list.index(player)+ 1 } - {player} avec {player.number_point} points")
+            print(
+                f"{tournament.players_list.index(player)+ 1 } - "
+                f"{player} avec {player.number_point} points")
 
 
 
 
 
-"""go = ViewControlTournament()
-go.view_create_new_round(name_of_round="toto")"""
+go = ViewControlTournament()
+toto = go.view_create_new_round(name_of_round="toto")
+print(toto)

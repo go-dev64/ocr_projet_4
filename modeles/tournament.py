@@ -8,7 +8,7 @@ class Tournament:
         self.place = place
         self.date = date
         self.number_of_round = 4
-        self.number_o_player = 8
+        self.number_of_player = 8
         self.round_list = []
         self.players_list = []
         self.time_control = time_control

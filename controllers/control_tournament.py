@@ -1,5 +1,4 @@
 from ocr_projet_4.modeles.round import Round
-from ocr_projet_4.modeles.match import Match
 from ocr_projet_4.views.view_control_tournament import ViewControlTournament
 from ocr_projet_4.views.view_tournament import ViewTournament
 from ocr_projet_4.controllers.control_round import ControlRound
@@ -25,27 +24,23 @@ class ControlTournament:
         return create_round
 
     def create_matchs_of_round_1(self):
-        matchs_list_of_round1 = []
         len_list_divide_per_2 = int(
             len(self.tournament.players_list) / 2
         )
         for i in range(1, len_list_divide_per_2 + 1):
-            i = Match(
+            self.tournament.round_list[-1].create_match(
                 name=i,
-                player1=self.tournament.players_list[i - 1],
-                player2=self.tournament.players_list[
+                player_1=self.tournament.players_list[i - 1],
+                player_2=self.tournament.players_list[
                     len_list_divide_per_2 + i - 1
-                ]
+                    ]
             )
-            i.get_color()
-            matchs_list_of_round1.append(i)
-        return matchs_list_of_round1
 
     def define_first_round(self):
         first_round = self.create_round(name="Round 1")
         self.tournament.sort_player_list_by_rang()
         first_round.players_list = self.tournament.players_list
-        first_round.list_of_match = self.create_matchs_of_round_1()
+        self.create_matchs_of_round_1()
         first_round.match_in_progress = first_round.list_of_match.copy()
         return first_round
 
@@ -63,8 +58,10 @@ class ControlTournament:
     def create_matchs_of_next_round(self, list_round, list_player):
         copy_list = list_player.copy()
         compteur = 0
-        while len(self.tournament.round_list[-1].list_of_match) < 4:
-            if compteur > 8:
+        while len(
+                self.tournament.round_list[-1].list_of_match
+        ) < self.tournament.number_of_player/2:
+            if compteur > self.tournament.number_of_player:
                 break
             compteur += 1
             i = compteur
@@ -78,13 +75,10 @@ class ControlTournament:
                     player_2=player2
                 )
                 if not already_played:
-                    i = Match(
+                    self.tournament.round_list[-1].create_match(
                         name=i,
-                        player1=player1,
-                        player2=player2
-                    )
-                    i.get_color()
-                    self.tournament.round_list[-1].list_of_match.append(i)
+                        player_1=player1,
+                        player_2=player2)
                     copy_list.pop(copy_list.index(player2))
                     copy_list.pop(0)
                     break
@@ -99,7 +93,7 @@ class ControlTournament:
 
     def number_of_match_by_round(self):
         for the_round in self.tournament.round_list:
-            if len(the_round.list_of_match) < 4:
+            if len(the_round.list_of_match) < self.tournament.number_of_round:
                 return False
         return True
 
@@ -121,6 +115,17 @@ class ControlTournament:
         random.shuffle(free_players)
         return free_players
 
+    def force_match(self):
+        if not self.number_of_match_by_round():
+            free_player_list = self.get_free_players()
+            player_1 = free_player_list[0]
+            player_2 = free_player_list[1]
+            self.tournament.round_list[-1].create_match(
+                name="last_match",
+                player_1=player_1,
+                player_2=player_2
+            )
+
     def define_next_round(self, name):
         next_round = self.create_round(name=name)
         self.tournament.sort_player_list_by_point()
@@ -139,7 +144,7 @@ class ControlTournament:
         )
 
     def run(self):
-        if self.view_create_round(name_of_round= "Round 1"):
+        if self.view_create_round(name_of_round="Round 1"):
             first_round = self.define_first_round()
             round = ControlRound(tour=first_round,
                                  players_list=self.tournament.players_list
@@ -153,14 +158,3 @@ class ControlTournament:
                                      )
                 round.run_round()
             self.display_end_of_tournament()
-
-
-
-
-
-
-
-
-
-
-

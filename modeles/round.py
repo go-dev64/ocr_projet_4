@@ -21,6 +21,7 @@ class Round:
             player2=player_2
         )
         name.get_color()
+        self.list_of_match.append(name)
 
     def start_of_round(self):
         """give the date and hour of starting round"""
