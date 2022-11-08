@@ -43,8 +43,13 @@ class ViewTournament:
         descritption = input("Description: ")
         return descritption
 
-    def user_choice_of_player(self, list_choice):
-        list_choice = list_choice
+    def user_choice_of_player(self):
+        """define if user select old player or create new player
+        args : list [
+
+        """
+        list_choice = ["Sélectionner un joueur ou une joueuse dans notre base de donnée",
+                       "Entrer un nouveau joueur/joueuse"]
         print("Choix des joueurs:\n"
               "Voulez-vous:\n")
         choice_number = 0

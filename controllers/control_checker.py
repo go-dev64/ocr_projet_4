@@ -8,8 +8,11 @@ class ControlChecker:
         result = 0
         while result != 1:
             date = input("Entrer la date du tournoi:\n"
-                         "Format JJ/MM/AAAA:")
-            if date != datetime.strptime(date, "%d/%m/%y"):
+                         "Format JJ-MM-AAAA:")
+            try:
+                if date != datetime.strptime(date, "%d-%m-%Y").strftime('%d-%m-%Y'):
+                    raise ValueError
+            except ValueError:
                 print("Format date invalide!")
             else:
                 result += 1

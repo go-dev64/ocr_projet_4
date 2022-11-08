@@ -6,11 +6,13 @@ class ViewPlayer:
     def __init__(self):
         self.checker = ControlChecker()
 
-    def input_player_name(self):
+    @staticmethod
+    def input_player_name():
         name = input("Entrer le nom du Joueur:\n")
         return name
 
-    def input_player_first_name(self):
+    @staticmethod
+    def input_player_first_name():
         first_name = input("Entrer le prénom du Joueur:\n")
         return first_name
 
@@ -18,8 +20,8 @@ class ViewPlayer:
         date = self.checker.check_date()
         return date
 
-    def input_gender(self, gender_list):
-        gender_list = gender_list
+    def input_gender(self):
+        gender_list = ["Femme", "Homme"]
         print("Sélectionner un genre:")
         gender_number = 0
         for gender in gender_list:
@@ -33,7 +35,8 @@ class ViewPlayer:
               f"{gender_list[gender_selected]}")
         return gender_selected
 
-    def display_player_rang(self, player_name, player_rang):
+    @staticmethod
+    def display_player_rang(player_name, player_rang):
         print(f"{player_name} est actuellement au rang "
               f"N°{player_rang} du classement.")
 
@@ -65,9 +68,3 @@ class ViewPlayer:
 
         else:
             return None
-
-
-go = ViewPlayer()
-go.change_player_rang(player_name="toto",
-                      player_rang=15)
-

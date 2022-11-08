@@ -1,8 +1,5 @@
 from ocr_projet_4.modeles.player import Player
 from ocr_projet_4.modeles.tournament import Tournament
-from ocr_projet_4.modeles.round import Round
-from ocr_projet_4.controllers.control_round import ControlRound
-from ocr_projet_4.modeles.match import Match
 from ocr_projet_4.controllers.control_tournament import ControlTournament
 
 play_1 = Player(name="Toto", first_name="patrick",
@@ -47,9 +44,11 @@ tournoi_1 = Tournament(name="Tournoi 1",
                        time_control="Splitz",
                        description="test controle tournament")
 
+list__tournament = [tournoi_1]
+
 tournoi_1.players_list = list_players
 
-go = ControlTournament(tournoi_1)
+"""go = ControlTournament(tournoi_1)
 go.run()
 list_match = []
 for round in go.tournament.round_list:
@@ -68,14 +67,4 @@ for i in range(len(list_match)):
 
         else:
             print("ras")
-
-
-
-
-
-
-
-
-
-
-
+"""
