@@ -48,10 +48,3 @@ class ControlRound:
             self.input_match_result()
         if len(self.tour.match_in_progress) == 0:
             self.end_round()
-
-
-
-
-
-
-

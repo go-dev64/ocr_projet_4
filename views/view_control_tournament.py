@@ -12,9 +12,22 @@ class ViewControlTournament:
         for tournament in tournament_list:
             number += 1
             print(f"{number} - {tournament}")
-
-        tournament_selected = int(input("Indiquer votre choix:"))
+        check = self.checker.check_num_choice(
+            list_choice=tournament_list
+        )
+        tournament_selected = check - 1
+        print(f"Vous avez sélectionner le tournoi:\n"
+              f"{tournament_list[tournament_selected]}")
         return tournament_selected
+
+    @staticmethod
+    def view_end_tournament(tournament):
+        print(f"Le {tournament} est terminé!\n"
+              "Résultat du tournoi:")
+        for player in tournament.players_list:
+            print(
+                f"{tournament.players_list.index(player)+ 1 } - "
+                f"{player} avec {player.number_point} points")
 
     def view_create_new_round(self, name_of_round):
         name_of_round = name_of_round
@@ -28,19 +41,3 @@ class ViewControlTournament:
             return True
         else:
             return False
-
-    def view_end_tournament(self, tournament):
-        print(f"Le {tournament} est terminé!\n"
-              "Résultat du touroi:")
-        for player in tournament.players_list:
-            print(
-                f"{tournament.players_list.index(player)+ 1 } - "
-                f"{player} avec {player.number_point} points")
-
-
-
-
-
-go = ViewControlTournament()
-toto = go.view_create_new_round(name_of_round="toto")
-print(toto)

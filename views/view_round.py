@@ -5,7 +5,8 @@ class ViewRound:
     def __init__(self):
         self.checker = ControlChecker()
 
-    def display_match(self, match_list, round):
+    @staticmethod
+    def display_match(match_list, round):
         print(f"Liste des match du {round}:")
         match_number = 0
         for match in match_list:
@@ -40,7 +41,8 @@ class ViewRound:
         else:
             return False
 
-    def view_end_of_round(self, name_of_round, player_list):
+    @staticmethod
+    def view_end_of_round(name_of_round, player_list):
         print(f"Fin du {name_of_round}!")
         print("Les vainqueurs sont:")
         for player in player_list:
