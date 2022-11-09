@@ -12,6 +12,19 @@ class Match:
         self.result_player2 = ""
         self.data = []
 
+    def serialized_match(self):
+        serialized_match = {
+            "name": self.name,
+            "finished_match": self.finished_match,
+            "player1": self.player1.serialized_player(),
+            "player2": self.player2.serialized_player(),
+            "player_with_black_piece": self.player_with_black_piece,
+            "result_player1": self.result_player1,
+            "result_player2": self.result_player2,
+            "data": self.data
+        }
+        return serialized_match
+
     def get_color(self):
         number = random.randint(0, 1)
         match number:

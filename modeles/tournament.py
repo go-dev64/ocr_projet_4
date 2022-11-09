@@ -1,7 +1,3 @@
-
-from ocr_projet_4.modeles.match import Match
-
-
 class Tournament:
     def __init__(self, name, place, date, time_control, description):
         self.name = name
@@ -14,9 +10,41 @@ class Tournament:
         self.time_control = time_control
         self.description = description
 
+    def serialized_tournament(self):
+        serialized_tournament = {
+            "name": self.name,
+            "place": self.place,
+            "date": self.date,
+            "number_of_round": self.number_of_round,
+            "number_of_player": self.number_of_player,
+            "round_list": self.convert_round_list_for_serialise(
+                the_list=self.round_list
+            ),
+            "players_list": self.convert_players_list_for_serialise(
+                the_list=self.players_list
+            ),
+            "time_control": self.time_control,
+            "description": self.description
+        }
+        return serialized_tournament
+
+    @staticmethod
+    def convert_round_list_for_serialise(the_list):
+        list_of_round = []
+        for round in the_list:
+            list_of_round.append(round.serialized_round())
+        return list_of_round
+
+    @staticmethod
+    def convert_players_list_for_serialise(the_list):
+        list_of_player = []
+        for player in the_list:
+            list_of_player.append(player.serialized_player())
+        return list_of_player
+
     def add_players(self, player):
         """add player to tournament"""
-        self.players_list.extend(player)
+        self.players_list.append(player)
 
     def add_tournament_description(self, description):
         self.description = description

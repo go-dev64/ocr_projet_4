@@ -1,6 +1,11 @@
 from ocr_projet_4.modeles.player import Player
 from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.controllers.control_tournament import ControlTournament
+from tinydb import TinyDB, Query
+
+db = TinyDB('DataBase/db.json')
+
+
 
 play_1 = Player(name="Toto", first_name="patrick",
                 date_of_birth="11/02/88", gender="homme")
@@ -44,27 +49,23 @@ tournoi_1 = Tournament(name="Tournoi 1",
                        time_control="Splitz",
                        description="test controle tournament")
 
-list__tournament = [tournoi_1]
 
-tournoi_1.players_list = list_players
+#table_of_players.insert(play_1.serialized_player())
 
-"""go = ControlTournament(tournoi_1)
-go.run()
-list_match = []
-for round in go.tournament.round_list:
-    for match in round.list_of_match:
-        list_match.append(match)
+#db.table("table_of_players").insert(play_4.serialized_player())
+#print(db.table("table_of_players").all())
 
-for i in range(len(list_match)):
-    copy_list = list_match.copy()
-    player1 = copy_list[i].player1
-    player2 = copy_list[i].player2
-    copy_list.pop(i)
-    for match in copy_list:
-        if player1 is match.player1 or player1 is match.player2:
-            if player2 is match.player1 or player2 is match.player2:
-                print("doublon sur ce match {match}")
+toto = db.table("table_of_players").all()
+print(toto)
 
-        else:
-            print("ras")
-"""
+the_player = Player(
+    name=toto[2]["name"],
+    first_name=toto[2]["first_name"],
+    date_of_birth=toto[2]["date_of_birth"],
+    gender=toto[2]["gender"]
+)
+print(the_player)
+print(the_player)
+
+
+

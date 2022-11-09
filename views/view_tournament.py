@@ -66,7 +66,7 @@ class ViewTournament:
 
     def user_select_player(self, players_list):
         players_list = players_list
-        print("Sélectionner un joueur:\n")
+        print("Sélectionner un joueur:")
         choice_player = 0
         for player in players_list:
             choice_player += 1
@@ -79,4 +79,6 @@ class ViewTournament:
               f"{players_list[player_selected]}")
         return player_selected
 
-
+    @staticmethod
+    def player_already_selected(player):
+        print(f"\n{player} est deja inscrit à ce tournoi!")
