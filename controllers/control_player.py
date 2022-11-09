@@ -1,6 +1,6 @@
 from ocr_projet_4.views.view_player import ViewPlayer
 from ocr_projet_4.modeles.player import Player
-from ocr_projet_4.DataBase.control_data import Data
+from ocr_projet_4.controllers.control_data import Data
 
 
 class ControlPlayer:
