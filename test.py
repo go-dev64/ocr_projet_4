@@ -3,7 +3,7 @@ from ocr_projet_4.modeles.tournament import Tournament
 from ocr_projet_4.controllers.control_tournament import ControlTournament
 from tinydb import TinyDB, Query
 
-db = TinyDB('DataBase/db.json')
+
 
 
 
@@ -50,10 +50,9 @@ tournoi_1 = Tournament(name="Tournoi 1",
                        description="test controle tournament")
 
 
-#table_of_players.insert(play_1.serialized_player())
 
-#db.table("table_of_players").insert(play_4.serialized_player())
-#print(db.table("table_of_players").all())
+db.table("table_of_players").insert(play_4.serialized_player())
+print(db.table("table_of_players").all())
 
 toto = db.table("table_of_players").all()
 print(toto)

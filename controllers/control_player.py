@@ -1,5 +1,6 @@
 from ocr_projet_4.views.view_player import ViewPlayer
 from ocr_projet_4.modeles.player import Player
+from ocr_projet_4.DataBase.control_data import Data
 
 
 class ControlPlayer:
@@ -34,4 +35,8 @@ class ControlPlayer:
             first_name=first_name,
             date_of_birth=date,
             gender=gender)
+        name.rang = None
+        serialized_name = name.serialized_player()
+        Data().db.table("table_of_players").insert(serialized_name)
         return name
+
