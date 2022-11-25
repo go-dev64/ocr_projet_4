@@ -1,7 +1,7 @@
-from ocr_projet_4.modeles.round import Round
-from ocr_projet_4.views.view_control_tournament import ViewControlTournament
-from ocr_projet_4.views.view_tournament import ViewTournament
-from ocr_projet_4.controllers.control_round import ControlRound
+from modeles.round import Round
+from views.view_control_tournament import ViewControlTournament
+from views.view_tournament import ViewTournament
+from controllers.control_round import ControlRound
 import random
 
 

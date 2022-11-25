@@ -1,4 +1,4 @@
-from ocr_projet_4.views.view_match import ViewMatch
+from views.view_match import ViewMatch
 
 
 class ControlMatch:

@@ -1,4 +1,4 @@
-from ocr_projet_4.controllers.control_checker import ControlChecker
+from controllers.control_checker import ControlChecker
 
 
 class ViewPlayer:
@@ -31,9 +31,9 @@ class ViewPlayer:
             list_choice=gender_list
         )
         gender_selected = check - 1
-        print(f"Vous avez sélectionner le match:\n"
+        print(f"Vous avez sélectionner le genre:\n"
               f"{gender_list[gender_selected]}")
-        return gender_selected
+        return gender_list[gender_selected]
 
     @staticmethod
     def display_player_rang(player_name, player_rang):
@@ -68,3 +68,21 @@ class ViewPlayer:
 
         else:
             return None
+
+    def input_player_rang(self):
+        print("Renseigner le classement du Joueur / de la Joueuse\n")
+        result_ok = 0
+        while result_ok != 1:
+            try:
+                rang = int(input(f"Entrer le rang au classement"))
+            except ValueError:
+                print("Oooops, Entrer Invalide. Entrer un Nombre!")
+            else:
+                result_ok += 1
+                return rang
+
+
+
+
+
+

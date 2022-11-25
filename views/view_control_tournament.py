@@ -1,4 +1,4 @@
-from ocr_projet_4.controllers.control_checker import ControlChecker
+from controllers.control_checker import ControlChecker
 
 
 class ViewControlTournament:

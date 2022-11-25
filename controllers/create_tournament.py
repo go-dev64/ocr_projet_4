@@ -1,9 +1,9 @@
-from ocr_projet_4.modeles.tournament import Tournament
-from ocr_projet_4.views.view_tournament import ViewTournament
-from ocr_projet_4.views.view_player import ViewPlayer
-from ocr_projet_4.test import list_players, list__tournament
-from ocr_projet_4.controllers.control_player import ControlPlayer
-from tinydb import TinyDB, Query
+from modeles.tournament import Tournament
+from views.view_tournament import ViewTournament
+from views.view_player import ViewPlayer
+from test import list_players, list__tournament
+from controllers.control_player import ControlPlayer
+from controllers.control_data import Data
 
 list_of_tournament = list__tournament
 
@@ -13,6 +13,7 @@ class CreateTournament:
         self.view_tournament = ViewTournament()
         self.view_player = ViewPlayer()
         self.control_player = ControlPlayer()
+        self.database = Data()
         self.list_of_type_of_time = ["Bullet", "Blitz", "Coup Rapid"]
         self.name = ""
         self.tournament_info = {}
@@ -70,11 +71,12 @@ class CreateTournament:
             return player
 
     def add_players_tournament(self, tournament):
+        """add new players or players from a player list in the database to the tournament"""
         while len(tournament.players_list) <= tournament.number_of_player:
             choice = self.view_tournament.user_choice_of_player()
             match choice:
                 case 0:
-                    """user want select old player"""
+                    """user want select player in players list in the database"""
                     player = self.add_old_player(
                         player_list=list_players,
                         tournament=tournament
@@ -85,10 +87,13 @@ class CreateTournament:
                     new_player = self.control_player.create_player()
                     tournament.add_players(player=new_player)
 
+    def save_tournament_in_database(self, tournament):
+        serialized_tournament = tournament.serialized_tournament()
+        self.database.table_of_tournament.insert(serialized_tournament)
+
     def create_new_tournament(self):
         self.name = self.get_name_tournament()
         self.get_information_of_tournament()
-
         self.name = Tournament(
             name=self.name,
             place=self.tournament_info["place"],
@@ -96,8 +101,8 @@ class CreateTournament:
             time_control=self.tournament_info["time_control"],
             description=self.tournament_info["description"]
         )
-        self.add_players_tournament(self.name)
-        list__tournament.append(self.name)
+        self.add_players_tournament(tournament=self.name)
+        self.save_tournament_in_database(tournament=self.name)
 
 
 go = CreateTournament()

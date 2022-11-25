@@ -1,5 +1,5 @@
-from ocr_projet_4.views.view_round import ViewRound
-from ocr_projet_4.controllers.control_match import ControlMatch
+from views.view_round import ViewRound
+from controllers.control_match import ControlMatch
 
 
 class ControlRound:

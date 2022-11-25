@@ -1,14 +1,12 @@
-from ocr_projet_4.modeles.player import Player
-from ocr_projet_4.modeles.tournament import Tournament
-from ocr_projet_4.controllers.control_tournament import ControlTournament
-from tinydb import TinyDB, Query
-
-
-
+from modeles.player import Player
+from modeles.tournament import Tournament
+from controllers.control_tournament import ControlTournament
+from controllers.control_data import Data
 
 
 play_1 = Player(name="Toto", first_name="patrick",
-                date_of_birth="11/02/88", gender="homme")
+                date_of_birth="11/02/88", gender="homme"
+                )
 play_1.rang = 1
 play_1.number_point = 0
 
@@ -50,11 +48,13 @@ tournoi_1 = Tournament(name="Tournoi 1",
                        description="test controle tournament")
 
 
+list__tournament = []
+db = Data()
 
-db.table("table_of_players").insert(play_4.serialized_player())
-print(db.table("table_of_players").all())
+db.table_of_player.insert(play_4.serialized_player())
+print(db.table_of_player.all())
 
-toto = db.table("table_of_players").all()
+toto = db.table_of_player.all()
 print(toto)
 
 the_player = Player(
