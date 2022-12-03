@@ -1,12 +1,14 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
 from controllers.control_data import Data, players_list
+from controllers.control_checker import ControlChecker
 
 
 class ControlPlayer:
 
     def __init__(self):
         self.view_player = ViewPlayer()
+        self.control_checker = ControlChecker()
         self.player_info = {}
 
     def get_player_name(self):
@@ -29,53 +31,98 @@ class ControlPlayer:
         rang = self.view_player.input_player_rang()
         return rang
 
+    def get_info_player(self):
+        player_info = {"name": self.get_player_name(),
+                       "first_name": self.get_player_first_name(),
+                       "date_of_birth": self.get_date_of_birth(),
+                       "gender": self.get_gender(),
+                       "rang": self.get_player_rang(),
+                       "number_point": 0
+                       }
+        return player_info
+
+    def instance_player(self, player_info):
+        player = Player(
+            name=player_info["name"],
+            first_name=player_info["first_name"],
+            date_of_birth=player_info["date_of_birth"],
+            gender=player_info["gender"],
+            rang=player_info["rang"]
+        )
+        player.number_point = player_info["number_point"]
+        return player
+
+    def create_new_player(self):
+        player_info = self.get_info_player()
+        player = self.instance_player(player_info=player_info)
+        return player
+
+    def select_player_in_database(self):
+        player_selected = self.view_player.user_select_player(
+            players_list=players_list
+        )
+        player = players_list[player_selected]
+        return player
+
+    def player_from_db(self, player, tournament):
+        player_from_db = player
+        if player_from_db in tournament.players_list:
+            self.view_player.player_already_selected(
+                player=player_from_db
+            )
+            return None
+        else:
+            return player_from_db
+
+    def check_if_player_in_list(self, player, the_list):
+        for element in the_list:
+            if element.name == player.name:
+                if element.first_name == player.first_name:
+                    if element.date_of_birth == player.date_of_birth:
+                        if element.gender == player.gender:
+                            return False, element
+
+        return True, player
+
+    def add_new_player_by_user(self, tournament):
+        new_player = self.create_new_player()
+        result = self.check_if_player_in_list(
+            player=new_player,
+            the_list=players_list
+        )
+        if not result[0]:
+            choice = self.view_player.valid_player_exist()
+            if choice == 0:
+                player_from_db = self.player_from_db(
+                    player=result[1],
+                    tournament=tournament
+                    )
+                return player_from_db
+            else:
+                return None
+        else:
+            self.save_player(player=new_player)
+            return new_player
+
+    def save_player(self, player):
+        self.add_player_in_instance_player_list(player=player)
+        self.add_player_in_database(player=player)
+
     def add_player_in_database(self, player):
         serialized_name = player.serialized_player()
         Data().table_of_player.insert(serialized_name)
 
-    def deserialize_player(self, serialized_player):
-        name = Player(
-            name=serialized_player['name'],
-            first_name=serialized_player['first_name'],
-            date_of_birth=serialized_player['date_of_birth'],
-            gender=serialized_player['gender'],
-            rang=serialized_player['rang'],
-            )
-        return name
-
-    def add_player_in_object_player_list(self, player):
+    def add_player_in_instance_player_list(self, player):
         players_list.append(player)
 
-    def create_player(self):
-        name = self.get_player_name()
-        first_name = self.get_player_first_name()
-        date = self.get_date_of_birth()
-        gender = self.get_gender()
-        rang = self.get_player_rang()
-        name = Player(
-            name=name,
-            first_name=first_name,
-            date_of_birth=date,
-            gender=gender,
-            rang=rang
-        )
-        #name.rang = None
-        self.add_player_in_object_player_list(player=name)
-        return name
-
-    def serialised_object_player_list(self):
-        for player in players_list:
-            self.add_player_in_database(player=player)
+    def update_table_player_list_in_database(self):
+        """ for player in players_list:
+            self.add_player_in_database(player=player)"""
 
     def deserialized_all_player_in_database(self):
         for player in Data().table_of_player.all():
-            players_list.append(
-                self.add_player_in_object_player_list(
-                    player=player
+            players_list.append(self.instance_player(
+                player_info=player
                 )
             )
-
-
-
-
 

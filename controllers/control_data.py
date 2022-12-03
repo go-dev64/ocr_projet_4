@@ -1,4 +1,4 @@
-from tinydb import TinyDB, Query, where
+from tinydb import TinyDB, Query
 
 
 tournaments_list = []
@@ -15,6 +15,8 @@ class Data:
 
 db = Data()
 
+
+db.table_of_player.truncate()
 for i in db.table_of_player:
     print(i)
 print(len(db.table_of_player))

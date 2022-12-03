@@ -50,8 +50,7 @@ class ViewTournament:
         """
         list_choice = ["Sélectionner un joueur ou une joueuse dans notre base de donnée",
                        "Entrer un nouveau joueur/joueuse"]
-        print("Choix des joueurs:\n"
-              "Voulez-vous:\n")
+        print("Choix des joueurs,Voulez-vous:\n")
         choice_number = 0
         for choice in list_choice:
             choice_number += 1
@@ -64,21 +63,5 @@ class ViewTournament:
               f"{list_choice[choice_selected]}")
         return choice_selected
 
-    def user_select_player(self, players_list):
-        players_list = players_list
-        print("Sélectionner un joueur:")
-        choice_player = 0
-        for player in players_list:
-            choice_player += 1
-            print(f"{choice_player} - {player}")
-        check = self.checker.check_num_choice(
-            list_choice=players_list
-        )
-        player_selected = check - 1
-        print(f"Vous avez sélectionner:\n"
-              f"{players_list[player_selected]}")
-        return player_selected
-
-    @staticmethod
-    def player_already_selected(player):
-        print(f"\n{player} est deja inscrit à ce tournoi!")
+    def confirm_player_registration(self, player, tournament):
+        print(f"{player} inscrit au {tournament}")

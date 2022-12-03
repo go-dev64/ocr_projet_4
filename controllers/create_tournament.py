@@ -1,11 +1,8 @@
 from modeles.tournament import Tournament
 from views.view_tournament import ViewTournament
 from views.view_player import ViewPlayer
-from test import list_players, list__tournament
 from controllers.control_player import ControlPlayer
 from controllers.control_data import Data
-
-list_of_tournament = list__tournament
 
 
 class CreateTournament:
@@ -50,42 +47,39 @@ class CreateTournament:
             user_choice_of_description_of_tournament()
         return description
 
-    def select_old_player(self, player_list):
-        player_selected = self.view_tournament.user_select_player(
-            players_list=player_list
+    def valid_registration_in_players_list(self, tournament, player):
+        tournament.add_players(player=player)
+        self.view_tournament.confirm_player_registration(
+            player=player,
+            tournament=tournament
         )
-        player = list_players[player_selected]
-        return player
-
-    def add_old_player(self, player_list, tournament):
-        player = self.select_old_player(player_list=player_list)
-        if player in tournament.players_list:
-            self.view_tournament.player_already_selected(
-                player=player
-            )
-            self.add_old_player(
-                player_list=player_list,
-                tournament=tournament
-            )
-        else:
-            return player
 
     def add_players_tournament(self, tournament):
-        """add new players or players from a player list in the database to the tournament"""
+        """add new players or players from
+        a database player list to the tournament"""
         while len(tournament.players_list) <= tournament.number_of_player:
             choice = self.view_tournament.user_choice_of_player()
             match choice:
                 case 0:
-                    """user want select player in players list in the database"""
-                    player = self.add_old_player(
-                        player_list=list_players,
-                        tournament=tournament
-                    )
-                    tournament.add_players(player=player)
+                    """user want select player in database players list"""
+                    player_from_db = self.control_player.player_from_db(
+                        player=self.control_player.select_player_in_database(),
+                        tournament=tournament)
+                    if player_from_db is not None:
+                        self.valid_registration_in_players_list(
+                            tournament=tournament,
+                            player=player_from_db
+                        )
                 case 1:
                     """user want create new player"""
-                    new_player = self.control_player.create_player()
-                    tournament.add_players(player=new_player)
+                    new_player = self.control_player.add_new_player_by_user(
+                        tournament=tournament
+                    )
+                    if new_player is not None:
+                        self.valid_registration_in_players_list(
+                            tournament=tournament,
+                            player=new_player
+                        )
 
     def save_tournament_in_database(self, tournament):
         serialized_tournament = tournament.serialized_tournament()
@@ -105,5 +99,12 @@ class CreateTournament:
         self.save_tournament_in_database(tournament=self.name)
 
 
-go = CreateTournament()
-go.create_new_tournament()
+go = Tournament(name="test",
+                place="toto",
+                date=11-11-2022,
+                time_control="Bullet",
+                description="test")
+
+toto = CreateTournament()
+ControlPlayer().deserialized_all_player_in_database()
+toto.add_players_tournament(tournament=go)

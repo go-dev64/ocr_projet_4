@@ -1,7 +1,10 @@
+from controllers.control_round import ControlRound
+from controllers.control_data import Data, tournaments_list
+from controllers.control_player import ControlPlayer
 from modeles.round import Round
+from modeles.tournament import Tournament
 from views.view_control_tournament import ViewControlTournament
 from views.view_tournament import ViewTournament
-from controllers.control_round import ControlRound
 import random
 
 
@@ -142,6 +145,37 @@ class ControlTournament:
         self.view_control_tournament.view_end_tournament(
             tournament=self.tournament
         )
+
+    def reload_tournament(self, tournament):
+        name = Tournament(
+            name=tournament['name'],
+            place=tournament['place'],
+            date=tournament['date'],
+            time_control=tournament['time_control'],
+            description=tournament['description']
+        )
+        name.players_list.extend(
+            self.reload_tournament_players(
+                tournament=tournament
+            )
+        )
+        return name
+
+    def reload_tournament_players(self, tournament):
+        tournament_players_list = []
+        for tournament_player in tournament['players_list']:
+            player = ControlPlayer().instance_player(
+                player_info=tournament_player
+            )
+            tournament_players_list.append(player)
+        return tournament_players_list
+
+    def deserialized_all_tournament_in_database(self):
+        for tournament in Data().table_of_tournament.all():
+            tournaments_list.append(self.reload_tournament(
+                    tournament=tournament
+                )
+            )
 
     def run(self):
         if self.view_create_round(name_of_round="Round 1"):
