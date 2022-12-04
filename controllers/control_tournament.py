@@ -1,5 +1,5 @@
 from controllers.control_round import ControlRound
-from controllers.control_data import Data, tournaments_list
+from controllers.control_data import Data, data_tournaments_list
 from controllers.control_player import ControlPlayer
 from modeles.round import Round
 from modeles.tournament import Tournament
@@ -172,7 +172,7 @@ class ControlTournament:
 
     def deserialized_all_tournament_in_database(self):
         for tournament in Data().table_of_tournament.all():
-            tournaments_list.append(self.reload_tournament(
+            data_tournaments_list.append(self.reload_tournament(
                     tournament=tournament
                 )
             )

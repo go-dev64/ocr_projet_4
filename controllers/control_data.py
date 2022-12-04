@@ -1,8 +1,8 @@
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 
 
-tournaments_list = []
-players_list = []
+data_tournaments_list = []
+data_players_list = []
 
 
 class Data:

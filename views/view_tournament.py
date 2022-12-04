@@ -1,10 +1,10 @@
-from controllers.control_checker import ControlChecker
+from views.view_checker import ViewChecker
 
 
 class ViewTournament:
 
     def __init__(self):
-        self.checker = ControlChecker()
+        self.checker = ViewChecker()
 
     @staticmethod
     def user_choice_of_name_of_tournament():

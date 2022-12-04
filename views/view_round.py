@@ -1,9 +1,9 @@
-from controllers.control_checker import ControlChecker
+from views.view_checker import ViewChecker
 
 
 class ViewRound:
     def __init__(self):
-        self.checker = ControlChecker()
+        self.checker = ViewChecker()
 
     @staticmethod
     def display_match(match_list, round):

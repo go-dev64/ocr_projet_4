@@ -1,14 +1,14 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
-from controllers.control_data import Data, players_list
-from controllers.control_checker import ControlChecker
+from controllers.control_data import Data, data_players_list
+from views.view_checker import ViewChecker
 
 
 class ControlPlayer:
 
     def __init__(self):
         self.view_player = ViewPlayer()
-        self.control_checker = ControlChecker()
+        self.view_checker = ViewChecker()
         self.player_info = {}
 
     def get_player_name(self):
@@ -41,7 +41,8 @@ class ControlPlayer:
                        }
         return player_info
 
-    def instance_player(self, player_info):
+    @staticmethod
+    def instance_player(player_info):
         player = Player(
             name=player_info["name"],
             first_name=player_info["first_name"],
@@ -59,9 +60,9 @@ class ControlPlayer:
 
     def select_player_in_database(self):
         player_selected = self.view_player.user_select_player(
-            players_list=players_list
+            players_list=data_players_list
         )
-        player = players_list[player_selected]
+        player = data_players_list[player_selected]
         return player
 
     def player_from_db(self, player, tournament):
@@ -74,7 +75,8 @@ class ControlPlayer:
         else:
             return player_from_db
 
-    def check_if_player_in_list(self, player, the_list):
+    @staticmethod
+    def check_if_player_in_list(player, the_list):
         for element in the_list:
             if element.name == player.name:
                 if element.first_name == player.first_name:
@@ -88,7 +90,7 @@ class ControlPlayer:
         new_player = self.create_new_player()
         result = self.check_if_player_in_list(
             player=new_player,
-            the_list=players_list
+            the_list=data_players_list
         )
         if not result[0]:
             choice = self.view_player.valid_player_exist()
@@ -108,12 +110,14 @@ class ControlPlayer:
         self.add_player_in_instance_player_list(player=player)
         self.add_player_in_database(player=player)
 
-    def add_player_in_database(self, player):
+    @staticmethod
+    def add_player_in_database(player):
         serialized_name = player.serialized_player()
         Data().table_of_player.insert(serialized_name)
 
-    def add_player_in_instance_player_list(self, player):
-        players_list.append(player)
+    @staticmethod
+    def add_player_in_instance_player_list(player):
+        data_players_list.append(player)
 
     def update_table_player_list_in_database(self):
         """ for player in players_list:
@@ -121,8 +125,7 @@ class ControlPlayer:
 
     def deserialized_all_player_in_database(self):
         for player in Data().table_of_player.all():
-            players_list.append(self.instance_player(
+            data_players_list.append(self.instance_player(
                 player_info=player
                 )
             )
-

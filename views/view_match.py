@@ -1,10 +1,10 @@
-from controllers.control_checker import ControlChecker
+from views.view_checker import ViewChecker
 
 
 class ViewMatch:
 
     def __init__(self):
-        self.checker = ControlChecker()
+        self.checker = ViewChecker()
 
     def match_result(self, player_1, player_2):
         players = [player_1, player_2, "match nul"]

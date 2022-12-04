@@ -1,10 +1,10 @@
-from controllers.control_checker import ControlChecker
+from views.view_checker import ViewChecker
 
 
 class ViewPlayer:
 
     def __init__(self):
-        self.checker = ControlChecker()
+        self.checker = ViewChecker()
 
     @staticmethod
     def input_player_name():
@@ -69,7 +69,8 @@ class ViewPlayer:
         else:
             return None
 
-    def input_player_rang(self):
+    @staticmethod
+    def input_player_rang():
         print("Renseigner le classement du Joueur / de la Joueuse\n")
         result_ok = 0
         while result_ok != 1:
@@ -114,6 +115,3 @@ class ViewPlayer:
     @staticmethod
     def player_already_selected(player):
         print(f"\n{player} est deja inscrit à ce tournoi!")
-
-
-

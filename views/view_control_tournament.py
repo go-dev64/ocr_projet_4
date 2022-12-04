@@ -1,10 +1,10 @@
-from controllers.control_checker import ControlChecker
+from views.view_checker import ViewChecker
 
 
 class ViewControlTournament:
 
     def __init__(self):
-        self.checker = ControlChecker()
+        self.checker = ViewChecker()
 
     def view_select_tournament(self, tournament_list):
         print("Sélection du tournoi")

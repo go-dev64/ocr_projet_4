@@ -1,8 +1,7 @@
 from datetime import datetime
-from controllers.control_data import Data, players_list
 
 
-class ControlChecker:
+class ViewChecker:
 
     @staticmethod
     def check_date():
