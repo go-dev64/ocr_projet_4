@@ -1,5 +1,6 @@
 from views.view_round import ViewRound
 from controllers.control_match import ControlMatch
+from modeles.round import Round
 
 
 class ControlRound:
@@ -40,6 +41,25 @@ class ControlRound:
         result_match = ControlMatch(match=match).run()
         self.tour.add_winner(result_match)
         self.tour.take_out_the_finished_match(match)
+
+    def deserialized_round(self, round_info):
+        round = Round(name=round_info["name"])
+        round.list_of_match = round_info["list_of_match"]
+        round.match_in_progress = round_info["match_in_progress"]
+        round.in_game_player_list = round_info["in_game_player_list"]
+        round.players_list = round_info["player_list"]
+        round.date_of_start = round_info["date_of_start"]
+        round.date_of_end = round_info["date_of_end"]
+        round.hour_of_start = round_info["hour_of_start"]
+        round.hour_of_end = round_info["hour_of_end"]
+        return round
+
+    def toto(self):
+        list= []
+        for element in list:
+            list.append()
+
+
 
     def run_round(self):
         self.display_match_of_round()
