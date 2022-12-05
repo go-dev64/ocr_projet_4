@@ -4,33 +4,30 @@ from controllers.control_player import ControlPlayer
 
 
 class ControlMatch:
-    def __init__(self, match):
-        self.match = match
+    def __init__(self):
         self.control_player = ControlPlayer()
         self.view_match = ViewMatch()
-        self.player_1 = self.match.player1
-        self.player_2 = self.match.player2
 
-    def get_result_match(self):
+    def get_result_match(self, match):
         """ return
         1 : Winner is player 1,
         2 : Winner is player 2
         3 : draw """
         result = ViewMatch().match_result(
-            player_1=self.player_1,
-            player_2=self.player_2)
+            player_1=match.player_1,
+            player_2=match.player_2)
         return result
 
-    def return_result(self, result):
+    def return_result(self, match, result):
         match result:
             case 1:
-                return [self.player_1]
+                return [match.player_1]
             case 2:
-                return [self.player_2]
+                return [match.player_2]
             case 3:
-                return [self.player_1, self.player_2]
+                return [match.player_1, match.player_2]
 
-    def deserialized_match(self, match_info):
+    def reload_match(self, match_info):
         match = Match(
             name=match_info["name"],
             player1=self.control_player.instance_player(
@@ -47,23 +44,11 @@ class ControlMatch:
         match.data = match_info["data"]
         return match
 
-
-
-    def run(self):
-        result = self.get_result_match()
-        self.match.result_of_match(result=result)
-        self.match.give_player_point(result=result)
-        self.match.status_match_is_finish()
-        self.match.save_match()
-        winner = self.return_result(result=result)
+    def run(self, match):
+        result = self.get_result_match(match=match)
+        match.result_of_match(result=result)
+        match.give_player_point(result=result)
+        match.status_match_is_finish()
+        match.save_match()
+        winner = self.return_result(match=match, result=result)
         return winner
-
-
-
-
-
-
-
-
-
-

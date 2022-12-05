@@ -123,11 +123,13 @@ class ControlPlayer:
         """ for player in players_list:
             self.add_player_in_database(player=player)"""
 
-    def deserialized_all_player_in_database(self, table):
-        for player in Data().table_of_player.all():
-            data_players_list.append(self.instance_player(
+    def reload_all_player_in_list(self, serialized_list, instance_list):
+        for player in serialized_list:
+            instance_list.append(self.instance_player(
                 player_info=player
                 )
             )
+
+
 
 
