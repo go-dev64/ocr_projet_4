@@ -16,7 +16,6 @@ class Data:
 db = Data()
 
 
-db.table_of_player.truncate()
 for i in db.table_of_player:
     print(i)
 print(len(db.table_of_player))

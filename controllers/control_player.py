@@ -9,6 +9,7 @@ class ControlPlayer:
     def __init__(self):
         self.view_player = ViewPlayer()
         self.view_checker = ViewChecker()
+        self.data = Data()
         self.player_info = {}
 
     def get_player_name(self):
@@ -110,18 +111,17 @@ class ControlPlayer:
         self.add_player_in_instance_player_list(player=player)
         self.add_player_in_database(player=player)
 
-    @staticmethod
-    def add_player_in_database(player):
+    def add_player_in_database(self, player):
         serialized_name = player.serialized_player()
-        Data().table_of_player.insert(serialized_name)
+        self.data.table_of_player.insert(serialized_name)
 
     @staticmethod
     def add_player_in_instance_player_list(player):
         data_players_list.append(player)
 
-    def update_table_player_list_in_database(self):
-        """ for player in players_list:
-            self.add_player_in_database(player=player)"""
+    def update_table_player_list_in_database(self, player):
+        serialized_player = player.serialized_player()
+        self.data.table_of_player.update(serialized_player)
 
     def reload_all_player_in_list(self, serialized_list, instance_list):
         for player in serialized_list:
@@ -129,7 +129,3 @@ class ControlPlayer:
                 player_info=player
                 )
             )
-
-
-
-

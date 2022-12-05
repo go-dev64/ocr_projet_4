@@ -36,15 +36,15 @@ class Match:
     def result_of_match(self, result):
         """save result"""
         match result:
-            case 1:
+            case 0:
                 "winner is player1"
                 self.result_player1 = f"{self.player1} win"
                 self.result_player2 = f"{self.player2} lose"
-            case 2:
+            case 1:
                 "winner is player2"
                 self.result_player2 = f"{self.player2} win"
                 self.result_player1 = f"{self.player1} lose"
-            case 3:
+            case 2:
                 "draw"
                 self.result_player1 = "draw"
                 self.result_player2 = "draw"

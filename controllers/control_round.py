@@ -39,7 +39,7 @@ class ControlRound:
 
     def input_match_result(self, round):
         match_selected = self.select_match(round=round)
-        result_match = ControlMatch().run(match=match_selected)
+        result_match = ControlMatch().play_match(match=match_selected)
         round.add_winner(result_match)
         round.take_out_the_finished_match(match_selected)
 
@@ -78,3 +78,4 @@ class ControlRound:
             self.input_match_result(round=round)
         if len(round.match_in_progress) == 0:
             self.end_round(round=round)
+

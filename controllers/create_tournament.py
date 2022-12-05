@@ -106,5 +106,4 @@ go = Tournament(name="test",
                 description="test")
 
 toto = CreateTournament()
-ControlPlayer().deserialized_all_player_in_database()
-toto.add_players_tournament(tournament=go)
+toto.create_new_tournament()

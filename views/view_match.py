@@ -17,12 +17,12 @@ class ViewMatch:
         )
         match_result = check - 1
         match match_result:
-            case 1:
+            case 0:
                 print(f"Le vainqueur est {player_1}")
                 return match_result
-            case 2:
+            case 1:
                 print(f"Le vainqueur est {player_2}")
                 return match_result
-            case 3:
+            case 2:
                 print("Match nul")
                 return match_result

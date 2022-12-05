@@ -14,18 +14,18 @@ class ControlMatch:
         2 : Winner is player 2
         3 : draw """
         result = ViewMatch().match_result(
-            player_1=match.player_1,
-            player_2=match.player_2)
+            player_1=match.player1,
+            player_2=match.player2)
         return result
 
     def return_result(self, match, result):
         match result:
+            case 0:
+                return [match.player1]
             case 1:
-                return [match.player_1]
+                return [match.player2]
             case 2:
-                return [match.player_2]
-            case 3:
-                return [match.player_1, match.player_2]
+                return [match.player1, match.player2]
 
     def reload_match(self, match_info):
         match = Match(
@@ -44,11 +44,18 @@ class ControlMatch:
         match.data = match_info["data"]
         return match
 
-    def run(self, match):
+    def play_match(self, match):
         result = self.get_result_match(match=match)
         match.result_of_match(result=result)
         match.give_player_point(result=result)
         match.status_match_is_finish()
         match.save_match()
+        self.control_player.update_table_player_list_in_database(
+            player=match.player1
+        )
+        self.control_player.update_table_player_list_in_database(
+            player=match.player2
+        )
+
         winner = self.return_result(match=match, result=result)
         return winner

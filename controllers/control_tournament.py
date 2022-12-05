@@ -189,7 +189,7 @@ class ControlTournament:
         )
         return the_tournament
 
-    def deserialized_all_tournament_in_database(self):
+    def reload_all_tournament_in_database(self):
         for tournament in Data().table_of_tournament.all():
             data_tournaments_list.append(self.reload_tournament(
                     tournament=tournament
@@ -209,3 +209,12 @@ class ControlTournament:
                 round = ControlRound()
                 round.run_round(round=next_round)
             self.display_end_of_tournament(tournament=tournament)
+
+
+go = ControlTournament()
+go.reload_all_tournament_in_database()
+print(data_tournaments_list)
+print(data_tournaments_list)
+
+go.run(tournament=data_tournaments_list[-1])
+
