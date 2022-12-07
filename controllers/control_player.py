@@ -32,13 +32,23 @@ class ControlPlayer:
         rang = self.view_player.input_player_rang()
         return rang
 
+    def get_id_player(self):
+        id_player = len(self.data.table_of_player) + 1
+        return id_player
+
+    def change_rang_of_player(self, player):
+        new_rang = self.view_player.change_player_rang(player)
+        player.edit_grading(new_grading=new_rang)
+        self.update_table_player_list_in_database(player=player)
+
     def get_info_player(self):
         player_info = {"name": self.get_player_name(),
                        "first_name": self.get_player_first_name(),
                        "date_of_birth": self.get_date_of_birth(),
                        "gender": self.get_gender(),
                        "rang": self.get_player_rang(),
-                       "number_point": 0
+                       "number_point": 0,
+                       "id_player": self.get_id_player()
                        }
         return player_info
 
@@ -52,6 +62,7 @@ class ControlPlayer:
             rang=player_info["rang"]
         )
         player.number_point = player_info["number_point"]
+        player.id_player = player_info["id_player"]
         return player
 
     def create_new_player(self):
@@ -99,7 +110,7 @@ class ControlPlayer:
                 player_from_db = self.player_from_db(
                     player=result[1],
                     tournament=tournament
-                    )
+                )
                 return player_from_db
             else:
                 return None
@@ -113,7 +124,8 @@ class ControlPlayer:
 
     def add_player_in_database(self, player):
         serialized_name = player.serialized_player()
-        self.data.table_of_player.insert(serialized_name)
+        id_player = self.data.table_of_player.insert(serialized_name)
+        self.data.table_of_player.update({"id_player": id_player}, self.data.where("id_player") == id_player)
 
     @staticmethod
     def add_player_in_instance_player_list(player):
@@ -121,11 +133,31 @@ class ControlPlayer:
 
     def update_table_player_list_in_database(self, player):
         serialized_player = player.serialized_player()
-        self.data.table_of_player.update(serialized_player)
+        self.data.table_of_player.update(
+            serialized_player, self.data.where("id_player") == player.id_player)
 
-    def reload_all_player_in_list(self, serialized_list, instance_list):
-        for player in serialized_list:
-            instance_list.append(self.instance_player(
+    def reload_all_player_in_data_players_list(self):
+        for player in self.data.table_of_player.all():
+            data_players_list.append(self.instance_player(
                 player_info=player
-                )
             )
+            )
+
+    def return_player_from_data_player_list(self, player_serialized):
+        for player in data_players_list:
+            if player.id_player == player_serialized["id_player"]:
+                return player
+
+    def return_players_instance_list(self, serialized_player_list):
+        """Convert a serialised player list in a instance player list"""
+        players_list = []
+        for serialized_player in serialized_player_list:
+            player = self.return_player_from_data_player_list(
+                player_serialized=serialized_player
+            )
+            players_list.append(player)
+        return players_list
+
+
+print(len(Data().table_of_player.all()))
+

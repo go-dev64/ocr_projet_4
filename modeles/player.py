@@ -12,6 +12,7 @@ class Player:
         self.gender = gender
         self.rang = rang
         self.number_point = 0
+        self.id_player = None
 
     def serialized_player(self):
         serialized_player = {
@@ -20,7 +21,8 @@ class Player:
             "date_of_birth": self.date_of_birth,
             "gender": self.gender,
             "rang": self.rang,
-            "number_point": self.number_point
+            "number_point": self.number_point,
+            "id_player": self.id_player
          }
         return serialized_player
 

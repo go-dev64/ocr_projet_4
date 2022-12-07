@@ -37,9 +37,9 @@ class ControlRound:
         match = round.match_in_progress[match_selected]
         return match
 
-    def input_match_result(self, round):
+    def match_result(self, round):
         match_selected = self.select_match(round=round)
-        result_match = ControlMatch().play_match(match=match_selected)
+        result_match = self.control_match.play_match(match=match_selected)
         round.add_winner(result_match)
         round.take_out_the_finished_match(match_selected)
 
@@ -57,13 +57,11 @@ class ControlRound:
             matchs_list_serialized=round_info["list_of_match"])
         round.match_in_progress = self.reload_match_of_round(
             matchs_list_serialized=round_info["match_in_progress"])
-        self.control_player.reload_all_player_in_list(
-            serialized_list=round_info["in_game_player_list"],
-            instance_list=round.in_game_player_list
+        round.in_game_player_list = self.control_player.return_players_instance_list(
+            serialized_player_list=round_info["in_game_player_list"],
         )
-        self.control_player.reload_all_player_in_list(
-            serialized_list=round_info["player_list"],
-            instance_list=round.players_list
+        round.players_list = self.control_player.return_players_instance_list(
+            serialized_player_list=round_info["players_list"],
         )
         round.date_of_start = round_info["date_of_start"]
         round.date_of_end = round_info["date_of_end"]
@@ -71,11 +69,13 @@ class ControlRound:
         round.hour_of_end = round_info["hour_of_end"]
         return round
 
-    def run_round(self, round):
+    def start_of_round(self, round):
         self.display_match_of_round(round=round)
         self.start_round(round=round)
+
+    def play_round(self, round):
         while len(round.match_in_progress) != 0:
-            self.input_match_result(round=round)
+            self.match_result(round=round)
         if len(round.match_in_progress) == 0:
             self.end_round(round=round)
 

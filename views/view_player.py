@@ -8,12 +8,12 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_name():
-        name = input("Entrer le nom du Joueur:\n")
+        name = input("Entrer le nom du Joueur:\n").capitalize()
         return name
 
     @staticmethod
     def input_player_first_name():
-        first_name = input("Entrer le prénom du Joueur:\n")
+        first_name = input("Entrer le prénom du Joueur:\n").capitalize()
         return first_name
 
     def input_date_of_birth(self):
@@ -40,15 +40,15 @@ class ViewPlayer:
         print(f"{player_name} est actuellement au rang "
               f"N°{player_rang} du classement.")
 
-    def change_player_rang(self, player_name, player_rang):
+    def change_player_rang(self, player):
         new_rang = None
         list_of_choice = ["Y", "N"]
         self.display_player_rang(
-            player_name=player_name,
-            player_rang=player_rang
+            player_name=player.name,
+            player_rang=player.rang
         )
         print(f"Vous modifier le rang du joueur: "
-              f"{player_name}")
+              f"{player.name}")
         check = self.checker.check_string(
                 list_choice=list_of_choice
         )
@@ -57,13 +57,13 @@ class ViewPlayer:
             while result_ok != 1:
                 try:
                     rang = int(input(f"Entrer le nouveau rang au classement"
-                                     f" de {player_name}:"))
+                                     f" de {player.name}:"))
                 except ValueError:
                     print("Oooops, Entrer Invalide. Entrer un Nombre!")
                 else:
                     result_ok += 1
                     new_rang = rang
-            print(f"\nNouveau Rang de {player_name}: {new_rang}")
+            print(f"\nNouveau Rang de {player.name}: {new_rang}")
             return new_rang
 
         else:
@@ -71,7 +71,7 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_rang():
-        print("Renseigner le classement du Joueur / de la Joueuse\n")
+        print(f"Renseigner le classement du Joueur:\n")
         result_ok = 0
         while result_ok != 1:
             try:

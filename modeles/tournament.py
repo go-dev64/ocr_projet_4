@@ -9,6 +9,8 @@ class Tournament:
         self.players_list = []
         self.time_control = time_control
         self.description = description
+        self.status = "en cours"
+        self.id_tournament = None
 
     def serialized_tournament(self):
         serialized_tournament = {
@@ -24,7 +26,9 @@ class Tournament:
                 the_list=self.players_list
             ),
             "time_control": self.time_control,
-            "description": self.description
+            "description": self.description,
+            "status": self.status,
+            "id_tournament": self.id_tournament
         }
         return serialized_tournament
 
@@ -68,6 +72,9 @@ class Tournament:
             key=lambda player: player.number_point,
             reverse=True
         )
+
+    def change_status(self):
+        self.status = "Terminé"
 
     def __str__(self):
         return self.name + " de " + self.place

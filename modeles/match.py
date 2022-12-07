@@ -10,7 +10,7 @@ class Match:
         self.player_with_black_piece = ""
         self.result_player1 = ""
         self.result_player2 = ""
-        self.data = []
+        self.match_result = []
 
     def serialized_match(self):
         serialized_match = {
@@ -18,10 +18,10 @@ class Match:
             "finished_match": self.finished_match,
             "player1": self.player1.serialized_player(),
             "player2": self.player2.serialized_player(),
-            "player_with_black_piece": self.player_with_black_piece,
+            "player_with_black_piece": self.player_with_black_piece.serialized_player(),
             "result_player1": self.result_player1,
             "result_player2": self.result_player2,
-            "data": self.data
+            "match_result": self.serialized_result_match()
         }
         return serialized_match
 
@@ -60,10 +60,18 @@ class Match:
                 self.player1.number_point += 0.5
                 self.player2.number_point += 0.5
 
-    def save_match(self):
+    def save_result_of_match(self):
         list_player1 = [self.player1, self.result_player1]
         list_player2 = [self.player2, self.result_player2]
-        self.data = (list_player1, list_player2)
+        self.match_result = (list_player1, list_player2)
+
+    def serialized_result_match(self):
+        match_result = {"player1": self.player1.serialized_player(),
+                        "result_player1": self.result_player1,
+                        "player2": self.player2.serialized_player(),
+                        "result_player2": self.result_player2
+                        }
+        return match_result
 
     def status_match_is_finish(self):
         self.finished_match = True

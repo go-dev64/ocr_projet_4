@@ -31,6 +31,8 @@ class ViewChecker:
             else:
                 return the_input
 
+
+
     @staticmethod
     def check_num_choice(list_choice):
         """ list of choice start by 1 not 0"""
