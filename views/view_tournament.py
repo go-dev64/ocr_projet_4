@@ -46,7 +46,6 @@ class ViewTournament:
     def user_choice_of_player(self):
         """define if user select old player or create new player
         args : list [
-
         """
         list_choice = ["Sélectionner un joueur ou une joueuse dans notre base de donnée",
                        "Entrer un nouveau joueur/joueuse"]
@@ -65,3 +64,12 @@ class ViewTournament:
 
     def confirm_player_registration(self, player, tournament):
         print(f"{player} inscrit au {tournament}")
+
+    def confirm_creation_tournament(self, tournament):
+        print(f"Création de Tournoi: {tournament}")
+
+    def launch_new_tournament(self, tournament):
+        print(f"Voulez vous commencer le tournoi: {tournament} ?")
+        list_choice = ["Yes", "No"]
+        choice = self.checker.check_string(list_choice=list_choice)
+        return choice

@@ -33,10 +33,10 @@ class ViewControlTournament:
         name_of_round = name_of_round
         list_of_choice = ["Y", "N", "E"]
         print(f"Génerer le {name_of_round} ?:")
-        check = self.checker.check_string(
+        choice = self.checker.check_string(
             list_choice=list_of_choice
         )
-        if check == "Y":
+        if choice == "Y":
             print(f"Creation du {name_of_round}!")
             return True
         else:

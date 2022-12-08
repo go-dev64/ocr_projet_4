@@ -14,6 +14,21 @@ class Data:
         self.where = where
         self.query = Query()
 
+    def add_tournament_in_database(self, tournament):
+        serialized_tournament = tournament.serialized_tournament()
+        id_tournament = self.table_of_tournament.insert(serialized_tournament)
+        self.table_of_player.update(
+            {"id_tournament": id_tournament},
+            self.where("id_tournament") == id_tournament
+        )
+
+    def update_tournament_in_database(self, tournament):
+        serialized_tournament = tournament.serialized_tournament()
+        self.table_of_tournament.update(
+            serialized_tournament, self.where(
+                "id_tournament") == tournament.id_tournament)
+
+
 
 
 
