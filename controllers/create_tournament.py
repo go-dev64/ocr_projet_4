@@ -110,5 +110,7 @@ class CreateTournament:
         return tournament
 
     def launch_new_tournament(self, new_tournament):
-        choice = self.view_tournament.launch_new_tournament(tournament=new_tournament)
+        choice = self.view_tournament.confirm_creation_tournament(
+            tournament=new_tournament
+        )
         return choice

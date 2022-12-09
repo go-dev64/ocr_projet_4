@@ -159,5 +159,3 @@ class ControlPlayer:
         return players_list
 
 
-print(len(Data().table_of_player.all()))
-

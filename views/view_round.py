@@ -28,9 +28,20 @@ class ViewRound:
               f"{match_list[match_selected]}")
         return match_selected
 
+    def confirm_play_next_match(self):
+        list_of_choice = ["Y", "N"]
+        print(f"Voulez-vous entrer le résultat d'un autre match ?: Y / N")
+        check = self.checker.check_string(
+            list_choice=list_of_choice
+        )
+        if check == "Y":
+            return True
+        else:
+            return False
+
     def view_start_of_round(self, name_of_round):
         name_of_round = name_of_round
-        list_of_choice = ["Y", "N", "E"]
+        list_of_choice = ["Y", "N"]
         print(f"Voulez-vous lancez le {name_of_round} ?: Y / N")
         check = self.checker.check_string(
             list_choice=list_of_choice
@@ -42,8 +53,8 @@ class ViewRound:
             return False
 
     @staticmethod
-    def view_end_of_round(name_of_round, player_list):
+    def view_end_of_round(name_of_round, winner_players_list):
         print(f"Fin du {name_of_round}!")
         print("Les vainqueurs sont:")
-        for player in player_list:
+        for player in winner_players_list:
             print(player)

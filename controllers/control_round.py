@@ -1,7 +1,8 @@
-from views.view_round import ViewRound
+from controllers.control_data import Data
 from controllers.control_match import ControlMatch
 from controllers.control_player import ControlPlayer
 from modeles.round import Round
+from views.view_round import ViewRound
 
 
 class ControlRound:
@@ -9,6 +10,7 @@ class ControlRound:
         self.view_round = ViewRound()
         self.control_match = ControlMatch()
         self.control_player = ControlPlayer()
+        self.data = Data()
 
     def display_match_of_round(self, round):
         list_of_match = round.match_in_progress
@@ -17,16 +19,12 @@ class ControlRound:
             round=round.name
         )
 
-    def start_round(self, round):
-        self.view_round.view_start_of_round(
-            name_of_round=round.name
-        )
-        round.start_of_round()
+
 
     def end_round(self, round):
         self.view_round.view_end_of_round(
             name_of_round=round.name,
-            player_list=round.in_game_player_list
+            winner_players_list=round.in_game_player_list
         )
         round.end_of_round()
 
@@ -37,11 +35,32 @@ class ControlRound:
         match = round.match_in_progress[match_selected]
         return match
 
-    def match_result(self, round):
+    def play_match_of_round(self, round):
         match_selected = self.select_match(round=round)
         result_match = self.control_match.play_match(match=match_selected)
         round.add_winner(result_match)
         round.take_out_the_finished_match(match_selected)
+
+    def start_of_round(self, round):
+        self.display_match_of_round(round=round)
+        round.start_of_round()
+
+    def start_round(self, round):
+        self.view_round.view_start_of_round(
+            name_of_round=round.name
+        )
+
+    def play_round(self, tournament, round):
+        while len(round.match_in_progress) != 0:
+            if self.view_round.confirm_play_next_match():
+                self.play_match_of_round(round=round)
+            else:
+                break
+        if len(round.match_in_progress) == 0:
+            self.end_round(round=round)
+            self.data.update_tournament_in_database(tournament=tournament)
+            return True
+        return None
 
     def reload_match_of_round(self, matchs_list_serialized):
         matchs_list = []
@@ -69,13 +88,4 @@ class ControlRound:
         round.hour_of_end = round_info["hour_of_end"]
         return round
 
-    def start_of_round(self, round):
-        self.display_match_of_round(round=round)
-        self.start_round(round=round)
-
-    def play_round(self, round):
-        while len(round.match_in_progress) != 0:
-            self.match_result(round=round)
-        if len(round.match_in_progress) == 0:
-            self.end_round(round=round)
 

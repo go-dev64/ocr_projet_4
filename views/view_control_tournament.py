@@ -18,7 +18,7 @@ class ViewControlTournament:
         tournament_selected = check - 1
         print(f"Vous avez sélectionner le tournoi:\n"
               f"{tournament_list[tournament_selected]}")
-        return tournament_selected
+        return tournament_list[tournament_selected]
 
     @staticmethod
     def view_end_tournament(tournament):

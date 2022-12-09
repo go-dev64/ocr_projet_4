@@ -68,7 +68,7 @@ class ViewTournament:
     def confirm_creation_tournament(self, tournament):
         print(f"Création de Tournoi: {tournament}")
 
-    def launch_new_tournament(self, tournament):
+    def confirm_launch_new_tournament(self, tournament):
         print(f"Voulez vous commencer le tournoi: {tournament} ?")
         list_choice = ["Yes", "No"]
         choice = self.checker.check_string(list_choice=list_choice)

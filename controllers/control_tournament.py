@@ -1,5 +1,4 @@
 from controllers.control_data import Data, data_tournaments_list
-from controllers.control_menu import ControlMenu
 from controllers.control_player import ControlPlayer
 from controllers.control_round import ControlRound
 from modeles.round import Round
@@ -47,6 +46,10 @@ class ControlTournament:
         first_round.players_list = tournament.players_list
         self.create_matchs_of_round_1(tournament=tournament)
         first_round.match_in_progress = first_round.list_of_match.copy()
+        self.data.update_tournament_in_database(
+            tournament=tournament
+        )
+        self.control_round.start_round(round=first_round)
         return first_round
 
     @staticmethod
@@ -161,11 +164,18 @@ class ControlTournament:
             tournament=tournament
         )
         next_round.match_in_progress = next_round.list_of_match.copy()
+        self.data.update_tournament_in_database(
+            tournament=tournament
+        )
         return next_round
 
-    def display_end_of_tournament(self, tournament):
+    def end_of_tournament(self, tournament):
         tournament.sort_player_list_by_point()
         self.view_control_tournament.view_end_tournament(
+            tournament=tournament
+        )
+        tournament.change_status()
+        self.data.update_tournament_in_database(
             tournament=tournament
         )
 
@@ -219,30 +229,75 @@ class ControlTournament:
             serialized_tournament, self.data.where(
                 "id_tournament") == tournament.id_tournament)"""
 
-    def play_tournament(self, tournament):
-        while len(tournament.round_list[3].match_in_progress) != 0:
-            if len(tournament.round_list) == 0:
-                if self.valid_create_round(name_of_round="Round 1"):
-                    first_round = self.define_first_round(tournament=tournament)
-                    self.control_round.play_round(round=first_round)
+    def condition(self, tournament):
+        try:
+            result = len(tournament.round_list[3].match_in_progress)
+            assert result == 0
+        except IndexError:
+            return False
+        else:
+            return True
 
-            elif tournament.round_list[-1].match_in_progress != 0:
-                self.control_round.play_round(round=tournament.round_list[-1])
 
+    def apply_first_round(self, tournament):
+        self.valid_create_round(name_of_round="Round 1")
+        first_round = self.define_first_round(tournament=tournament)
+        result = self.control_round.play_round(
+                    tournament=tournament,
+                    round=first_round
+            )
+        return result
+
+    def apply_next_round(self, tournament):
+        number_round = len(tournament.round_list) + 1
+        next_round = self.define_next_round(
+            name=f"Round {number_round}",
+            tournament=tournament
+        )
+        if self.control_round.view_round.view_start_of_round(
+                name_of_round=next_round
+        ):
+            self.control_round.start_round(round=next_round)
+            self.data.update_tournament_in_database(
+                tournament=tournament
+            )
+            if self.control_round.play_round(
+                    tournament=tournament,
+                    round=next_round
+            ) is None:
+                return False
             else:
-                for round in range(2, tournament.number_of_round + 1):
-                    next_round = self.define_next_round(
-                        name=f"Round {round}",
-                        tournament=tournament
-                    )
-                    self.control_round.play_round(round=next_round)
+                return True
+        else:
+            return False
+
+    def play_tournament(self, tournament):
+        while len(tournament.round_list) < 5:
+            if self.condition(tournament=tournament):
+                self.end_of_tournament(tournament=tournament)
+                break
+            if len(tournament.round_list) == 0:
+                if self.apply_first_round(tournament=tournament) is None:
+                    break
+                else:
+                    continue
+
+            elif tournament.round_list[-1].match_in_progress == 0:
+                if self.apply_next_round(tournament=tournament):
+                    continue
+                else:
+                    break
+            elif tournament.round_list[-1].match_in_progress != 0:
+                if self.control_round.play_round(
+                    tournament=tournament,
+                    round=tournament.round_list[-1],
+                ) is None:
+                    break
+                else:
+                    continue
 
 
-        self.data.update_tournament_in_database(tournament=tournament)
-        self.display_end_of_tournament(tournament=tournament)
-
-
-ControlPlayer().reload_all_player_in_data_players_list()
+"""ControlPlayer().reload_all_player_in_data_players_list()
 go = ControlTournament()
 go.reload_all_tournament_in_database()
 
@@ -255,7 +310,7 @@ toto = x[0]["round_list"][0]
 y = toto["list_of_match"]
 print(toto["name"])
 for i in y:
-    print(i)
+    print(i)"""
 
 #go.play_tournament(tournament=data_tournaments_list[-1])
 
