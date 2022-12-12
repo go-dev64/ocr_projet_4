@@ -7,7 +7,7 @@ class ViewRound:
 
     @staticmethod
     def display_match(match_list, round):
-        print(f"Liste des match du {round}:")
+        print(f"Voici la liste des match du prochain Round: Le {round}:")
         match_number = 0
         for match in match_list:
             match_number += 1
@@ -42,7 +42,7 @@ class ViewRound:
     def view_start_of_round(self, name_of_round):
         name_of_round = name_of_round
         list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous lancez le {name_of_round} ?: Y / N")
+        print(f"Voulez-vous commencer le {name_of_round} ?: Y / N")
         check = self.checker.check_string(
             list_choice=list_of_choice
         )

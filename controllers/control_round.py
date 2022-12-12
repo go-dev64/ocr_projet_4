@@ -19,8 +19,6 @@ class ControlRound:
             round=round.name
         )
 
-
-
     def end_round(self, round):
         self.view_round.view_end_of_round(
             name_of_round=round.name,
@@ -43,12 +41,12 @@ class ControlRound:
 
     def start_of_round(self, round):
         self.display_match_of_round(round=round)
-        round.start_of_round()
-
-    def start_round(self, round):
-        self.view_round.view_start_of_round(
+        if self.view_round.view_start_of_round(
             name_of_round=round.name
-        )
+        ):
+            round.start_of_round()
+        else:
+            return None
 
     def play_round(self, tournament, round):
         while len(round.match_in_progress) != 0:

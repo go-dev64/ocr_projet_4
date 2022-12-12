@@ -71,8 +71,9 @@ class Round:
 
     @staticmethod
     def get_time_now():
+        now = datetime.now()
         date = datetime.today().strftime("%d/%m/%y")
-        hour = datetime.today().isoformat(timespec="seconds")
+        hour = now.strftime("%H:%M:%S")
         return date, hour
 
     def add_winner(self, winner):

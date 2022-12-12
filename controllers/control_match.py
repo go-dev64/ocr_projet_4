@@ -50,7 +50,9 @@ class ControlMatch:
             )
         )
         match.finished_match = match_info["finished_match"]
-        match.player_with_black_piece = match_info["player_with_black_piece"]
+        match.player_with_black_piece = self.control_player.\
+            return_player_from_data_player_list(
+                player_serialized=match_info["player_with_black_piece"])
         match.result_player1 = match_info["result_player1"]
         match.result_player2 = match_info["result_player2"]
         match.match_result = self.reload_match_result(

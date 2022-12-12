@@ -31,7 +31,7 @@ class ViewControlTournament:
 
     def view_create_new_round(self, name_of_round):
         name_of_round = name_of_round
-        list_of_choice = ["Y", "N", "E"]
+        list_of_choice = ["Y", "N"]
         print(f"Génerer le {name_of_round} ?:")
         choice = self.checker.check_string(
             list_choice=list_of_choice
@@ -40,4 +40,4 @@ class ViewControlTournament:
             print(f"Creation du {name_of_round}!")
             return True
         else:
-            return False
+            return None
