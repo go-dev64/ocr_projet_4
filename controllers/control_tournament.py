@@ -91,7 +91,6 @@ class ControlTournament:
             if compteur > tournament.number_of_player:
                 break
             compteur += 1
-            i = compteur
             player1 = copy_list[0]
             for player2 in copy_list:
                 if player2 == player1:
@@ -182,16 +181,22 @@ class ControlTournament:
             )
 
     def select_tournament(self):
-        tournament = self.view_tournament.view_select_tournament(
-            tournament_list=data_tournaments_list
+        tournament_in_progress = []
+        for tournament in data_tournaments_list:
+            if tournament.status == "en cours":
+                tournament_in_progress.append(tournament)
+        tournament_selected = self.view_tournament.view_select_tournament(
+            tournament_list=tournament_in_progress
         )
-        return tournament
+        return tournament_selected
 
     def condition(self, tournament):
         try:
             result = len(tournament.round_list[3].match_in_progress)
             assert result == 0
         except IndexError:
+            return False
+        except AssertionError:
             return False
         else:
             return True

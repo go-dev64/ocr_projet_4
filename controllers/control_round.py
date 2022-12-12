@@ -28,7 +28,8 @@ class ControlRound:
 
     def select_match(self, round):
         match_selected = self.view_round.select_match(
-            round.match_in_progress
+            match_list=round.match_in_progress,
+            round=round
         )
         match = round.match_in_progress[match_selected]
         return match
@@ -50,13 +51,15 @@ class ControlRound:
 
     def play_round(self, tournament, round):
         while len(round.match_in_progress) != 0:
-            if self.view_round.confirm_play_next_match():
+            if self.view_round.confirm_play_next_match(round=round):
                 self.play_match_of_round(round=round)
             else:
                 break
         if len(round.match_in_progress) == 0:
             self.end_round(round=round)
-            self.data.update_tournament_in_database(tournament=tournament)
+            self.data.update_tournament_in_database(
+                tournament=tournament
+            )
             return True
         return None
 
@@ -85,5 +88,3 @@ class ControlRound:
         round.hour_of_start = round_info["hour_of_start"]
         round.hour_of_end = round_info["hour_of_end"]
         return round
-
-

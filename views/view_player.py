@@ -97,6 +97,11 @@ class ViewPlayer:
               f"{players_list[player_selected]}")
         return player_selected
 
+    @staticmethod
+    def player_already_selected(player, list_where_player_exist):
+        print(f"\n{player} est deja inscrit dans {list_where_player_exist}!")
+
+
     def valid_player_exist(self):
         print("Joueur deja existant dans la base de données.\n")
         list_of_action = ["Sélectionner le joueur/joueuse existant-e",
@@ -112,6 +117,31 @@ class ViewPlayer:
         action_selected = check - 1
         return action_selected
 
-    @staticmethod
-    def player_already_selected(player):
-        print(f"\n{player} est deja inscrit à ce tournoi!")
+    def confirm_player_registration(self, player, player_list):
+        print(f"{player} inscrit dans {player_list}")
+
+    def view_menu_player(self, list_of_action):
+        print("Menu joueur")
+        list_of_action = list_of_action
+        for action in list_of_action:
+            print(f"{int(list_of_action.index(action) + 1)} - {action}")
+
+        action_selected = self.checker.check_num_choice(
+            list_choice=list_of_action
+        )
+        return action_selected
+
+    def user_continu(self):
+        list_of_choice = ["Y", "N"]
+        print("Voulez-vous retourner au Menu Principal ?")
+        check = self.checker.check_string(
+            list_choice=list_of_choice
+        )
+        if check == "Y":
+            return True
+        else:
+            return False
+
+
+
+

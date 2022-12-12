@@ -36,7 +36,8 @@ class ControlPlayer:
         id_player = len(self.data.table_of_player) + 1
         return id_player
 
-    def change_rang_of_player(self, player):
+    def change_rang_of_player(self):
+        player = self.select_player_in_database()
         new_rang = self.view_player.change_player_rang(player)
         player.edit_grading(new_grading=new_rang)
         self.update_table_player_list_in_database(player=player)
@@ -81,7 +82,8 @@ class ControlPlayer:
         player_from_db = player
         if player_from_db in tournament.players_list:
             self.view_player.player_already_selected(
-                player=player_from_db
+                player=player_from_db,
+                list_where_player_exist= tournament
             )
             return None
         else:
@@ -98,7 +100,34 @@ class ControlPlayer:
 
         return True, player
 
-    def add_new_player_by_user(self, tournament):
+    def add_new_player_by_user(self):
+        new_player = self.create_new_player()
+        result = self.check_if_player_in_list(
+            player=new_player,
+            the_list=data_players_list
+        )
+        if result[0]:
+            self.save_player(player=new_player)
+            return new_player
+        else:
+            return None, result[1]
+
+    def add_new_player_in_tournament(self, tournament):
+        new_player = self.add_new_player_by_user()
+        if new_player[0] is None:
+            choice = self.view_player.valid_player_exist()
+            if choice == 0:
+                player_from_db = self.player_from_db(
+                    player=new_player[1],
+                    tournament=tournament
+                )
+                return player_from_db
+            else:
+                return None
+        else:
+            return new_player
+
+    """ def add_new_player_in_tournament(self, tournament):
         new_player = self.create_new_player()
         result = self.check_if_player_in_list(
             player=new_player,
@@ -116,7 +145,7 @@ class ControlPlayer:
                 return None
         else:
             self.save_player(player=new_player)
-            return new_player
+            return new_player"""
 
     def save_player(self, player):
         self.add_player_in_instance_player_list(player=player)
@@ -158,4 +187,82 @@ class ControlPlayer:
             players_list.append(player)
         return players_list
 
+    def print_player_list_sort_by_rang(self, players_list):
+        """sort list by rang"""
+        players_list = sorted(
+            players_list,
+            key=lambda player: player.rang
+        )
+        position = 0
+        for the_player in players_list:
+            position += 1
+            print(f"{position} - {the_player}")
+        choice = self.view_player.user_continu()
+        return choice
+
+    def print_player_list_sort_by_name(self, players_list):
+        """sort list by name"""
+        players_list = sorted(
+            players_list,
+            key=lambda player: player.name
+        )
+        position = 0
+        for the_player in players_list:
+            position += 1
+            print(f"{position} - {the_player}")
+        choice = self.view_player.user_continu()
+        return choice
+
+    def add_player_by_player_menu(self):
+        new_player = self.add_new_player_by_user()
+        if new_player[0] is None:
+            self.view_player.confirm_player_registration(
+                player=new_player,
+                player_list="la base de données!"
+            )
+
+    def menu_player(self):
+        choice = 0
+        while choice != 1:
+            list_of_action = ["Afficher la liste de tous joueurs de la base de donnée",
+                              "Afficher la liste de tous joueurs d'un tournoi",
+                              "Enregistrer un nouveau joueur",
+                              "Modifier le classement d'un joueur",
+                              "Retour Menu Principal"
+                              ]
+            action_selected = self.view_player.view_menu_player(
+                list_of_action=list_of_action
+            )
+            match action_selected:
+                case 1:
+                    self.print_player_list_sort_by_rang(
+                        players_list=data_players_list
+                    )
+                    if self.view_player.user_continu():
+                        continue
+                    else:
+                        break
+
+                case 2:
+                    self.print_player_list_sort_by_name(
+                        players_list=data_players_list
+                    )
+                    if self.view_player.user_continu():
+                        continue
+                    else:
+                        break
+                case 3:
+                    self.add_player_by_player_menu()
+                    if self.view_player.user_continu():
+                        continue
+                    else:
+                        break
+                case 4:
+                    self.change_rang_of_player()
+                    if self.view_player.user_continu():
+                        continue
+                    else:
+                        break
+                case 5:
+                    break
 

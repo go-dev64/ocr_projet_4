@@ -27,10 +27,3 @@ class Data:
         self.table_of_tournament.update(
             serialized_tournament, self.where(
                 "id_tournament") == tournament.id_tournament)
-
-
-
-
-
-
-

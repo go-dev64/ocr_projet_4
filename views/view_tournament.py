@@ -62,9 +62,6 @@ class ViewTournament:
               f"{list_choice[choice_selected]}")
         return choice_selected
 
-    def confirm_player_registration(self, player, tournament):
-        print(f"{player} inscrit au {tournament}")
-
     def confirm_creation_tournament(self, tournament):
         print(f"Création de Tournoi: {tournament}")
 

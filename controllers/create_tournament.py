@@ -5,8 +5,6 @@ from views.view_tournament import ViewTournament
 from views.view_player import ViewPlayer
 
 
-
-
 class CreateTournament:
     def __init__(self):
         self.view_tournament = ViewTournament()
@@ -83,7 +81,7 @@ class CreateTournament:
                         )
                 case 1:
                     """user want create new player"""
-                    new_player = self.control_player.add_new_player_by_user(
+                    new_player = self.control_player.add_new_player_in_tournament(
                         tournament=tournament
                     )
                     if new_player is not None:
@@ -91,14 +89,6 @@ class CreateTournament:
                             tournament=tournament,
                             player=new_player
                         )
-
-    """def add_tournament_in_database(self, tournament):
-        serialized_tournament = tournament.serialized_tournament()
-        id_tournament = self.data.table_of_tournament.insert(serialized_tournament)
-        self.data.table_of_player.update(
-            {"id_tournament": id_tournament},
-            self.data.where("id_tournament") == id_tournament
-        )"""
 
     def create_new_tournament(self):
         self.get_information_of_tournament()

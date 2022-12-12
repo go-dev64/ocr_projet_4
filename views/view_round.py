@@ -7,19 +7,19 @@ class ViewRound:
 
     @staticmethod
     def display_match(match_list, round):
-        print(f"Voici la liste des match du prochain Round: Le {round}:")
+        print(f"Voici la liste des matchs du prochain Round: Le {round}")
         match_number = 0
         for match in match_list:
             match_number += 1
             print(f"Macth Numéro {match_number}: {match}")
 
-    def select_match(self, match_list):
+    def select_match(self, match_list, round):
         match_list = match_list
-        print("Sélectionner un match:")
+        print(f"Sélectionner un match du {round.name}:")
         match_number = 0
         for match in match_list:
             match_number += 1
-            print(f"Macth Numéro {match_number}: {match}")
+            print(f"{match_number} -  {match.name}: {match}")
         check = self.checker.check_num_choice(
             list_choice=match_list
         )
@@ -28,9 +28,9 @@ class ViewRound:
               f"{match_list[match_selected]}")
         return match_selected
 
-    def confirm_play_next_match(self):
+    def confirm_play_next_match(self, round):
         list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous entrer le résultat d'un autre match ?: Y / N")
+        print(f"Voulez-vous saisir le résultat d'un match du {round.name} ?")
         check = self.checker.check_string(
             list_choice=list_of_choice
         )
@@ -42,7 +42,7 @@ class ViewRound:
     def view_start_of_round(self, name_of_round):
         name_of_round = name_of_round
         list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous commencer le {name_of_round} ?: Y / N")
+        print(f"Voulez-vous commencer le {name_of_round} ?")
         check = self.checker.check_string(
             list_choice=list_of_choice
         )
