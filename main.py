@@ -2,7 +2,7 @@ from controllers.create_tournament import CreateTournament
 from controllers.control_tournament import ControlTournament
 from controllers.control_player import ControlPlayer
 from controllers.control_menu import ControlMenu
-from controllers.control_data import Data, data_tournaments_list
+from controllers.control_data import data_tournaments_list
 
 
 def main():
@@ -22,4 +22,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

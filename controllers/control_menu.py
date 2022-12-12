@@ -12,7 +12,7 @@ class ControlMenu:
 
     def action_selected_in_main_menu(self):
         list_of_action = ["Nouveau Tournoi", "Reprendre un Tournoi", "Menu Joueur", "Arrêter le programme"]
-        self.view_main_menu.view_menu(list=list_of_action)
+        self.view_main_menu.view_menu(list_of_choice=list_of_action)
         user_action = self.checker.check_num_choice(list_choice=list_of_action)
         return user_action
 

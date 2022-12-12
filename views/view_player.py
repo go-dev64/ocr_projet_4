@@ -82,25 +82,24 @@ class ViewPlayer:
                 result_ok += 1
                 return rang
 
-    def user_select_player(self, players_list):
-        players_list = players_list
-        print("Sélectionner un joueur:")
-        choice_player = 0
-        for player in players_list:
-            choice_player += 1
-            print(f"{choice_player} - {player}")
+    def user_select_element(self, list_of_elements, type_of_element):
+        list_of_elements = list_of_elements
+        print(f"Sélectionner un {type_of_element}:")
+        choice_element = 0
+        for element in list_of_elements:
+            choice_element += 1
+            print(f"{choice_element} - {element}")
         check = self.checker.check_num_choice(
-            list_choice=players_list
+            list_choice=list_of_elements
         )
-        player_selected = check - 1
+        element_selected = check - 1
         print(f"Vous avez sélectionner:\n"
-              f"{players_list[player_selected]}")
-        return player_selected
+              f"{list_of_elements[element_selected]}")
+        return element_selected
 
     @staticmethod
     def player_already_selected(player, list_where_player_exist):
         print(f"\n{player} est deja inscrit dans {list_where_player_exist}!")
-
 
     def valid_player_exist(self):
         print("Joueur deja existant dans la base de données.\n")
@@ -131,9 +130,9 @@ class ViewPlayer:
         )
         return action_selected
 
-    def user_continu(self):
+    def back_to_menu(self):
         list_of_choice = ["Y", "N"]
-        print("Voulez-vous retourner au Menu Principal ?")
+        print("Voulez-vous retourner au Menu précédent ?")
         check = self.checker.check_string(
             list_choice=list_of_choice
         )
@@ -141,7 +140,3 @@ class ViewPlayer:
             return True
         else:
             return False
-
-
-
-
