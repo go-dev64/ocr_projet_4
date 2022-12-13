@@ -1,4 +1,4 @@
-from controllers.control_data import Data, data_tournaments_list
+from controllers.control_data import Data, data_tournaments_list, data_players_list
 from controllers.control_player import ControlPlayer
 from modeles.tournament import Tournament
 from views.view_tournament import ViewTournament
@@ -58,9 +58,9 @@ class CreateTournament:
 
     def valid_registration_in_players_list(self, tournament, player):
         tournament.add_players(player=player)
-        self.view_tournament.confirm_player_registration(
-            player=player,
-            tournament=tournament
+        self.control_player.generic.view_generic.confirm_element_registration(
+            element=player,
+            elements_list=tournament.name
         )
 
     def add_players_tournament(self, tournament):
@@ -72,7 +72,10 @@ class CreateTournament:
                 case 0:
                     """user want select player in database players list"""
                     player_from_db = self.control_player.player_from_db(
-                        player=self.control_player.select_player_in_database(),
+                        player=self.control_player.generic.select_element_in_list(
+                            list_of_elements=data_players_list,
+                            type_of_element="joueur"
+                        ),
                         tournament=tournament)
                     if player_from_db is not None:
                         self.valid_registration_in_players_list(
@@ -89,6 +92,8 @@ class CreateTournament:
                             tournament=tournament,
                             player=new_player
                         )
+                    else:
+                        continue
 
     def create_new_tournament(self):
         self.get_information_of_tournament()

@@ -1,6 +1,8 @@
 from controllers.control_data import Data, data_tournaments_list
+from controllers.control_generic import Generic
 from controllers.control_player import ControlPlayer
 from controllers.control_round import ControlRound
+from controllers.create_tournament import CreateTournament
 from modeles.round import Round
 from modeles.tournament import Tournament
 from views.view_control_tournament import ViewControlTournament
@@ -14,6 +16,7 @@ class ControlTournament:
         self.view_tournament = ViewControlTournament()
         self.control_player = ControlPlayer()
         self.control_round = ControlRound()
+        self.generic = Generic()
         self.data = Data()
 
     def create_round(self, name, tournament):
@@ -87,7 +90,7 @@ class ControlTournament:
         compteur = 0
         while len(
                 tournament.round_list[-1].list_of_match
-        ) < tournament.number_of_player/2:
+        ) < tournament.number_of_player / 2:
             if compteur > tournament.number_of_player:
                 break
             compteur += 1
@@ -101,7 +104,6 @@ class ControlTournament:
                     player_2=player2
                 )
                 if not already_played:
-
                     match_name = len(tournament.round_list[-1].list_of_match) + 1
                     tournament.round_list[-1].create_match(
                         name=f"match {match_name}",
@@ -160,9 +162,9 @@ class ControlTournament:
             time_control=tournament['time_control'],
             description=tournament['description']
         )
-        the_tournament.players_list.extend(self.control_player.return_players_instance_list(
+        the_tournament.players_list.extend(self.control_player.get_players_instance_list(
             serialized_player_list=tournament["players_list"]
-            )
+        )
         )
         the_tournament.number_of_round = tournament["number_of_round"]
         the_tournament.number_of_player = tournament["number_of_player"]
@@ -176,8 +178,8 @@ class ControlTournament:
     def reload_all_tournament_in_database(self):
         for tournament in self.data.table_of_tournament.all():
             data_tournaments_list.append(self.reload_tournament(
-                    tournament=tournament
-                )
+                tournament=tournament
+            )
             )
 
     def select_tournament(self):
@@ -210,8 +212,8 @@ class ControlTournament:
             return None
 
         if self.control_round.play_round(
-                    tournament=tournament,
-                    round=first_round
+                tournament=tournament,
+                round=first_round
         ) is None:
             return None
         else:
@@ -252,9 +254,92 @@ class ControlTournament:
                     continue
             elif len(tournament.round_list[-1].match_in_progress) != 0:
                 if self.control_round.play_round(
-                    tournament=tournament,
-                    round=tournament.round_list[-1],
+                        tournament=tournament,
+                        round=tournament.round_list[-1],
                 ) is None:
                     break
                 else:
                     continue
+
+    def display_round_of_tournament(self):
+        tournament = self.generic.select_element_in_list(
+            list_of_elements=data_tournaments_list,
+            type_of_element="Tournoi"
+        )
+        self.generic.view_generic.display_elements_of_list(
+            elements_list=tournament.round_list
+        )
+
+    def display_match_of_round(self,):
+        tournament = self.generic.select_element_in_list(
+            list_of_elements=data_tournaments_list,
+            type_of_element="Tournoi"
+        )
+        round = self.generic.select_element_in_list(
+            list_of_elements=tournament.round_list,
+            type_of_element="Round"
+        )
+        self.generic.view_generic.display_elements_of_list(
+            elements_list=round.list_of_match
+        )
+
+    def tournament_menu(self):
+        while True:
+            list_of_action = ["Nouveau Tournoi",
+                              "Reprendre un Tournoi",
+                              "Afficher tous les Tournois",
+                              "Afficher tous les Rounds d'un Tournoi",
+                              "Afficher tous les Matchs d'un Round",
+                              "Retour au Menu Principal"]
+            choice = self.generic.action_selected_in_menu_by_user(
+                actions_list=list_of_action,
+                name_of_menu="Menu Tournoi"
+            )
+
+            match choice:
+                case 1:
+                    tournament = CreateTournament().create_new_tournament()
+                    choice = CreateTournament().launch_new_tournament(
+                        new_tournament=tournament
+                    )
+                    if choice == 1:
+                        self.play_tournament(
+                            tournament=tournament
+                        )
+                    else:
+                        continue
+                case 2:
+                    tournament = self.select_tournament()
+                    self.play_tournament(tournament=tournament)
+                    if self.generic.view_generic.back_to_menu():
+                        break
+                    else:
+                        continue
+                case 3:
+                    self.generic.view_generic.display_elements_of_list(
+                        elements_list=data_tournaments_list
+                    )
+                    if self.generic.view_generic.back_to_menu(
+                            name="Menu Principal"
+                    ):
+                        break
+                    else:
+                        continue
+                case 4:
+                    self.display_round_of_tournament()
+                    if self.generic.view_generic.back_to_menu(
+                            name="Menu Principal"
+                    ):
+                        break
+                    else:
+                        continue
+                case 5:
+                    self.display_match_of_round()
+                    if self.generic.view_generic.back_to_menu(
+                            name="Menu Principal"
+                    ):
+                        break
+                    else:
+                        continue
+                case 6:
+                    break

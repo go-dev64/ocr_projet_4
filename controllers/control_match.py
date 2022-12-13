@@ -28,11 +28,11 @@ class ControlMatch:
                 return [match.player1, match.player2]
 
     def reload_match_result(self, match_result):
-        list_player1 = [self.control_player.return_player_from_data_player_list(
+        list_player1 = [self.control_player.find_player_in_data_player_list(
             player_serialized=match_result["player1"]),
             match_result["result_player1"]
         ]
-        list_player2 = [self.control_player.return_player_from_data_player_list(
+        list_player2 = [self.control_player.find_player_in_data_player_list(
             player_serialized=match_result["player2"]),
             match_result["result_player2"]
         ]
@@ -42,16 +42,16 @@ class ControlMatch:
     def reload_match(self, match_info):
         match = Match(
             name=match_info["name"],
-            player1=self.control_player.return_player_from_data_player_list(
+            player1=self.control_player.find_player_in_data_player_list(
                 player_serialized=match_info["player1"]
             ),
-            player2=self.control_player.return_player_from_data_player_list(
+            player2=self.control_player.find_player_in_data_player_list(
                 player_serialized=match_info["player2"]
             )
         )
         match.finished_match = match_info["finished_match"]
         match.player_with_black_piece = self.control_player.\
-            return_player_from_data_player_list(
+            find_player_in_data_player_list(
                 player_serialized=match_info["player_with_black_piece"])
         match.result_player1 = match_info["result_player1"]
         match.result_player2 = match_info["result_player2"]
@@ -66,10 +66,10 @@ class ControlMatch:
         match.give_player_point(result=result)
         match.status_match_is_finish()
         match.save_result_of_match()
-        self.control_player.update_table_player_list_in_database(
+        self.control_player.update_player_in_database(
             player=match.player1
         )
-        self.control_player.update_table_player_list_in_database(
+        self.control_player.update_player_in_database(
             player=match.player2
         )
         winner = self.return_result(match=match, result=result)

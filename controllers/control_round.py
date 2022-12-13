@@ -77,10 +77,10 @@ class ControlRound:
             matchs_list_serialized=round_info["list_of_match"])
         round.match_in_progress = self.reload_match_of_round(
             matchs_list_serialized=round_info["match_in_progress"])
-        round.in_game_player_list = self.control_player.return_players_instance_list(
+        round.in_game_player_list = self.control_player.get_players_instance_list(
             serialized_player_list=round_info["in_game_player_list"],
         )
-        round.players_list = self.control_player.return_players_instance_list(
+        round.players_list = self.control_player.get_players_instance_list(
             serialized_player_list=round_info["players_list"],
         )
         round.date_of_start = round_info["date_of_start"]
