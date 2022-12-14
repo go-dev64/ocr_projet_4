@@ -8,13 +8,13 @@ class ViewGeneric:
     def confirm_element_registration(self, element, elements_list):
         print(f"{element} inscrit dans {elements_list}")
 
-    def user_select_element(self, list_of_elements, type_of_element):
+    def user_select_element(self, list_of_elements, type_of_element, sort_by):
         list_of_elements = list_of_elements
         print(f"Sélectionner un {type_of_element}:")
-        choice_element = 0
-        for element in list_of_elements:
-            choice_element += 1
-            print(f"{choice_element} - {element}")
+        self.display_elements_of_list(
+            elements_list=list_of_elements,
+            sort_by=sort_by
+        )
         check = self.checker.check_num_choice(
             list_choice=list_of_elements
         )
@@ -45,9 +45,17 @@ class ViewGeneric:
         else:
             return False
 
-    def display_elements_of_list(self, elements_list):
-        compteur = 0
-        for element in elements_list:
-            compteur += 1
-            print(f"{compteur} - {element}")
+    def display_elements_of_list(self, elements_list, sort_by):
+        if sort_by == "rang":
+            list_sorted = sorted(elements_list, key=lambda player: player.rang)
+            compteur = 0
+            for element in list_sorted:
+                compteur += 1
+                print(f"{compteur} - {element}: N°{element.rang} au classement")
+        else:
+            compteur = 0
+            for element in elements_list:
+                compteur += 1
+                print(f"{compteur} - {element}")
+
 

@@ -264,7 +264,8 @@ class ControlTournament:
     def display_round_of_tournament(self):
         tournament = self.generic.select_element_in_list(
             list_of_elements=data_tournaments_list,
-            type_of_element="Tournoi"
+            type_of_element="Tournoi",
+            sort_by="Tournoi"
         )
         self.generic.view_generic.display_elements_of_list(
             elements_list=tournament.round_list
@@ -273,11 +274,13 @@ class ControlTournament:
     def display_match_of_round(self,):
         tournament = self.generic.select_element_in_list(
             list_of_elements=data_tournaments_list,
-            type_of_element="Tournoi"
+            type_of_element="Tournoi",
+            sort_by="Tournoi"
         )
         round = self.generic.select_element_in_list(
             list_of_elements=tournament.round_list,
-            type_of_element="Round"
+            type_of_element="Round",
+            sort_by="Round"
         )
         self.generic.view_generic.display_elements_of_list(
             elements_list=round.list_of_match

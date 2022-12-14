@@ -71,7 +71,7 @@ class CreateTournament:
             match choice:
                 case 0:
                     """user want select player in database players list"""
-                    player_from_db = self.control_player.player_from_db(
+                    player_from_db = self.control_player.check_if_player_is_tournament_players_list(
                         player=self.control_player.generic.select_element_in_list(
                             list_of_elements=data_players_list,
                             type_of_element="joueur"

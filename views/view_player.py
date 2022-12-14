@@ -100,5 +100,3 @@ class ViewPlayer:
         )
         action_selected = check - 1
         return action_selected
-
-

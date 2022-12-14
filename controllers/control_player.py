@@ -10,6 +10,7 @@ class ControlPlayer:
         self.view_player = ViewPlayer()
         self.generic = Generic()
         self.data = Data()
+        self.data_players_list = data_players_list
         self.player_info = {}
 
     def get_player_name(self):
@@ -54,8 +55,8 @@ class ControlPlayer:
             first_name=player_info["first_name"],
             date_of_birth=player_info["date_of_birth"],
             gender=player_info["gender"],
-            rang=player_info["rang"]
         )
+        player.rang = player_info["rang"]
         player.number_point = player_info["number_point"]
         player.id_player = player_info["id_player"]
         return player
@@ -66,15 +67,21 @@ class ControlPlayer:
         return player
 
     def change_rang_of_player(self):
-        player = self.generic.select_element_in_list(
-            list_of_elements=data_players_list,
-            type_of_element="joueur"
+        sorted(self.data_players_list, key=lambda player: player.rang)
+        player_selected = self.generic.select_element_in_list(
+            list_of_elements=self.data_players_list,
+            type_of_element="joueur",
+            sort_by="rang"
         )
-        new_rang = self.view_player.change_player_rang(player)
-        player.edit_grading(new_grading=new_rang)
-        self.update_player_in_database(player=player)
+        new_rang = self.view_player.change_player_rang(player_selected)
+        player_selected.edit_grading(new_grading=new_rang)
+        self.data_players_list.pop(self.data_players_list.index(player_selected))
+        self.data_players_list.insert(new_rang - 1, player_selected)
+        for element in self.data_players_list:
+            element.rang = 1 + data_players_list.index(element)
+        self.update_player_in_database(player=player_selected)
 
-    def player_from_db(self, player, tournament):
+    def check_if_player_is_tournament_players_list(self, player, tournament):
         player_from_db = player
         if player_from_db in tournament.players_list:
             self.view_player.player_already_selected(
@@ -96,7 +103,7 @@ class ControlPlayer:
 
         return True, player
 
-    def add_new_player_by_user(self, where):
+    def add_new_player_by_user(self, name_of_list):
         new_player = self.create_new_player()
         result = self.check_if_player_in_list(
             player=new_player,
@@ -104,52 +111,35 @@ class ControlPlayer:
         )
         if result[0]:
             self.save_player(player=new_player)
+            self.generic.view_generic.confirm_element_registration(
+                element=new_player,
+                elements_list=name_of_list
+            )
             return True, new_player
         else:
             self.view_player.player_already_selected(
                 player=new_player,
-                list_where_player_exist=where
+                list_where_player_exist=name_of_list
             )
             return result
 
     def add_new_player_in_tournament(self, tournament):
-        new_player = self.add_new_player_by_user(
-            where="la base de donnée"
-        )
+        new_player = self.add_new_player_by_user(name_of_list="la base de donnée")
         if not new_player[0]:
             choice = self.view_player.valid_player_exist()
             if choice == 0:
-                player_from_db = self.player_from_db(
+                player_from_db = self.check_if_player_in_list(
                     player=new_player[1],
-                    tournament=tournament
+                    the_list=tournament
                 )
                 return player_from_db
             else:
                 return None
         else:
-            self.save_player(player=new_player[1])
             return new_player[1]
 
-
-
-
-
-    """    def add_new_player_in_tournament(self, tournament):
-        new_player = self.add_new_player_by_user()
-        if new_player[0] is None:
-            choice = self.view_player.valid_player_exist()
-            if choice == 0:
-                player_from_db = self.player_from_db(
-                    player=new_player[1],
-                    tournament=tournament
-                )
-                return player_from_db
-            else:
-                return None
-        else:
-            return new_player"""
-
     def save_player(self, player):
+        player.rang = int(len(data_players_list))
         data_players_list.append(player)
         self.save_new_player_in_database(player=player)
 
@@ -170,9 +160,8 @@ class ControlPlayer:
 
     def instancing_all_player_in_data_players_list(self):
         for player in self.data.table_of_player.all():
-            data_players_list.append(self.instance_player(
-                player_info=player
-                )
+            data_players_list.append(
+                self.instance_player(player_info=player)
             )
 
     def find_player_in_data_player_list(self, player_serialized):
@@ -190,39 +179,26 @@ class ControlPlayer:
             players_list.append(player)
         return players_list
 
-    def print_player_list_sort_by_rang(self, players_list):
+    def display_player_list_sort_by_rang(self, players_list):
         """sort list by rang"""
-        players_list = sorted(
-            players_list,
-            key=lambda player: player.rang
+        self.generic.view_generic.display_elements_of_list(
+            elements_list=players_list,
+            sort_by="rang"
         )
-        position = 0
-        for the_player in players_list:
-            position += 1
-            print(f"{position} - {the_player}")
 
-    def print_player_list_sort_by_name(self, players_list):
+    def display_player_list_sort_by_name(self, players_list):
         """sort list by name"""
-        players_list = sorted(
+        sorted(
             players_list,
             key=lambda player: player.name
         )
-        position = 0
-        for the_player in players_list:
-            position += 1
-            print(f"{position} - {the_player}")
+        self.generic.view_generic.display_elements_of_list(
+            elements_list=players_list,
+            sort_by="name"
+        )
 
-    def add_player_by_player_menu(self):
-        new_player = self.add_new_player_by_user()
-        if new_player[0] is None:
-            self.generic.view_generic.confirm_element_registration(
-                element=new_player,
-                elements_list="la base de données!"
-            )
-
-    def print_players_list(self, players_list, name_of_menu):
-        choice = 0
-        while choice != 1:
+    def display_players_list(self, players_list, name_of_menu):
+        while True:
             list_of_action = ["Trier les joueurs par classement",
                               "Trier les joueurs par ordre alphabétique",
                               "Retour au menu précédent"
@@ -233,22 +209,14 @@ class ControlPlayer:
             )
             match action_selected:
                 case 1:
-                    self.print_player_list_sort_by_rang(
-                        players_list=players_list
-                    )
-                    if self.generic.view_generic.back_to_menu(
-                            name="Menu Joueur"
-                    ):
+                    self.display_player_list_sort_by_rang(players_list=players_list)
+                    if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                         break
                     else:
                         continue
                 case 2:
-                    self.print_player_list_sort_by_name(
-                        players_list=players_list
-                    )
-                    if self.generic.view_generic.back_to_menu(
-                            name="Menu Joueur"
-                    ):
+                    self.display_player_list_sort_by_name(players_list=players_list)
+                    if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                         break
                     else:
                         continue
@@ -270,21 +238,22 @@ class ControlPlayer:
             )
             match action_selected:
                 case 1:
-                    self.print_players_list(
+                    self.display_players_list(
                         players_list=data_players_list,
                         name_of_menu="Menu Joueur / Liste des Joueur dans la base de données"
                     )
                 case 2:
                     tournament = self.generic.select_element_in_list(
                         list_of_elements=data_tournaments_list,
-                        type_of_element="tournoi"
+                        type_of_element="tournoi",
+                        sort_by="name"
                     )
-                    self.print_players_list(
+                    self.display_players_list(
                         players_list=tournament.players_list,
                         name_of_menu=f"Menu Joueur / Liste des Joueur du {tournament}"
                     )
                 case 3:
-                    self.add_player_by_player_menu()
+                    self.add_new_player_by_user(name_of_list="la base de donnée")
 
                 case 4:
                     self.change_rang_of_player()
