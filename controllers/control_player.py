@@ -66,20 +66,24 @@ class ControlPlayer:
         player = self.instance_player(player_info=player_info)
         return player
 
+    def move_player_on_new_rang(self, player, players_list):
+        players_list.pop(players_list.index(player))
+        players_list.insert(player.rang - 1, player)
+        for element in players_list:
+            element.rang = 1 + players_list.index(element)
+            self.update_player_in_database(player=element)
+
     def change_rang_of_player(self):
-        sorted(self.data_players_list, key=lambda player: player.rang)
+        players_list_sorted = sorted(self.data_players_list, key=lambda player: player.rang)
         player_selected = self.generic.select_element_in_list(
-            list_of_elements=self.data_players_list,
+            list_of_elements=players_list_sorted,
             type_of_element="joueur",
             sort_by="rang"
         )
         new_rang = self.view_player.change_player_rang(player_selected)
-        player_selected.edit_grading(new_grading=new_rang)
-        self.data_players_list.pop(self.data_players_list.index(player_selected))
-        self.data_players_list.insert(new_rang - 1, player_selected)
-        for element in self.data_players_list:
-            element.rang = 1 + data_players_list.index(element)
-        self.update_player_in_database(player=player_selected)
+        if new_rang is not None:
+            player_selected.edit_grading(new_grading=new_rang)
+            self.move_player_on_new_rang(player=player_selected, players_list=players_list_sorted)
 
     def check_if_player_is_tournament_players_list(self, player, tournament):
         player_from_db = player
@@ -179,24 +183,6 @@ class ControlPlayer:
             players_list.append(player)
         return players_list
 
-    def display_player_list_sort_by_rang(self, players_list):
-        """sort list by rang"""
-        self.generic.view_generic.display_elements_of_list(
-            elements_list=players_list,
-            sort_by="rang"
-        )
-
-    def display_player_list_sort_by_name(self, players_list):
-        """sort list by name"""
-        sorted(
-            players_list,
-            key=lambda player: player.name
-        )
-        self.generic.view_generic.display_elements_of_list(
-            elements_list=players_list,
-            sort_by="name"
-        )
-
     def display_players_list(self, players_list, name_of_menu):
         while True:
             list_of_action = ["Trier les joueurs par classement",
@@ -209,13 +195,21 @@ class ControlPlayer:
             )
             match action_selected:
                 case 1:
-                    self.display_player_list_sort_by_rang(players_list=players_list)
+                    list_sorted_by_rang = sorted(players_list, key=lambda player: player.rang)
+                    self.generic.view_generic.display_elements_of_list(
+                        elements_list=list_sorted_by_rang,
+                        sort_by="rang"
+                    )
                     if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                         break
                     else:
                         continue
                 case 2:
-                    self.display_player_list_sort_by_name(players_list=players_list)
+                    list_sorted_by_name = sorted(players_list, key=lambda player: player.name)
+                    self.generic.view_generic.display_elements_of_list(
+                        elements_list=list_sorted_by_name,
+                        sort_by="name"
+                    )
                     if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                         break
                     else:
