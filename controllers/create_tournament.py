@@ -57,6 +57,7 @@ class CreateTournament:
         return the_tournament
 
     def valid_registration_in_players_list(self, tournament, player):
+        player.number_point = 0
         tournament.add_players(player=player)
         self.control_player.generic.view_generic.confirm_element_registration(
             element=player,
