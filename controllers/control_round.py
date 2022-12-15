@@ -14,22 +14,17 @@ class ControlRound:
 
     def display_match_of_round(self, round):
         list_of_match = round.match_in_progress
-        self.view_round.display_match(
-            match_list=list_of_match,
-            round=round.name
-        )
+        self.view_round.display_match(match_list=list_of_match, round=round.name)
 
     def end_round(self, round):
         self.view_round.view_end_of_round(
-            name_of_round=round.name,
-            winner_players_list=round.in_game_player_list
+            name_of_round=round.name, winner_players_list=round.in_game_player_list
         )
         round.end_of_round()
 
     def select_match(self, round):
         match_selected = self.view_round.select_match(
-            match_list=round.match_in_progress,
-            round=round
+            match_list=round.match_in_progress, round=round
         )
         match = round.match_in_progress[match_selected]
         return match
@@ -40,12 +35,11 @@ class ControlRound:
         round.add_winner(result_match)
         round.take_out_the_finished_match(match_selected)
 
-    def start_of_round(self, round):
+    def launch_of_round(self, round):
         self.display_match_of_round(round=round)
-        if self.view_round.view_start_of_round(
-            name_of_round=round.name
-        ):
+        if self.view_round.view_start_of_round(name_of_round=round.name):
             round.start_of_round()
+            return True
         else:
             return None
 
@@ -57,26 +51,26 @@ class ControlRound:
                 break
         if len(round.match_in_progress) == 0:
             self.end_round(round=round)
-            self.data.update_tournament_in_database(
-                tournament=tournament
-            )
+            self.data.update_tournament_in_database(tournament=tournament)
             return True
         return None
 
     def reload_match_of_round(self, matchs_list_serialized):
         matchs_list = []
         for match_serialized in matchs_list_serialized:
-            matchs_list.append(self.control_match.reload_match(
-                match_info=match_serialized)
+            matchs_list.append(
+                self.control_match.reload_match(match_info=match_serialized)
             )
         return matchs_list
 
     def reload_round(self, round_info):
         round = Round(name=round_info["name"])
         round.list_of_match = self.reload_match_of_round(
-            matchs_list_serialized=round_info["list_of_match"])
+            matchs_list_serialized=round_info["list_of_match"]
+        )
         round.match_in_progress = self.reload_match_of_round(
-            matchs_list_serialized=round_info["match_in_progress"])
+            matchs_list_serialized=round_info["match_in_progress"]
+        )
         round.in_game_player_list = self.control_player.get_players_instance_list(
             serialized_player_list=round_info["in_game_player_list"],
         )

@@ -1,13 +1,5 @@
-
-
 class Player:
-
-    def __init__(self,
-                 name,
-                 first_name,
-                 date_of_birth,
-                 gender
-                 ):
+    def __init__(self, name, first_name, date_of_birth, gender):
         self.name = name
         self.first_name = first_name
         self.date_of_birth = date_of_birth
@@ -24,8 +16,8 @@ class Player:
             "gender": self.gender,
             "rang": self.rang,
             "number_point": self.number_point,
-            "id_player": self.id_player
-         }
+            "id_player": self.id_player,
+        }
         return serialized_player
 
     def edit_grading(self, new_grading):

@@ -21,7 +21,7 @@ class Match:
             "player_with_black_piece": self.player_with_black_piece.serialized_player(),
             "result_player1": self.result_player1,
             "result_player2": self.result_player2,
-            "match_result": self.serialized_result_match()
+            "match_result": self.serialized_result_match(),
         }
         return serialized_match
 
@@ -52,11 +52,11 @@ class Match:
     def give_player_point(self, result):
         """add point to player"""
         match result:
-            case 1:
+            case 0:
                 self.player1.number_point += 1
-            case 2:
+            case 1:
                 self.player2.number_point += 1
-            case 3:
+            case 2:
                 self.player1.number_point += 0.5
                 self.player2.number_point += 0.5
 
@@ -66,11 +66,12 @@ class Match:
         self.match_result = (list_player1, list_player2)
 
     def serialized_result_match(self):
-        match_result = {"player1": self.player1.serialized_player(),
-                        "result_player1": self.result_player1,
-                        "player2": self.player2.serialized_player(),
-                        "result_player2": self.result_player2
-                        }
+        match_result = {
+            "player1": self.player1.serialized_player(),
+            "result_player1": self.result_player1,
+            "player2": self.player2.serialized_player(),
+            "result_player2": self.result_player2,
+        }
         return match_result
 
     def status_match_is_finish(self):

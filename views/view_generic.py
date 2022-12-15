@@ -11,16 +11,10 @@ class ViewGeneric:
     def user_select_element(self, list_of_elements, type_of_element, sort_by):
         list_of_elements = list_of_elements
         print(f"Sélectionner un {type_of_element}:")
-        self.display_elements_of_list(
-            elements_list=list_of_elements,
-            sort_by=sort_by
-        )
-        check = self.checker.check_num_choice(
-            list_choice=list_of_elements
-        )
+        self.display_elements_of_list(elements_list=list_of_elements, sort_by=sort_by)
+        check = self.checker.check_num_choice(list_choice=list_of_elements)
         element_selected = check - 1
-        print(f"Vous avez sélectionner:\n"
-              f"{list_of_elements[element_selected]}")
+        print(f"Vous avez sélectionner:\n" f"{list_of_elements[element_selected]}")
         return element_selected
 
     def view_menu(self, list_of_choice, name_of_menu):
@@ -29,17 +23,13 @@ class ViewGeneric:
         for element in list_of_choice:
             n += 1
             print(f"{n} - {element}")
-        user_choice = self.checker.check_num_choice(
-            list_choice=list_of_choice
-        )
+        user_choice = self.checker.check_num_choice(list_choice=list_of_choice)
         return user_choice
 
     def back_to_menu(self, name):
         list_of_choice = ["Y", "N"]
         print(f"Voulez-vous retourner au {name} ?")
-        check = self.checker.check_string(
-            list_choice=list_of_choice
-        )
+        check = self.checker.check_string(list_choice=list_of_choice)
         if check == "Y":
             return True
         else:
@@ -57,5 +47,3 @@ class ViewGeneric:
             for element in elements_list:
                 compteur += 1
                 print(f"{compteur} - {element}")
-
-

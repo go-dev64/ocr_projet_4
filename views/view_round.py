@@ -20,20 +20,15 @@ class ViewRound:
         for match in match_list:
             match_number += 1
             print(f"{match_number} -  {match.name}: {match}")
-        check = self.checker.check_num_choice(
-            list_choice=match_list
-        )
+        check = self.checker.check_num_choice(list_choice=match_list)
         match_selected = check - 1
-        print(f"Vous avez sélectionner le match:\n"
-              f"{match_list[match_selected]}")
+        print(f"Vous avez sélectionner le match:\n" f"{match_list[match_selected]}")
         return match_selected
 
     def confirm_play_next_match(self, round):
         list_of_choice = ["Y", "N"]
         print(f"Voulez-vous saisir le résultat d'un match du {round.name} ?")
-        check = self.checker.check_string(
-            list_choice=list_of_choice
-        )
+        check = self.checker.check_string(list_choice=list_of_choice)
         if check == "Y":
             return True
         else:
@@ -43,9 +38,7 @@ class ViewRound:
         name_of_round = name_of_round
         list_of_choice = ["Y", "N"]
         print(f"Voulez-vous commencer le {name_of_round} ?")
-        check = self.checker.check_string(
-            list_choice=list_of_choice
-        )
+        check = self.checker.check_string(list_choice=list_of_choice)
         if check == "Y":
             print(f"\nLe {name_of_round} est lancé!")
             return True

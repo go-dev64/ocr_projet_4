@@ -32,7 +32,7 @@ class Round:
             "date_of_start": self.date_of_start,
             "hour_of_start": self.hour_of_start,
             "date_of_end": self.date_of_end,
-            "hour_of_end": self.hour_of_end
+            "hour_of_end": self.hour_of_end,
         }
         return serialized_round
 
@@ -47,15 +47,11 @@ class Round:
     def convert_players_list_for_serialise(the_list):
         list_of_player = []
         for player in the_list:
-            list_of_player .append(player.serialized_player())
+            list_of_player.append(player.serialized_player())
         return list_of_player
 
     def create_match(self, name, player_1, player_2):
-        name = Match(
-            name=name,
-            player1=player_1,
-            player2=player_2
-        )
+        name = Match(name=name, player1=player_1, player2=player_2)
         name.get_color()
         self.list_of_match.append(name)
 

@@ -28,7 +28,7 @@ class Tournament:
             "time_control": self.time_control,
             "description": self.description,
             "status": self.status,
-            "id_tournament": self.id_tournament
+            "id_tournament": self.id_tournament,
         }
         return serialized_tournament
 
@@ -58,19 +58,14 @@ class Tournament:
 
     def sort_player_list_by_rang(self):
         """sort list by rang, only in first round"""
-        self.players_list = sorted(
-            self.players_list,
-            key=lambda player: player.rang
-        )
+        self.players_list = sorted(self.players_list, key=lambda player: player.rang)
 
     def sort_player_list_by_point(self):
         """sort by rang if equality of point"""
         self.sort_player_list_by_rang()
         """ sort list by point """
         self.players_list = sorted(
-            self.players_list,
-            key=lambda player: player.number_point,
-            reverse=True
+            self.players_list, key=lambda player: player.number_point, reverse=True
         )
 
     def change_status(self):

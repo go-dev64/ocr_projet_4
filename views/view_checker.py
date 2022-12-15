@@ -2,15 +2,13 @@ from datetime import datetime
 
 
 class ViewChecker:
-
     @staticmethod
     def check_date():
         result = 0
         while result != 1:
-            date = input("Entrer la date du tournoi:\n"
-                         "Format JJ-MM-AAAA:")
+            date = input("Entrer la date du tournoi:\n" "Format JJ-MM-AAAA:")
             try:
-                if date != datetime.strptime(date, "%d-%m-%Y").strftime('%d-%m-%Y'):
+                if date != datetime.strptime(date, "%d-%m-%Y").strftime("%d-%m-%Y"):
                     raise ValueError
             except ValueError:
                 print("Format date invalide!")
@@ -33,7 +31,7 @@ class ViewChecker:
 
     @staticmethod
     def check_num_choice(list_choice):
-        """ list of choice start by 1 not 0"""
+        """list of choice start by 1 not 0"""
         result = 0
         while result != 1:
             the_input = input("Indiquer le numéro de votre choix:\n")

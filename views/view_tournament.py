@@ -2,7 +2,6 @@ from views.view_checker import ViewChecker
 
 
 class ViewTournament:
-
     def __init__(self):
         self.checker = ViewChecker()
 
@@ -29,12 +28,12 @@ class ViewTournament:
         for match_type in list_of_type_of_match:
             type_number += 1
             print(f"{type_number} - {match_type}")
-        check = self.checker.check_num_choice(
-            list_choice=list_of_type_of_match
-        )
+        check = self.checker.check_num_choice(list_choice=list_of_type_of_match)
         type_match_selected = check - 1
-        print(f"Vous avez choisi comme controle de temps:"
-              f"{list_of_type_of_match[type_match_selected]}")
+        print(
+            f"Vous avez choisi comme controle de temps:"
+            f"{list_of_type_of_match[type_match_selected]}"
+        )
         return list_of_type_of_match[type_match_selected]
 
     @staticmethod
@@ -47,19 +46,18 @@ class ViewTournament:
         """define if user select old player or create new player
         args : list [
         """
-        list_choice = ["Sélectionner un joueur ou une joueuse dans notre base de donnée",
-                       "Entrer un nouveau joueur/joueuse"]
+        list_choice = [
+            "Sélectionner un joueur dans notre base de donnée",
+            "Entrer un nouveau joueur",
+        ]
         print("Choix des joueurs,Voulez-vous:\n")
         choice_number = 0
         for choice in list_choice:
             choice_number += 1
             print(f"{choice_number} - {choice}")
-        check = self.checker.check_num_choice(
-            list_choice=list_choice
-        )
+        check = self.checker.check_num_choice(list_choice=list_choice)
         choice_selected = check - 1
-        print(f"Vous avez sélectionner :\n"
-              f"{list_choice[choice_selected]}")
+        print(f"Vous avez sélectionner :\n" f"{list_choice[choice_selected]}")
         return choice_selected
 
     def confirm_creation_tournament(self, tournament):
@@ -67,6 +65,6 @@ class ViewTournament:
 
     def confirm_launch_new_tournament(self, tournament):
         print(f"Voulez vous commencer le tournoi: {tournament} ?")
-        list_choice = ["Yes", "No"]
+        list_choice = ["Y", "N"]
         choice = self.checker.check_string(list_choice=list_choice)
         return choice
