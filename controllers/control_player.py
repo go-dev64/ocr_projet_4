@@ -188,7 +188,7 @@ class ControlPlayer:
                         players_list, key=lambda player: player.name
                     )
                     self.generic.view_generic.display_elements_of_list(
-                        elements_list=list_sorted_by_name, sort_by="name"
+                        elements_list=list_sorted_by_name
                     )
                     if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                         break

@@ -8,7 +8,7 @@ class ViewGeneric:
     def confirm_element_registration(self, element, elements_list):
         print(f"{element} inscrit dans {elements_list}")
 
-    def user_select_element(self, list_of_elements, type_of_element, sort_by):
+    def user_select_element(self, list_of_elements, type_of_element, sort_by=None):
         list_of_elements = list_of_elements
         print(f"Sélectionner un {type_of_element}:")
         self.display_elements_of_list(elements_list=list_of_elements, sort_by=sort_by)
@@ -35,7 +35,7 @@ class ViewGeneric:
         else:
             return False
 
-    def display_elements_of_list(self, elements_list, sort_by):
+    def display_elements_of_list(self, elements_list, sort_by=None):
         if sort_by == "rang":
             list_sorted = sorted(elements_list, key=lambda player: player.rang)
             compteur = 0

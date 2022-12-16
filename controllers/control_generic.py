@@ -15,7 +15,7 @@ class Generic:
         )
         return user_choice
 
-    def select_element_in_list(self, list_of_elements, type_of_element, sort_by):
+    def select_element_in_list(self, list_of_elements, type_of_element, sort_by=None):
         index_element_selected = self.view_generic.user_select_element(
             list_of_elements=list_of_elements,
             type_of_element=type_of_element,

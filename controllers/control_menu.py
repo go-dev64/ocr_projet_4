@@ -58,7 +58,6 @@ class ControlMenu:
                 case 3:
                     self.generic.view_generic.display_elements_of_list(
                         elements_list=self.control_tournament.data_tournaments_list,
-                        sort_by="name",
                     )
                     if self.generic.view_generic.back_to_menu(name="Menu Principal"):
                         break
@@ -101,8 +100,7 @@ class ControlMenu:
                 case 2:
                     tournament = self.generic.select_element_in_list(
                         list_of_elements=self.control_tournament.data_tournaments_list,
-                        type_of_element="tournoi",
-                        sort_by="name",
+                        type_of_element="tournoi"
                     )
                     self.control_player.display_players_list(
                         players_list=tournament.players_list,
