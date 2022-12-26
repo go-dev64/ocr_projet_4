@@ -81,37 +81,29 @@ class CreateTournament:
         return free_players
 
     def add_players_tournament(self, tournament):
-        """add new players or players from
-        a database player list to the tournament"""
+        """add new players or players from a database player list to the tournament"""
         free_players_list = self.get_free_players()
         while len(tournament.players_list) <= tournament.number_of_player - 1:
             choice = self.view_tournament.user_choice_of_player()
             match choice:
                 case 0:
                     """user want select player in database players list"""
-                    player_from_db = (
-                        self.control_player.check_if_player_is_tournament_players_list(
+                    player_from_db = self.control_player.check_if_player_is_tournament_players_list(
                             player=self.control_player.generic.select_element_in_list(
                                 list_of_elements=free_players_list,
                                 type_of_element="joueur",
-                                sort_by="name",
-                            ),
-                            tournament=tournament,
+                            ), tournament=tournament
                         )
-                    )
                     if player_from_db is not None:
+                        free_players_list.pop(free_players_list.index(player_from_db))
                         self.valid_registration_in_players_list(
                             tournament=tournament, player=player_from_db
                         )
                 case 1:
                     """user want create new player"""
-                    new_player = self.control_player.add_new_player_in_tournament(
-                        tournament=tournament
-                    )
+                    new_player = self.control_player.add_new_player_in_tournament(tournament=tournament)
                     if new_player is not None:
-                        self.valid_registration_in_players_list(
-                            tournament=tournament, player=new_player
-                        )
+                        self.valid_registration_in_players_list(tournament=tournament, player=new_player)
                     else:
                         continue
 

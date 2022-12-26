@@ -10,7 +10,7 @@ class ControlMenu:
         self.control_player = player
 
     def main_menu(self):
-        list_of_action = ["Menu Tournoi", "Menu Joueur", "Arrêter le programme"]
+        list_of_action = ["Menu Tournoi", "Menu Joueur", "Arreter le programme"]
         while True:
             choice = self.generic.action_selected_in_menu_by_user(
                 actions_list=list_of_action, name_of_menu="Menu Principal"

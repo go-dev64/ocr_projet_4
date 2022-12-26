@@ -45,6 +45,7 @@ class ViewTournament:
     def user_choice_of_player(self):
         """define if user select old player or create new player
         args : list [
+        :rtype: object
         """
         list_choice = [
             "Sélectionner un joueur dans notre base de donnée",
