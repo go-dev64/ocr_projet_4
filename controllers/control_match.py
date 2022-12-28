@@ -19,13 +19,12 @@ class ControlMatch:
         return result
 
     def return_result(self, match, result):
-        match result:
-            case 0:
-                return [match.player1]
-            case 1:
-                return [match.player2]
-            case 2:
-                return [match.player1, match.player2]
+        if result == 0:
+            return [match.player1]
+        elif result == 1:
+            return [match.player2]
+        else:
+            return [match.player1, match.player2]
 
     def reload_match_result(self, match_result):
         list_player1 = [

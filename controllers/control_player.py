@@ -1,6 +1,6 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
-from controllers.control_generic import Generic
+from controllers.control_generic import Generic, MenuDisplay
 from controllers.control_data import Data, data_players_list
 
 
@@ -168,31 +168,33 @@ class ControlPlayer:
                 "Trier les joueurs par ordre alphabétique",
                 "Retour au menu précédent",
             ]
-            action_selected = self.generic.action_selected_in_menu_by_user(
-                actions_list=list_of_action, name_of_menu=name_of_menu
+            action_selected = MenuDisplay(
+                menu=list_of_action,
+                text="Voulez-vous retourner au menu précédent?",
+                title=name_of_menu
             )
-            match action_selected:
-                case 1:
-                    list_sorted_by_rang = sorted(
-                        players_list, key=lambda player: player.rang
-                    )
-                    self.generic.view_generic.display_elements_of_list(
-                        elements_list=list_sorted_by_rang, sort_by="rang"
-                    )
-                    if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
-                        break
-                    else:
-                        continue
-                case 2:
-                    list_sorted_by_name = sorted(
-                        players_list, key=lambda player: player.name
-                    )
-                    self.generic.view_generic.display_elements_of_list(
-                        elements_list=list_sorted_by_name
-                    )
-                    if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
-                        break
-                    else:
-                        continue
-                case 3:
+            if action_selected == 0:
+
+                list_sorted_by_rang = sorted(
+                    players_list, key=lambda player: player.rang
+                )
+                self.generic.view_generic.display_elements_of_list(
+                    elements_list=list_sorted_by_rang, sort_by="rang"
+                )
+                if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
                     break
+                else:
+                    continue
+            if action_selected == 1:
+                list_sorted_by_name = sorted(
+                    players_list, key=lambda player: player.name
+                )
+                self.generic.view_generic.display_elements_of_list(
+                    elements_list=list_sorted_by_name
+                )
+                if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
+                    break
+                else:
+                    continue
+            else:
+                break

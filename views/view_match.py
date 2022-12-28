@@ -17,13 +17,12 @@ class ViewMatch:
         )
         check = self.checker.check_num_choice(list_choice=players)
         match_result = check - 1
-        match match_result:
-            case 0:
-                print(f"Le vainqueur est {player_1}")
-                return match_result
-            case 1:
-                print(f"Le vainqueur est {player_2}")
-                return match_result
-            case 2:
-                print("Match nul")
-                return match_result
+        if match_result == 0:
+            print(f"Le vainqueur est {player_1}")
+            return match_result
+        elif match_result == 1:
+            print(f"Le vainqueur est {player_2}")
+            return match_result
+        else:
+            print("Match nul")
+            return match_result
