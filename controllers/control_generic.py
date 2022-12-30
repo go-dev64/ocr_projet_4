@@ -25,17 +25,65 @@ class Generic:
         element_selected = list_of_elements[index_element_selected]
         return element_selected
 
+    def convert_objects_list_in_string_list(self, object_list, ):
+        str_list = []
+        for element in object_list:
+            string = element.__str__()
+            str_list.append(string)
+        return str_list
+
+    def add_exit(self, elements_list):
+        elements_list.append("Retour au Menu Précédent")
+
+    def select_of_element_in_list(self, element_list, text, title):
+        """
+    user select element in list elements
+        :param element_list:
+        :param text: confirm back to menu
+        :param title: title of menu or action to do (ex: select a player)
+        :return: index of element selected
+        """
+        liste = element_list
+        list_elements = self.convert_objects_list_in_string_list(liste)
+        self.add_exit(elements_list=list_elements)
+        the_element = MenuDisplay(
+            element=list_elements,
+            text=text,
+            title=title
+        )
+        the_element.launch_menu_selector()
+        return the_element.selected
+
+    def display_list(self, list_of_elements, title):
+        """
+        display element of list
+        :param list_of_elements:
+        :param title:
+        :return:
+        """
+        elements_list = self.convert_objects_list_in_string_list(object_list=list_of_elements)
+        MenuDisplay(
+            element=elements_list,
+            title=title
+        ).launch_display_list()
+
+
 class MenuDisplay:
 
-    def __init__(self, menu, text, title):
+    def __init__(self, element, title, text=None):
         """display menu et return action selected"""
-        self.menu = menu
+        self.menu = element
         self.title = title
         self.confirmation_text = text
-        self.action_selected = int
-        curses.wrapper(self.mainloop)
+        self.selected = int
 
-    def mainloop(self, stdscr):
+    def launch_menu_selector(self):
+        curses.wrapper(self.menu_selector)
+
+    def launch_display_list(self):
+        curses.wrapper(self.display_list)
+
+    def menu_selector(self, stdscr):
         """turn off cursor blinking"""
         curses.curs_set(0)
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
@@ -53,7 +101,7 @@ class MenuDisplay:
             elif key == curses.KEY_DOWN and current_row < len(self.menu) - 1:
                 current_row += 1
             elif key == curses.KEY_ENTER or key in [10, 13]:
-                self.action_selected = current_row
+                self.selected = current_row
                 if current_row == len(self.menu) - 1:
                     if self.confirm(self.confirmation_text):
                         break
@@ -61,8 +109,33 @@ class MenuDisplay:
                     break
             self.print_menu(current_row)
 
+    def middle_screen_width(self, text):
+        middle_width = self.screen_width // 2 - len(text) // 2
+        return middle_width
+
+    def middle_screen_height(self, element):
+        middle_height = self.screen_height // 2 - len(element) // 2
+        return middle_height
+
+    def print_title_application(self):
+        title = "  Gestionnaire de Tournoi d'Echec  "
+        self.stdscr.border()
+        self.stdscr.addstr(0, self.middle_screen_width(text=title), title)
+
+    def print_name_of_menu(self):
+        middle_screen_width_title = self.middle_screen_width(text=self.title)
+        height_position = self.screen_height // 2 - len(self.menu) // 2 - 5
+        self.stdscr.addstr(height_position, middle_screen_width_title, self.title)
+
+    def print_guideline(self, text_guideline):
+        middle_screen_width = self.middle_screen_width(text=text_guideline)
+        down_screen = self.screen_height - 2
+        self.stdscr.addstr(down_screen, middle_screen_width, text_guideline)
+
     def print_menu(self, selected_row_idx):
         self.stdscr.clear()
+        self.print_title_application()
+        self.print_name_of_menu()
         for idx, row in enumerate(self.menu):
             x = self.screen_width // 2 - len(row) // 2
             y = self.screen_height // 2 - len(self.menu) // 2 + idx
@@ -70,6 +143,9 @@ class MenuDisplay:
                 self.color_print(y, x, row, 1)
             else:
                 self.stdscr.addstr(y, x, row)
+        self.print_guideline(
+            text_guideline="Utiliser les fléches pour vous déplacer / Appuyer sur Entrée pour valider"
+        )
         self.stdscr.refresh()
 
     def color_print(self, y, x, text, pair_num):
@@ -126,4 +202,25 @@ class MenuDisplay:
         x = self.screen_width // 2 - len(text) // 2
         y = self.screen_height // 2
         self.stdscr.addstr(y, x, text)
+        self.stdscr.refresh()
+
+    def display_list(self, stdscr):
+        """turn off cursor blinking"""
+        curses.curs_set(0)
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        self.stdscr = stdscr
+        """get size of screen"""
+        self.screen_height, self.screen_width = self.stdscr.getmaxyx()
+        self.print_list()
+        self.stdscr.getch()
+
+    def print_list(self):
+        self.stdscr.clear()
+        self.print_title_application()
+        self.print_name_of_menu()
+        for idx, row in enumerate(self.menu):
+            x = self.screen_width // 2 - len(row) // 2
+            y = self.screen_height // 2 - len(self.menu) // 2 + idx
+            self.stdscr.addstr(y, x, f"{idx + 1} - {row}")
+        self.print_guideline(text_guideline="Appuyer sur une touche pour revenir au Menu Précédent")
         self.stdscr.refresh()

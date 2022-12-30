@@ -1,5 +1,5 @@
 from controllers.control_data import Data, data_tournaments_list
-from controllers.control_generic import Generic
+from controllers.control_generic import Generic, MenuDisplay
 from controllers.control_player import ControlPlayer
 from controllers.control_round import ControlRound
 from modeles.round import Round
@@ -224,25 +224,3 @@ class ControlTournament:
                     break
                 else:
                     continue
-
-    def display_round_of_tournament(self):
-        tournament = self.generic.select_element_in_list(
-            list_of_elements=self.data_tournaments_list,
-            type_of_element="Tournoi"
-        )
-        self.generic.view_generic.display_elements_of_list(
-            elements_list=tournament.round_list
-        )
-
-    def display_match_of_round(self):
-        tournament = self.generic.select_element_in_list(
-            list_of_elements=self.data_tournaments_list,
-            type_of_element="Tournoi"
-        )
-        round = self.generic.select_element_in_list(
-            list_of_elements=tournament.round_list,
-            type_of_element="Round"
-        )
-        self.generic.view_generic.display_elements_of_list(
-            elements_list=round.list_of_match
-        )

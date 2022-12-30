@@ -35,17 +35,17 @@ class Match:
     def result_of_match(self, result):
         """save result"""
         if result == 0:
-                "winner is player1"
-                self.result_player1 = f"{self.player1} win"
-                self.result_player2 = f"{self.player2} lose"
+            "winner is player1"
+            self.result_player1 = f"{self.player1} win"
+            self.result_player2 = f"{self.player2} lose"
         elif result == 1:
-                "winner is player2"
-                self.result_player2 = f"{self.player2} win"
-                self.result_player1 = f"{self.player1} lose"
+            "winner is player2"
+            self.result_player2 = f"{self.player2} win"
+            self.result_player1 = f"{self.player1} lose"
         else:
-                "draw"
-                self.result_player1 = "draw"
-                self.result_player2 = "draw"
+            "draw"
+            self.result_player1 = "draw"
+            self.result_player2 = "draw"
 
     def give_player_point(self, result):
         """add point to player"""

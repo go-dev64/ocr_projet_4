@@ -1,6 +1,6 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
-from controllers.control_generic import Generic, MenuDisplay
+from controllers.control_generic import Generic
 from controllers.control_data import Data, data_players_list
 
 
@@ -69,14 +69,9 @@ class ControlPlayer:
             element.rang = 1 + players_list.index(element)
             self.data.update_player_in_database(player=element)
 
-    def change_rang_of_player(self):
+    def change_rang_of_player(self, player_selected):
         players_list_sorted = sorted(
-            self.data_players_list, key=lambda player: player.rang
-        )
-        player_selected = self.generic.select_element_in_list(
-            list_of_elements=players_list_sorted,
-            type_of_element="joueur",
-            sort_by="rang",
+            self.data_players_list, key=lambda player: player.name
         )
         new_rang = self.view_player.change_player_rang(player_selected)
         if new_rang is not None:
@@ -147,6 +142,11 @@ class ControlPlayer:
             data_players_list.append(self.instance_player(player_info=player))
 
     def find_player_in_data_player_list(self, player_serialized):
+        """
+        find player in data player list
+        :param player_serialized:
+        :return: instance of player find
+        """
         for player in self.data_players_list:
             if player.id_player == player_serialized["id_player"]:
                 return player
@@ -162,39 +162,36 @@ class ControlPlayer:
         return players_list
 
     def display_players_list(self, players_list, name_of_menu):
+        """
+        display players list by name or rang
+        :param players_list: data players list
+        :param name_of_menu:
+        :return: function of display list sorted
+        """
         while True:
             list_of_action = [
                 "Trier les joueurs par classement",
                 "Trier les joueurs par ordre alphabétique",
-                "Retour au menu précédent",
             ]
-            action_selected = MenuDisplay(
-                menu=list_of_action,
+
+            action_selected = self.generic.select_of_element_in_list(
+                element_list=list_of_action,
                 text="Voulez-vous retourner au menu précédent?",
                 title=name_of_menu
             )
             if action_selected == 0:
+                """display player by rang"""
+                self.generic.display_list(
+                    list_of_elements=sorted(players_list, key=lambda player: player.rang),
+                    title="Classement des joueur de la base de données"
+                )
 
-                list_sorted_by_rang = sorted(
-                    players_list, key=lambda player: player.rang
+            elif action_selected == 1:
+                """display player by name"""
+                self.generic.display_list(
+                    list_of_elements=sorted(players_list, key=lambda player: player.name),
+                    title="Liste des joueurs dans la base de données triés par ordre alphabtique"
                 )
-                self.generic.view_generic.display_elements_of_list(
-                    elements_list=list_sorted_by_rang, sort_by="rang"
-                )
-                if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
-                    break
-                else:
-                    continue
-            if action_selected == 1:
-                list_sorted_by_name = sorted(
-                    players_list, key=lambda player: player.name
-                )
-                self.generic.view_generic.display_elements_of_list(
-                    elements_list=list_sorted_by_name
-                )
-                if self.generic.view_generic.back_to_menu(name="Menu Joueur"):
-                    break
-                else:
-                    continue
+
             else:
                 break
