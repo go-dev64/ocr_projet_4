@@ -61,9 +61,9 @@ class Generic:
         :param title:
         :return:
         """
-        elements_list = self.convert_objects_list_in_string_list(object_list=list_of_elements)
+        #elements_list = self.convert_objects_list_in_string_list(object_list=list_of_elements)
         MenuDisplay(
-            element=elements_list,
+            element=list_of_elements,
             title=title
         ).launch_display_list()
 
@@ -82,6 +82,18 @@ class MenuDisplay:
 
     def launch_display_list(self):
         curses.wrapper(self.display_list)
+
+    def lauch_input_user(self):
+        curses.wrapper(self.input_user)
+
+    def input_user(self):
+        baba = "quel est votre nom"
+        width = self.screen_width // 2
+        height = self.screen_height // 2
+        self.stdscr.clear()
+        self.stdscr.addstr(width, height, baba)
+        self.input_user = self.stdscr.getstr(y=width + 1 + len(baba), x=height)
+        self.stdscr.getch()
 
     def menu_selector(self, stdscr):
         """turn off cursor blinking"""
@@ -137,12 +149,12 @@ class MenuDisplay:
         self.print_title_application()
         self.print_name_of_menu()
         for idx, row in enumerate(self.menu):
-            x = self.screen_width // 2 - len(row) // 2
+            x = self.screen_width // 2 - len(row.__str__()) // 2
             y = self.screen_height // 2 - len(self.menu) // 2 + idx
             if idx == selected_row_idx:
-                self.color_print(y, x, row, 1)
+                self.color_print(y, x, row.__str__(), 1)
             else:
-                self.stdscr.addstr(y, x, row)
+                self.stdscr.addstr(y, x, row.__str__())
         self.print_guideline(
             text_guideline="Utiliser les fléches pour vous déplacer / Appuyer sur Entrée pour valider"
         )
@@ -219,8 +231,8 @@ class MenuDisplay:
         self.print_title_application()
         self.print_name_of_menu()
         for idx, row in enumerate(self.menu):
-            x = self.screen_width // 2 - len(row) // 2
+            x = self.screen_width // 2 - len(row.__str__()) // 2
             y = self.screen_height // 2 - len(self.menu) // 2 + idx
-            self.stdscr.addstr(y, x, f"{idx + 1} - {row}")
+            self.stdscr.addstr(y, x, f"{idx + 1} - {row.__str__()}")
         self.print_guideline(text_guideline="Appuyer sur une touche pour revenir au Menu Précédent")
         self.stdscr.refresh()

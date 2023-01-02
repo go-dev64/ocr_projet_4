@@ -145,7 +145,7 @@ class ControlPlayer:
         """
         find player in data player list
         :param player_serialized:
-        :return: instance of player find
+        :return: instance of player from data player list
         """
         for player in self.data_players_list:
             if player.id_player == player_serialized["id_player"]:

@@ -1,5 +1,6 @@
 from views.view_checker import ViewChecker
 import curses
+from curses.textpad import rectangle
 
 
 class ViewGeneric:
@@ -48,5 +49,35 @@ class ViewGeneric:
             for element in elements_list:
                 compteur += 1
                 print(f"{compteur} - {element}")
+
+
+
+class UserInput:
+    def __init__(self, window_dim_y, window_dim_x, window_org_y, window_org_x, org_text_y, org_text_x, text):
+        self.dim_y = window_dim_y
+        self.dim_x = window_dim_x
+        self.org_y = window_org_y
+        self.org_x = window_org_x
+        self.org_text_y = org_text_y
+        self.org_text_x = org_text_x
+        self.text = text
+        self.stdscr = self.stdscr
+        self.screen_height, self.screen_width = self.stdscr.getmaxyx()
+        self.middle_width = self.screen_width // 2
+        self.middle_height = self.screen_height // 2
+        self.new_window = curses.newwin(self.dim_y, self.dim_x, self.org_y, self.org_x)
+        self.stdscr.clear()
+        curses.curs_set(1)
+        curses.echo()
+
+    def screen(self, stdscr):
+        self.stdscr = stdscr
+
+    def get_user_input(self):
+        rectangle(self.new_window, self.org_y + 1, self.org_x + 1, self.dim_y - 1, self.dim_x - 1)
+        self.new_window.addstr(self.org_text_y, self.org_text_x, self.text)
+        user_input = self.new_window.getstr(self.org_text_y, len(self.text) + 5, 150)
+        self.new_window.refresh()
+        return user_input
 
 
