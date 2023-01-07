@@ -83,18 +83,6 @@ class MenuDisplay:
     def launch_display_list(self):
         curses.wrapper(self.display_list)
 
-    def lauch_input_user(self):
-        curses.wrapper(self.input_user)
-
-    def input_user(self):
-        baba = "quel est votre nom"
-        width = self.screen_width // 2
-        height = self.screen_height // 2
-        self.stdscr.clear()
-        self.stdscr.addstr(width, height, baba)
-        self.input_user = self.stdscr.getstr(y=width + 1 + len(baba), x=height)
-        self.stdscr.getch()
-
     def menu_selector(self, stdscr):
         """turn off cursor blinking"""
         curses.curs_set(0)

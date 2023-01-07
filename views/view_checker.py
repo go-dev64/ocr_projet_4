@@ -38,8 +38,7 @@ class ViewChecker:
             try:
                 the_input = int(the_input)
                 assert 1 <= the_input < len(list_choice) + 1
-            except ValueError:
-                print("Oooops! Entrer un Numéro Valide!")
+
             except AssertionError:
                 print("Oooops! Entrée Invalide!")
             else:
