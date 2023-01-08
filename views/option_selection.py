@@ -23,22 +23,47 @@ class OptionSelection:
         self.stdscr.clrtoeol()
 
         offset_x = 10
+        if len(self.list_of_choice) == 2:
+            option_1 = self.list_of_choice[0]
+            pos_x = pos_x_end_text + offset_x // 2
+            if selected == option_1:
+                self.color_print(pos_y, pos_x, option_1, 1)
+            else:
+                self.stdscr.addstr(pos_y, pos_x, option_1)
 
-        option_1 = self.list_of_choice[0]
-        pos_x = pos_x_end_text + offset_x // 2
-        if selected == option_1:
-            self.color_print(pos_y, pos_x, option_1, 1)
+            option_2 = self.list_of_choice[1]
+            pos_x = pos_x_end_text + len(option_1) + offset_x
+            if selected == option_2:
+                self.color_print(pos_y, pos_x, option_2, 1)
+            else:
+                self.stdscr.addstr(pos_y, pos_x, option_2)
+
+            self.stdscr.refresh()
+
         else:
-            self.stdscr.addstr(pos_y, pos_x, option_1)
+            option_1 = self.list_of_choice[0]
+            pos_x = pos_x_end_text + offset_x // 2
+            if selected == option_1:
+                self.color_print(pos_y, pos_x, option_1, 1)
+            else:
+                self.stdscr.addstr(pos_y, pos_x, option_1)
 
-        option_2 = self.list_of_choice[1]
-        pos_x = pos_x_end_text + len(option_1) + offset_x
-        if selected == option_2:
-            self.color_print(pos_y, pos_x, option_2, 1)
-        else:
-            self.stdscr.addstr(pos_y, pos_x, option_2)
+            option_2 = self.list_of_choice[1]
+            pos_x = pos_x_end_text + len(option_1) + offset_x
+            if selected == option_2:
+                self.color_print(pos_y, pos_x, option_2, 1)
+            else:
+                self.stdscr.addstr(pos_y, pos_x, option_2)
 
-        self.stdscr.refresh()
+            option_3 = self.list_of_choice[2]
+            pos_x = pos_x_end_text + len(option_1) + offset_x + len(option_2) + offset_x
+            if selected == option_3:
+                self.color_print(pos_y, pos_x, option_3, 1)
+            else:
+                self.stdscr.addstr(pos_y, pos_x, option_3)
+
+            self.stdscr.refresh()
+
 
     def select_option(self, stdscr):
         self.stdscr = stdscr
@@ -55,16 +80,26 @@ class OptionSelection:
 
             if key == curses.KEY_RIGHT and current_option == self.list_of_choice[0]:
                 current_option = self.list_of_choice[1]
+
+            elif key == curses.KEY_RIGHT and current_option == self.list_of_choice[1]:
+                current_option = self.list_of_choice[2]
+
             elif key == curses.KEY_LEFT and current_option == self.list_of_choice[1]:
                 current_option = self.list_of_choice[0]
+
+            elif key == curses.KEY_LEFT and current_option == self.list_of_choice[2]:
+                current_option = self.list_of_choice[1]
+
             elif key == curses.KEY_ENTER or key in [10, 13]:
                 if current_option == self.list_of_choice[0]:
                     self.option_selected = self.list_of_choice[0]
                     break
-                else:
+                elif current_option == self.list_of_choice[1]:
                     self.option_selected = self.list_of_choice[1]
                     break
-
+                else:
+                    self.option_selected = self.list_of_choice[2]
+                    break
             self.print_option_beside(current_option)
 
     def print_text(self):

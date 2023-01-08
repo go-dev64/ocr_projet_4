@@ -1,5 +1,5 @@
 import curses
-from screen import MyScreen, Screen
+from curses.textpad import Textbox
 
 
 class Window:
@@ -17,7 +17,8 @@ class Window:
                                       begin_x=self.pos_x)
         self.window.border()
 
-    def new_window(self, nlines, ncols, begin_y, begin_x):
+    @staticmethod
+    def new_window(nlines, ncols, begin_y, begin_x):
         new_window = curses.newwin(nlines,
                                    ncols,
                                    begin_y,
@@ -31,7 +32,9 @@ class Window:
 
     def display_comment_on_last_lines(self, comment):
         curses.curs_set(0)
-        self.window.addstr(self.number_lines - 1 , self.middle_width - len(comment) // 2, f" {comment.__str__()}")
+        self.window.addstr(
+            self.number_lines - 1, self.middle_width - len(comment) // 2, f" {comment.__str__()}"
+        )
         self.window.refresh()
 
     def clear_lines(self, pos_y):
@@ -50,6 +53,28 @@ class Window:
         self.window.getch()
         self.window.erase()
         self.window.refresh()
+
+    def text_box(self):
+        self.window.clear()
+        curses.curs_set(1)
+        curses.noecho()
+        self.window.border()
+        self.display_title()
+        self.display_comment_on_last_lines("Appuyer sur Entrer pour valider la saissie")
+        self.window.refresh()
+        win = curses.newwin(self.number_lines - 2, self.number_columns - 2, self.pos_y + 1, self.pos_x + 1)
+        box = Textbox(win)
+        self.window.refresh()
+        curses.curs_set(1)
+        box.edit(self.enter_is_terminate)
+        curses.noecho()
+        text = box.gather().strip().replace("\n", "")
+        return text
+
+    @staticmethod
+    def enter_is_terminate(x):
+        if x == 10:
+            return 7
 
 
 class ErrorWindow(Window):
