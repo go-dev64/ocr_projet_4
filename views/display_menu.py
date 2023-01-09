@@ -37,6 +37,7 @@ class MenuDisplay(Screen):
             elif key in [27, 127]:
                 choice = Confirmation(text=self.confirm_text).select_option()
                 if choice:
+                    self.index_selected = None
                     break
 
             self.print_menu(current_row)

@@ -1,7 +1,6 @@
 from views.view_checker import ViewChecker
 from views.window import Window
-from views.screen import Screen
-from views.option_selection import Confirmation
+from views.display_menu import MenuDisplay, Confirmation, Screen
 
 
 class ViewGeneric:
@@ -19,6 +18,18 @@ class ViewGeneric:
     def confirm_choice(message, title=None):
         choice = Confirmation(text=message, title=title).select_option()
         return choice
+
+    def user_select_element_in_list(self, elements_list, confirmation_text, title):
+        """
+        """
+        element = MenuDisplay(
+            elements_list=elements_list,
+            confirm_text=confirmation_text,
+            title=title
+        )
+        element.menu_selector()
+        index_action_selected = element.index_selected
+        return index_action_selected
 
     def user_select_element(self, list_of_elements, type_of_element, sort_by=None):
         list_of_elements = list_of_elements

@@ -95,9 +95,10 @@ class ControlPlayer:
         )
         if result[0]:
             self.save_player(player=new_player)
-            Screen().message(message=f"Création du {new_player}.",
-                             title="Confirmation creation joueur"
-                             )
+            self.view_generic.confirm_element_registration(
+                message=f"Création du {new_player}.",
+                title="Confirmation creation joueur"
+            )
             return True, new_player
         else:
             self.view_player.player_already_selected(

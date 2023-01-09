@@ -186,7 +186,7 @@ class GetInfo(Screen):
         self.stdscr.nodelay(False)
         info_tournament["name"] = self.valid_string(info=key_information[0], pos_y=self.y + 4)
         info_tournament["place"] = self.valid_string(info=key_information[1], pos_y=self.y + 6)
-        info_tournament["date_of_start"] = self.valid_date(type_of_date=key_information[2],
+        info_tournament["date"] = self.valid_date(type_of_date=key_information[2],
                                                            pos_y=self.y + 8)
         info_tournament["time_control"] = self.get_tile_control()
         info_tournament["description"] = Window(window_title=key_information[3],

@@ -1,5 +1,5 @@
 from controllers.control_data import Data, data_tournaments_list, data_players_list
-from controllers.control_player import ControlPlayer
+from controllers.control_player import ControlPlayer, ViewGeneric
 from modeles.tournament import Tournament
 from views.view_tournament import ViewTournament
 from views.view_player import ViewPlayer
@@ -10,41 +10,19 @@ class CreateTournament:
         self.view_tournament = ViewTournament()
         self.view_player = ViewPlayer()
         self.control_player = ControlPlayer()
+        self.view_generic = ViewGeneric()
         self.data = Data()
         self.tournaments_list = data_tournaments_list
         self.list_of_type_of_time = ["Bullet", "Blitz", "Coup Rapid"]
         self.tournament_info = {}
 
-    def get_name_tournament(self):
-        name = self.view_tournament.user_choice_of_name_of_tournament()
-        return name
-
-    def get_place_tournament(self):
-        place = self.view_tournament.user_choice_of_place_of_tournament()
-        return place
-
-    def get_date_tournament(self):
-        date = self.view_tournament.user_choice_of_date_of_tournament()
-        return date
-
-    def get_time_control(self, list_type_of_time):
-        time_control = self.view_tournament.user_choice_of_control_time(
-            list_type_of_time
-        )
-        return time_control
-
-    def get_tournament_description(self):
-        description = self.view_tournament.user_choice_of_description_of_tournament()
-        return description
-
     def get_information_of_tournament(self):
-        self.tournament_info["name"] = self.get_name_tournament()
-        self.tournament_info["place"] = self.get_place_tournament()
-        self.tournament_info["date"] = self.get_date_tournament()
-        self.tournament_info["time_control"] = self.get_time_control(
-            list_type_of_time=self.list_of_type_of_time
-        )
-        self.tournament_info["description"] = self.get_tournament_description()
+        info_tournament = self.view_tournament.get_info_tournament()
+        self.tournament_info["name"] = info_tournament["name"]
+        self.tournament_info["place"] = info_tournament["place"]
+        self.tournament_info["date"] = info_tournament["date"]
+        self.tournament_info["time_control"] = info_tournament["time_control"]
+        self.tournament_info["description"] = info_tournament["description"]
 
     def instance_tournament(self, tournament_info):
         the_tournament = Tournament(
@@ -60,7 +38,8 @@ class CreateTournament:
         player.number_point = 0
         tournament.add_players(player=player)
         self.control_player.generic.view_generic.confirm_element_registration(
-            element=player, elements_list=tournament.name
+            message=f"{player} est inscrit au {tournament.name}",
+            title="Confirmation inscription joueur"
         )
 
     def get_tournament_in_progress(self):
@@ -88,13 +67,15 @@ class CreateTournament:
             choice = self.view_tournament.user_choice_of_player()
             if choice == 0:
                 """user want select player in database players list"""
+                index_player_db = self.view_generic.user_select_element_in_list(
+                            elements_list=free_players_list,
+                            confirmation_text="Voulez-vous revenir au menu precedent",
+                            title="Liste des joueurs disponible",
+                        )
+                player = free_players_list[index_player_db]
                 player_from_db = (
                     self.control_player.check_if_player_is_tournament_players_list(
-                        player=self.control_player.generic.select_element_in_list(
-                            list_of_elements=free_players_list,
-                            type_of_element="joueur",
-                            sort_by="name",
-                        ),
+                        player=player,
                         tournament=tournament,
                     )
                 )
@@ -102,6 +83,7 @@ class CreateTournament:
                     self.valid_registration_in_players_list(
                         tournament=tournament, player=player_from_db
                     )
+                    free_players_list.pop
             elif choice == 1:
                 """user want create new player"""
                 new_player = self.control_player.add_new_player_in_tournament(
@@ -124,7 +106,7 @@ class CreateTournament:
         return tournament
 
     def launch_new_tournament(self, new_tournament):
-        self.view_tournament.confirm_creation_tournament(tournament=new_tournament)
+        #self.view_tournament.confirm_creation_tournament(tournament=new_tournament)
         choice = self.view_tournament.confirm_launch_new_tournament(
             tournament=new_tournament
         )

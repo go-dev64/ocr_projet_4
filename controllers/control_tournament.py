@@ -151,15 +151,12 @@ class ControlTournament:
                 self.reload_tournament(tournament=tournament)
             )
 
-    def select_tournament(self):
+    def tournament_in_progress(self):
         tournament_in_progress = []
         for tournament in self.data_tournaments_list:
             if tournament.status == "en cours":
                 tournament_in_progress.append(tournament)
-        tournament_selected = self.view_tournament.view_select_tournament(
-            tournament_list=tournament_in_progress
-        )
-        return tournament_selected
+        return tournament_in_progress
 
     def launch_round(self, tournament, round):
         if self.control_round.launch_of_round(round=round) is None:

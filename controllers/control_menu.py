@@ -51,39 +51,50 @@ class ControlMenu:
                 )
                 if choice == "Y":
                     self.control_tournament.play_tournament(tournament=tournament)
-                else:
-                    continue
 
             elif index_action_selected_of_menu == 1:
                 "reload in progress tournament"
-                tournament = self.control_tournament.select_tournament()
-                self.control_tournament.play_tournament(tournament=tournament)
-                if self.generic.view_generic.back_to_menu(name="Menu Principal"):
-                    break
-                else:
-                    continue
+                tournament_in_progress = self.control_tournament.tournament_in_progress()
+
+                action_main_menu = MenuDisplay(
+                    elements_list=tournament_in_progress,
+                    confirm_text="Voulez-vous retourner au Menu Précédent?",
+                    title="Sélectionner un Tournoi"
+                )
+                action_main_menu.menu_selector()
+                index_tournament_selected = action_main_menu.index_selected
+
+                self.control_tournament.play_tournament(
+                    tournament=tournament_in_progress[index_tournament_selected]
+                )
 
             elif index_action_selected_of_menu == 2:
                 "display all tournaments"
-                self.generic.display_list(
-                    list_of_elements=self.control_tournament.data_tournaments_list,
+                action_main_menu = MenuDisplay(
+                    elements_list=self.control_tournament.data_tournaments_list,
+                    confirm_text="Voulez-vous retourner au Menu Précédent?",
                     title="Liste des tournois"
                 )
+                action_main_menu.display_list()
 
             elif index_action_selected_of_menu == 3:
                 "display all rounds of tournament"
                 tournament_list = self.control_tournament.data_tournaments_list
-                index_tournament_selected = self.generic.select_of_element_in_list(
-                    element_list=tournament_list,
-                    title="Sélectionner un Tournoi",
-                    text="Retour au Menu precedent"
+                action_main_menu = MenuDisplay(
+                    elements_list=tournament_list,
+                    confirm_text="Voulez-vous retourner au Menu Précédent?",
+                    title="Sélectionner un Tournoi"
                 )
-                if index_tournament_selected < len(tournament_list):
+                action_main_menu.menu_selector()
+                index_tournament_selected = action_main_menu.index_selected
+                if index_tournament_selected is not None:
                     tournament_selected = tournament_list[index_tournament_selected]
-                    self.generic.display_list(
-                        list_of_elements=tournament_selected.round_list,
+                    action_main_menu = MenuDisplay(
+                        elements_list=tournament_selected.round_list,
+                        confirm_text="Voulez-vous retourner au Menu Précédent?",
                         title=f"Liste des rounds du {tournament_selected}"
                     )
+                    action_main_menu.display_list()
 
             elif index_action_selected_of_menu == 4:
                 "display all matchs of round of tournament"
@@ -96,7 +107,7 @@ class ControlMenu:
                 action_main_menu.menu_selector()
                 index_tournament_selected = action_main_menu.index_selected
 
-                if index_tournament_selected is int:
+                if index_tournament_selected is not None:
                     tournament_selected = tournament_list[index_tournament_selected]
                     action_main_menu = MenuDisplay(
                         elements_list=tournament_selected.round_list,
@@ -106,7 +117,7 @@ class ControlMenu:
                     action_main_menu.menu_selector()
                     index_round_selected = action_main_menu.index_selected
 
-                    if index_round_selected is int:
+                    if index_round_selected is not None:
                         round_selected = tournament_selected.round_list[index_round_selected]
                         action_main_menu = MenuDisplay(
                             elements_list=round_selected.list_of_match,
@@ -153,7 +164,7 @@ class ControlMenu:
                 action_main_menu.menu_selector()
 
                 index_tournament_selected = action_main_menu.index_selected
-                if index_tournament_selected is int:
+                if index_tournament_selected is not None:
                     tournament_selected = tournament_list[index_tournament_selected]
 
                     players_list = MenuDisplay(
@@ -181,7 +192,7 @@ class ControlMenu:
                 )
                 action_main_menu.menu_selector()
                 index_players_list = action_main_menu.index_selected
-                if index_players_list is int:
+                if index_players_list is not None:
                     self.control_player.change_rang_of_player(
                         player_selected=players_list_sorted[index_players_list])
             else:
