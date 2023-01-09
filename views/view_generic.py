@@ -1,14 +1,24 @@
 from views.view_checker import ViewChecker
-import curses
-from curses.textpad import rectangle
+from views.window import Window
+from views.screen import Screen
+from views.option_selection import Confirmation
 
 
 class ViewGeneric:
     def __init__(self):
         self.checker = ViewChecker()
 
-    def confirm_element_registration(self, element, elements_list):
-        print(f"{element} inscrit dans {elements_list}")
+    @staticmethod
+    def confirm_element_registration(message, title):
+        Screen().message(
+            message=message,
+            title=title
+        )
+
+    @staticmethod
+    def confirm_choice(message, title=None):
+        choice = Confirmation(text=message, title=title).select_option()
+        return choice
 
     def user_select_element(self, list_of_elements, type_of_element, sort_by=None):
         list_of_elements = list_of_elements
@@ -28,14 +38,6 @@ class ViewGeneric:
         user_choice = self.checker.check_num_choice(list_choice=list_of_choice)
         return user_choice
 
-    def back_to_menu(self, name):
-        list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous retourner au {name} ?")
-        check = self.checker.check_string(list_choice=list_of_choice)
-        if check == "Y":
-            return True
-        else:
-            return False
 
     def display_elements_of_list(self, elements_list, sort_by=None):
         if sort_by == "rang":
@@ -49,35 +51,5 @@ class ViewGeneric:
             for element in elements_list:
                 compteur += 1
                 print(f"{compteur} - {element}")
-
-
-
-class UserInput:
-    def __init__(self, window_dim_y, window_dim_x, window_org_y, window_org_x, org_text_y, org_text_x, text):
-        self.dim_y = window_dim_y
-        self.dim_x = window_dim_x
-        self.org_y = window_org_y
-        self.org_x = window_org_x
-        self.org_text_y = org_text_y
-        self.org_text_x = org_text_x
-        self.text = text
-        self.stdscr = self.stdscr
-        self.screen_height, self.screen_width = self.stdscr.getmaxyx()
-        self.middle_width = self.screen_width // 2
-        self.middle_height = self.screen_height // 2
-        self.new_window = curses.newwin(self.dim_y, self.dim_x, self.org_y, self.org_x)
-        self.stdscr.clear()
-        curses.curs_set(1)
-        curses.echo()
-
-    def screen(self, stdscr):
-        self.stdscr = stdscr
-
-    def get_user_input(self):
-        rectangle(self.new_window, self.org_y + 1, self.org_x + 1, self.dim_y - 1, self.dim_x - 1)
-        self.new_window.addstr(self.org_text_y, self.org_text_x, self.text)
-        user_input = self.new_window.getstr(self.org_text_y, len(self.text) + 5, 150)
-        self.new_window.refresh()
-        return user_input
 
 

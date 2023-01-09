@@ -40,3 +40,13 @@ class Screen:
         curses.nocbreak()
         self.stdscr.keypad(False)
         curses.echo()
+
+    def message(self, message, title):
+        comment = " Appuyer sur une touche pour continuer "
+        curses.curs_set(0)
+        self.stdscr.addstr(5, self.middle_width_screen - len(title) // 2, title)
+        self.stdscr.addstr(self.middle_height_screen, self.middle_width_screen - len(message) // 2, message)
+        self.stdscr .addstr(self.screen_height - 1, self.middle_width_screen - len(comment) // 2, comment)
+        self.stdscr.refresh()
+        self.stdscr.getch()
+        self.close_screen()

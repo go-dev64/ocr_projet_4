@@ -43,11 +43,11 @@ class Window:
         self.window.border()
         self.window.refresh()
 
-    def display_error_message(self, y, error_message):
+    def display_message(self, y, message):
         comment = " Appuyer sur une touche pour continuer "
         self.display_title()
         curses.curs_set(0)
-        self.window.addstr(y, self.middle_width - len(error_message) // 2, error_message)
+        self.window.addstr(y, self.middle_width - len(message) // 2, message)
         self.window.addstr(self.number_lines - 1, self.middle_width - len(comment) // 2, comment)
         self.window.refresh()
         self.window.getch()
@@ -75,20 +75,3 @@ class Window:
     def enter_is_terminate(x):
         if x == 10:
             return 7
-
-
-class ErrorWindow(Window):
-    def __init__(self, window_title, pos_y, pos_x, number_lines, number_columns, error_message):
-        self.error_message = error_message
-        super().__init__(window_title, pos_y, pos_x, number_lines, number_columns)
-
-    def display_message(self):
-        comment = " Appuyer sur une touche pour continuer "
-        self.display_title()
-        curses.curs_set(0)
-        self.window.addstr(self.middle_height, self.middle_width - len(self.error_message) // 2, self.error_message)
-        self.window.addstr(self.number_lines, self.middle_width - len(comment) // 2, comment)
-        self.window.refresh()
-        self.window.getch()
-        self.window.erase()
-        self.window.refresh()

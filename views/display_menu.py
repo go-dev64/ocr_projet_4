@@ -90,6 +90,12 @@ class MenuDisplay(Screen):
         self.display_comment_on_last_lines(
             comment="Appuyer sur une touche pour revenir au Menu Précédent "
         )
+        self.stdscr.addstr(
+            self.middle_height_screen - len(self.elements_list) // 2 - 3,
+            self.middle_width_screen - len(self.title) // 2,
+            self.title,
+            curses.A_BOLD
+        )
         self.print_list()
         self.stdscr.getch()
 

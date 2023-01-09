@@ -1,4 +1,6 @@
 from views.view_checker import ViewChecker
+from views.screen import Screen
+from views.input import GetInfo
 
 
 class ViewPlayer:
@@ -6,38 +8,19 @@ class ViewPlayer:
         self.checker = ViewChecker()
 
     @staticmethod
-    def input_player_name():
-        name = input("Entrer le nom du Joueur:\n").capitalize()
-        return name
-
-    @staticmethod
-    def input_player_first_name():
-        first_name = input("Entrer le prénom du Joueur:\n").capitalize()
-        return first_name
-
-    def input_date_of_birth(self):
-        date = self.checker.check_date()
-        return date
-
-    def input_gender(self):
-        gender_list = ["Femme", "Homme"]
-        print("Sélectionner un genre:")
-        gender_number = 0
-        for gender in gender_list:
-            gender_number += 1
-            print(f"{gender_number}: {gender}")
-        check = self.checker.check_num_choice(list_choice=gender_list)
-        gender_selected = check - 1
-        print(f"Vous avez sélectionner le genre:\n" f"{gender_list[gender_selected]}")
-        return gender_list[gender_selected]
-
-    @staticmethod
     def display_player_rang(player_name, player_rang):
         print(
             f"{player_name} est actuellement au rang " f"N°{player_rang} du classement."
         )
 
-    def change_player_rang(self, player):
+    def change_player_rang(self, player, player_list):
+        new_rang = GetInfo(pos_x=30, pos_y=5).get_new_rang_player(
+            player=player,
+            list_player=player_list
+        )
+        return new_rang
+
+
         new_rang = None
         list_of_choice = ["Y", "N"]
         self.display_player_rang(player_name=player.name, player_rang=player.rang)
@@ -79,12 +62,16 @@ class ViewPlayer:
 
     @staticmethod
     def player_already_selected(player, list_where_player_exist):
-        print(f"\n{player} est deja inscrit dans {list_where_player_exist}!")
+        Screen().message(
+            message=f"Le joueur {player} est deja inscrit dans {list_where_player_exist}!",
+            title=" Message Erreur ! "
+        )
 
     def valid_player_exist(self):
+
         print("Joueur deja existant dans la base de données.\n")
         list_of_action = [
-            "Sélectionner le joueur/joueuse existant-e",
+            "Sélectionner le joueur existant",
             "Recommencer la saisie",
         ]
         print("Voulez-vous:")

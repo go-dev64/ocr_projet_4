@@ -4,8 +4,6 @@ from views.option_selection import Confirmation
 
 class ControlMenu:
     def __init__(self, create_tournament, control_tournament, player):
-
-        #self.generic = Generic()
         self.create_tournament = create_tournament
         self.control_tournament = control_tournament
         self.control_player = player
@@ -34,7 +32,8 @@ class ControlMenu:
                               "Reprendre un Tournoi",
                               "Afficher tous les Tournois",
                               "Afficher tous les Rounds d'un Tournoi",
-                              "Afficher tous les Matchs d'un Round"
+                              "Afficher tous les Matchs d'un Round",
+                              "Retour au Menu Principal"
                               ]
             action_main_menu = MenuDisplay(
                 elements_list=list_of_action,
@@ -89,27 +88,37 @@ class ControlMenu:
             elif index_action_selected_of_menu == 4:
                 "display all matchs of round of tournament"
                 tournament_list = self.control_tournament.data_tournaments_list
-                index_tournament_selected = self.generic.select_of_element_in_list(
-                    element_list=tournament_list,
-                    title="Sélectionner un Tournoi",
-                    text="Retour au Menu precedent"
+                action_main_menu = MenuDisplay(
+                    elements_list=tournament_list,
+                    confirm_text="Voulez-vous retourner au Menu Précédent?",
+                    title="Sélectionner un Tournoi"
                 )
-                if index_tournament_selected < len(tournament_list):
+                action_main_menu.menu_selector()
+                index_tournament_selected = action_main_menu.index_selected
+
+                if index_tournament_selected is int:
                     tournament_selected = tournament_list[index_tournament_selected]
-                    index_round_selected = self.generic.select_of_element_in_list(
-                        element_list=tournament_selected.round_list,
-                        title=f"Sélectionner un Round du {tournament_selected}",
-                        text="Retour au Menu precedent"
+                    action_main_menu = MenuDisplay(
+                        elements_list=tournament_selected.round_list,
+                        confirm_text="Voulez-vous retourner au Menu Précédent?",
+                        title=f"Sélectionner un Round du {tournament_selected}"
                     )
-                    if index_round_selected < len(tournament_selected.round_list):
+                    action_main_menu.menu_selector()
+                    index_round_selected = action_main_menu.index_selected
+
+                    if index_round_selected is int:
                         round_selected = tournament_selected.round_list[index_round_selected]
-                        self.generic.display_list(
-                            list_of_elements=round_selected.list_of_match,
+                        action_main_menu = MenuDisplay(
+                            elements_list=round_selected.list_of_match,
+                            confirm_text="Voulez-vous retourner au Menu Précédent?",
                             title=f"Liste des matchs du {round_selected.name} du {tournament_selected}"
                         )
+                        action_main_menu.display_list()
 
             else:
-                break
+                choice = Confirmation(text="Voulez-vous retourner au Menu Principal?").select_option()
+                if choice:
+                    break
 
     def menu_player(self):
         while True:
@@ -118,6 +127,7 @@ class ControlMenu:
                 "Afficher la liste de tous joueurs d'un tournoi",
                 "Enregistrer un nouveau joueur",
                 "Modifier le classement d'un joueur",
+                "Retour au Menu Principal"
             ]
             action_main_menu = MenuDisplay(
                 elements_list=list_of_action,
@@ -136,17 +146,18 @@ class ControlMenu:
                 "Display all players of tournament"
                 tournament_list = self.control_tournament.data_tournaments_list
                 action_main_menu = MenuDisplay(
-                    elements_list=list_of_action,
+                    elements_list=tournament_list,
                     confirm_text="Voulez-vous retourner au Menu Précédent?",
                     title="Menu Joueur / Sélectionner un tournoi"
                 )
                 action_main_menu.menu_selector()
+
                 index_tournament_selected = action_main_menu.index_selected
-                if index_tournament_selected < len(tournament_list):
+                if index_tournament_selected is int:
                     tournament_selected = tournament_list[index_tournament_selected]
 
                     players_list = MenuDisplay(
-                        elements_list=list_of_action,
+                        elements_list=tournament_selected.players_list,
                         confirm_text="Voulez-vous retourner au Menu Précédent?",
                         title=f"Liste des joueur du {tournament_selected}"
                     )
@@ -170,8 +181,10 @@ class ControlMenu:
                 )
                 action_main_menu.menu_selector()
                 index_players_list = action_main_menu.index_selected
-                if index_players_list < len(players_list_sorted):
+                if index_players_list is int:
                     self.control_player.change_rang_of_player(
                         player_selected=players_list_sorted[index_players_list])
             else:
-                break
+                choice = Confirmation(text="Voulez-vous retourner au Menu Principal?").select_option()
+                if choice:
+                    break

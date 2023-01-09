@@ -1,8 +1,8 @@
 import curses
 from datetime import datetime
-from option_selection import OptionSelection
-from screen import Screen
-from window import Window
+from views.option_selection import OptionSelection
+from views.screen import Screen
+from views.window import Window
 
 
 class GetInfo(Screen):
@@ -64,7 +64,7 @@ class GetInfo(Screen):
                                   error_message=error_message
                                   )
             else:
-                return the_input
+                return the_input.capitalize()
 
     def valid_date(self, type_of_date, pos_y, ):
         """
@@ -132,7 +132,7 @@ class GetInfo(Screen):
                      number_lines=10,
                      number_columns=self.screen_width - 20
                      )
-        win.display_error_message(y=5, error_message=error_message)
+        win.display_message(y=5, message=error_message)
         self.stdscr.border()
 
     def get_info_player(self, ):
@@ -197,9 +197,14 @@ class GetInfo(Screen):
         self.stdscr.refresh()
         return info_tournament
 
-
-toto = GetInfo(pos_x=30,
-               pos_y=5)
-toto.display_comment_on_last_lines("Appuyer sur Entrer pour valider la saissie ")
-info_tour = toto.get_info_tournament()
-print(info_tour)
+    def get_new_rang_player(self, player, list_player):
+        title = f"Modification classement du {player}. Ancien classement : {player.rang}"
+        self.stdscr.addstr(self.y + 2, self.middle_width_screen - len(title) // 2, title)
+        self.stdscr.nodelay(True)
+        self.stdscr.getch()
+        self.stdscr.nodelay(False)
+        new_rang = self.vali_number(info=f"Nouveau classement de {player}:",
+                                    pos_y=self.y,
+                                    element_list=list_player
+                                    )
+        return new_rang

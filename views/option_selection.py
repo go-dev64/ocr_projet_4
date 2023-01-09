@@ -109,11 +109,11 @@ class OptionSelection:
 
 
 class Confirmation(Screen):
-    def __init__(self, text):
+    def __init__(self, text, title=None):
         super().__init__()
         self.text = text
+        self.title = title
         self.list_of_choice = ["Oui", "Non"]
-        #curses.wrapper(self.select_option)
 
     def color_print(self, y, x, text, pair_num):
         self.stdscr.attron(curses.color_pair(pair_num))
@@ -172,5 +172,6 @@ class Confirmation(Screen):
         x = self.middle_width_screen - len(self.text) // 2
         y = self.middle_height_screen
         self.stdscr.addstr(y, x, self.text)
+        if self.title is not None:
+            self.stdscr.addstr(y - 2, self.middle_width_screen - len(self.title) // 2, self.title)
         self.stdscr.refresh()
-

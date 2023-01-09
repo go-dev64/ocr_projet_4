@@ -1,48 +1,31 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
 from controllers.control_generic import Generic
-from views.display_menu import MenuDisplay
+from views.view_generic import ViewGeneric
+from views.input import GetInfo
+from views.display_menu import MenuDisplay,  Confirmation, Screen
 from controllers.control_data import Data, data_players_list
 
 
 class ControlPlayer:
     def __init__(self):
         self.view_player = ViewPlayer()
+        self.view_generic = ViewGeneric()
         self.generic = Generic()
         self.data = Data()
         self.data_players_list = data_players_list
         self.player_info = {}
-
-    def get_player_name(self):
-        name = self.view_player.input_player_name()
-        return name
-
-    def get_player_first_name(self):
-        first_name = self.view_player.input_player_first_name()
-        return first_name
-
-    def get_date_of_birth(self):
-        date = self.view_player.input_date_of_birth()
-        return date
-
-    def get_gender(self):
-        gender = self.view_player.input_gender()
-        return gender
 
     def get_id_player(self):
         id_player = len(self.data.table_of_player) + 1
         return id_player
 
     def get_info_player(self):
-        player_info = {
-            "name": self.get_player_name(),
-            "first_name": self.get_player_first_name(),
-            "date_of_birth": self.get_date_of_birth(),
-            "gender": self.get_gender(),
-            "number_point": 0,
-            "id_player": self.get_id_player(),
-            "rang": None,
-        }
+        get_player = GetInfo(pos_x=30, pos_y=5)
+        player_info = get_player.get_info_player()
+        player_info["number_point"] = 0
+        player_info["id_player"] = self.get_id_player()
+        player_info["rang"] = None
         return player_info
 
     @staticmethod
@@ -72,10 +55,13 @@ class ControlPlayer:
 
     def change_rang_of_player(self, player_selected):
         players_list_sorted = sorted(
-            self.data_players_list, key=lambda player: player.name
+            self.data_players_list, key=lambda player: player.rang
         )
-        new_rang = self.view_player.change_player_rang(player_selected)
-        if new_rang is not None:
+        new_rang = self.view_player.change_player_rang(player_selected, players_list_sorted)
+        confirm = self.view_generic.confirm_choice(message=f"Valider le nouveau classement de {player_selected}?",
+                                                   title=f"Nouveau classement de {player_selected}: {new_rang}"
+                                                   )
+        if confirm:
             player_selected.edit_grading(new_grading=new_rang)
             self.move_player_on_new_rang(
                 player=player_selected, players_list=players_list_sorted
@@ -109,9 +95,9 @@ class ControlPlayer:
         )
         if result[0]:
             self.save_player(player=new_player)
-            self.generic.view_generic.confirm_element_registration(
-                element=new_player, elements_list=name_of_list
-            )
+            Screen().message(message=f"Création du {new_player}.",
+                             title="Confirmation creation joueur"
+                             )
             return True, new_player
         else:
             self.view_player.player_already_selected(
@@ -122,7 +108,8 @@ class ControlPlayer:
     def add_new_player_in_tournament(self, tournament):
         new_player = self.add_new_player_by_user(name_of_list="la base de donnée")
         if not new_player[0]:
-            choice = self.view_player.valid_player_exist()
+            choice = self.view_generic.confirm_choice(message="Sélectionner le joueur existant?",
+                                                      title=f"{new_player} est deja inscrit dans la base de données!")
             if choice == 0:
                 player_from_db = self.check_if_player_in_list(
                     player=new_player[1], the_list=tournament
@@ -172,6 +159,7 @@ class ControlPlayer:
             list_of_action = [
                 "Trier les joueurs par classement",
                 "Trier les joueurs par ordre alphabétique",
+                "Retourner au Menu précédent"
             ]
             action_main_menu = MenuDisplay(
                 elements_list=list_of_action,
@@ -200,4 +188,6 @@ class ControlPlayer:
                 action_main_menu.display_list()
 
             else:
-                break
+                choice = Confirmation(text="Voulez-vous retourner au menu précédent?").select_option()
+                if choice:
+                    break
