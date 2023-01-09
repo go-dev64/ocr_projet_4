@@ -31,6 +31,14 @@ class ViewGeneric:
         index_action_selected = element.index_selected
         return index_action_selected
 
+    def display_element_list(self, elements_list, confirmation_text, title ):
+        element = MenuDisplay(
+            elements_list=elements_list,
+            confirm_text=confirmation_text,
+            title=title
+        )
+        element.display_list()
+
     def user_select_element(self, list_of_elements, type_of_element, sort_by=None):
         list_of_elements = list_of_elements
         print(f"Sélectionner un {type_of_element}:")

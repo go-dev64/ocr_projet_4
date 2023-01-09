@@ -1,53 +1,52 @@
 from views.view_checker import ViewChecker
+from views.view_generic import ViewGeneric
 
 
 class ViewRound:
     def __init__(self):
         self.checker = ViewChecker()
+        self.view_generic = ViewGeneric()
 
-    @staticmethod
-    def display_match(match_list, round):
-        print(f"Voici la liste des matchs du prochain Round: Le {round}")
-        match_number = 0
-        for match in match_list:
-            match_number += 1
-            print(f"Macth Numéro {match_number}: {match}")
+    def display_match(self, match_list, round):
+        self.view_generic.display_element_list(
+            elements_list=match_list,
+            title=f"Voici la liste des matchs du prochain Round: Le {round}",
+            confirmation_text=None
+        )
 
     def select_match(self, match_list, round):
-        match_list = match_list
-        print(f"Sélectionner un match du {round.name}:")
-        match_number = 0
-        for match in match_list:
-            match_number += 1
-            print(f"{match_number} -  {match.name}: {match}")
-        check = self.checker.check_num_choice(list_choice=match_list)
-        match_selected = check - 1
-        print(f"Vous avez sélectionner le match:\n" f"{match_list[match_selected]}")
-        return match_selected
+        index_match_selected = self.view_generic.user_select_element_in_list(
+            elements_list=match_list,
+            confirmation_text=" Voulez-vous revenir au menu precedent?",
+            title=f"Sélectionner un match du {round.name}:"
+        )
+        self.view_generic.confirm_element_registration(
+            message=f"Vous avez sélectionner le match:\n" f"{match_list[index_match_selected]}",
+            title=" Sélection Match"
+            )
+        return index_match_selected
 
     def confirm_play_next_match(self, round):
-        list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous saisir le résultat d'un match du {round.name} ?")
-        check = self.checker.check_string(list_choice=list_of_choice)
-        if check == "Y":
-            return True
-        else:
-            return False
+        choice = self.view_generic.confirm_choice(
+            message=f"Voulez-vous saisir le résultat d'un match du {round.name} ?",
+            title=" Entrer résultat Match"
+        )
+        return choice
 
     def view_start_of_round(self, name_of_round):
-        name_of_round = name_of_round
-        list_of_choice = ["Y", "N"]
-        print(f"Voulez-vous commencer le {name_of_round} ?")
-        check = self.checker.check_string(list_choice=list_of_choice)
-        if check == "Y":
-            print(f"\nLe {name_of_round} est lancé!")
-            return True
-        else:
-            return False
+        choice = self.view_generic.confirm_choice(
+            message=f"Voulez-vous commencer le {name_of_round} ?"
+        )
+        if choice is True:
+            self.view_generic.confirm_element_registration(
+                message=f"\nLe {name_of_round} est lancé!",
+                title=" Lancement nouveau Round"
+            )
+        return choice
 
-    @staticmethod
-    def view_end_of_round(name_of_round, winner_players_list):
-        print(f"Fin du {name_of_round}!")
-        print("Les vainqueurs sont:")
-        for player in winner_players_list:
-            print(player)
+    def view_end_of_round(self, name_of_round, winner_players_list):
+        self.view_generic.display_element_list(
+            elements_list=winner_players_list,
+            confirmation_text="voulez-vous retournez au menu precedent",
+            title=f"Fin du {name_of_round}! les gagnats sont:"
+        )

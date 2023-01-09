@@ -1,5 +1,5 @@
 from controllers.control_data import Data, data_tournaments_list
-from controllers.control_generic import Generic, MenuDisplay
+from controllers.control_generic import Generic
 from controllers.control_player import ControlPlayer
 from controllers.control_round import ControlRound
 from modeles.round import Round

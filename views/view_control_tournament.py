@@ -1,9 +1,11 @@
 from views.view_checker import ViewChecker
+from views.view_generic import ViewGeneric
 
 
 class ViewControlTournament:
     def __init__(self):
         self.checker = ViewChecker()
+        self.view_generic = ViewGeneric()
 
     def view_select_tournament(self, tournament_list):
         print("Sélection du tournoi")
@@ -19,22 +21,22 @@ class ViewControlTournament:
         )
         return tournament_list[tournament_selected]
 
-    @staticmethod
-    def view_end_tournament(tournament):
-        print(f"Le {tournament} est terminé!\n" "Résultat du tournoi:")
-        for player in tournament.players_list:
-            print(
-                f"{tournament.players_list.index(player)+ 1 } - "
-                f"{player} avec {player.number_point} points"
-            )
+    def view_end_tournament(self, tournament):
+        self.view_generic.display_element_list(
+            elements_list=tournament.players_list,
+            confirmation_text="retour au menu principal!",
+            title=f"Le {tournament} est terminé!\n" "Résultat du tournoi:")
 
     def view_create_new_round(self, name_of_round):
-        name_of_round = name_of_round
-        list_of_choice = ["Y", "N"]
-        print(f"Génerer le {name_of_round} ?:")
-        choice = self.checker.check_string(list_choice=list_of_choice)
-        if choice == "Y":
-            print(f"Creation du {name_of_round}!")
+        choice = self.view_generic.confirm_choice(
+            message=f"voulez-vous génerer le {name_of_round} ?",
+            title=" Création nouveau Round "
+        )
+        if choice is True:
+            self.view_generic.confirm_element_registration(
+                message=f"Création du {name_of_round}",
+                title=" Création nouveau Round "
+            )
             return True
         else:
             return None

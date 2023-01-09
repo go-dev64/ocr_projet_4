@@ -83,7 +83,7 @@ class CreateTournament:
                     self.valid_registration_in_players_list(
                         tournament=tournament, player=player_from_db
                     )
-                    free_players_list.pop
+                    free_players_list.pop(index_player_db)
             elif choice == 1:
                 """user want create new player"""
                 new_player = self.control_player.add_new_player_in_tournament(
