@@ -1,6 +1,7 @@
 from views.view_player import ViewPlayer
 from modeles.player import Player
 from controllers.control_generic import Generic
+from views.display_menu import MenuDisplay
 from controllers.control_data import Data, data_players_list
 
 
@@ -161,11 +162,10 @@ class ControlPlayer:
             players_list.append(player)
         return players_list
 
-    def display_players_list(self, players_list, name_of_menu):
+    def display_players_list(self, players_list):
         """
         display players list by name or rang
         :param players_list: data players list
-        :param name_of_menu:
         :return: function of display list sorted
         """
         while True:
@@ -173,25 +173,31 @@ class ControlPlayer:
                 "Trier les joueurs par classement",
                 "Trier les joueurs par ordre alphabétique",
             ]
-
-            action_selected = self.generic.select_of_element_in_list(
-                element_list=list_of_action,
-                text="Voulez-vous retourner au menu précédent?",
-                title=name_of_menu
+            action_main_menu = MenuDisplay(
+                elements_list=list_of_action,
+                confirm_text="Voulez-vous retourner au menu précédent?",
+                title="Menu Joueur"
             )
+            action_main_menu.menu_selector()
+            action_selected = action_main_menu.index_selected
+
             if action_selected == 0:
                 """display player by rang"""
-                self.generic.display_list(
-                    list_of_elements=sorted(players_list, key=lambda player: player.rang),
+                action_main_menu = MenuDisplay(
+                    elements_list=sorted(players_list, key=lambda player: player.rang),
+                    confirm_text="Voulez-vous retourner au menu précédent?",
                     title="Classement des joueur de la base de données"
                 )
+                action_main_menu.display_list()
 
             elif action_selected == 1:
                 """display player by name"""
-                self.generic.display_list(
-                    list_of_elements=sorted(players_list, key=lambda player: player.name),
+                action_main_menu = MenuDisplay(
+                    elements_list=sorted(players_list, key=lambda player: player.name),
+                    confirm_text="Voulez-vous retourner au menu précédent?",
                     title="Liste des joueurs dans la base de données triés par ordre alphabtique"
                 )
+                action_main_menu.display_list()
 
             else:
                 break

@@ -1,6 +1,6 @@
 import curses
-from screen import Screen
-from option_selection import Confirmation
+from views.screen import Screen
+from views.option_selection import Confirmation
 
 
 class MenuDisplay(Screen):
@@ -23,7 +23,7 @@ class MenuDisplay(Screen):
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
         current_row = 0
         self.print_menu(current_row)
-        
+
         while 1:
             key = self.stdscr.getch()
 
@@ -34,8 +34,9 @@ class MenuDisplay(Screen):
             elif key == curses.KEY_ENTER or key in [10, 13]:
                 self.index_selected = current_row
                 break
-            elif key == curses.KEY_EXIT or curses.KEY_BACKSPACE:
-                if Confirmation(text=self.confirm_text):
+            elif key in [27, 127]:
+                choice = Confirmation(text=self.confirm_text).select_option()
+                if choice:
                     break
 
             self.print_menu(current_row)
@@ -47,6 +48,12 @@ class MenuDisplay(Screen):
         :return: display element
         """
         self.stdscr.refresh()
+        self.stdscr.addstr(
+            self.middle_height_screen - len(self.elements_list) // 2 - 3,
+            self.middle_width_screen - len(self.title) // 2,
+            self.title,
+            curses.A_BOLD
+        )
         for idx, element in enumerate(self.elements_list):
             pos_x = self.middle_width_screen - len(element.__str__()) // 2
             pos_y = self.middle_height_screen - len(self.elements_list) // 2 + idx

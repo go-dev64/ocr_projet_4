@@ -1,5 +1,5 @@
 import curses
-from screen import Screen
+from views.screen import Screen
 
 
 class OptionSelection:
@@ -64,7 +64,6 @@ class OptionSelection:
 
             self.stdscr.refresh()
 
-
     def select_option(self, stdscr):
         self.stdscr = stdscr
         curses.curs_set(0)
@@ -114,8 +113,7 @@ class Confirmation(Screen):
         super().__init__()
         self.text = text
         self.list_of_choice = ["Oui", "Non"]
-        self.option_selected = bool
-        curses.wrapper(self.select_option)
+        #curses.wrapper(self.select_option)
 
     def color_print(self, y, x, text, pair_num):
         self.stdscr.attron(curses.color_pair(pair_num))
@@ -146,7 +144,7 @@ class Confirmation(Screen):
 
         self.stdscr.refresh()
 
-    def select_option(self, ):
+    def select_option(self):
         curses.curs_set(0)
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
         self.print_text_center()
@@ -161,18 +159,18 @@ class Confirmation(Screen):
                 current_option = self.list_of_choice[0]
             elif key == curses.KEY_ENTER or key in [10, 13]:
                 if current_option == self.list_of_choice[0]:
-                    self.option_selected = True
-                    break
+                    self.close_screen()
+                    return True
+
                 else:
-                    self.option_selected = False
-                    break
+                    self.close_screen()
+                    return False
+
             self.print_option_below(current_option)
-        self.close_screen()
 
     def print_text_center(self):
         x = self.middle_width_screen - len(self.text) // 2
         y = self.middle_height_screen
         self.stdscr.addstr(y, x, self.text)
         self.stdscr.refresh()
-
 
