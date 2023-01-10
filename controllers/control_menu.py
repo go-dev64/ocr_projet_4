@@ -49,7 +49,7 @@ class ControlMenu:
                 choice = self.create_tournament.launch_new_tournament(
                     new_tournament=tournament
                 )
-                if choice == "Y":
+                if choice is True:
                     self.control_tournament.play_tournament(tournament=tournament)
 
             elif index_action_selected_of_menu == 1:

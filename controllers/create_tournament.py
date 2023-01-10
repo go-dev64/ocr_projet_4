@@ -106,7 +106,7 @@ class CreateTournament:
         return tournament
 
     def launch_new_tournament(self, new_tournament):
-        #self.view_tournament.confirm_creation_tournament(tournament=new_tournament)
+        self.view_tournament.confirm_creation_tournament(tournament=new_tournament)
         choice = self.view_tournament.confirm_launch_new_tournament(
             tournament=new_tournament
         )
